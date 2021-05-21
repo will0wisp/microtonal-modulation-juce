@@ -5,9 +5,11 @@
               jucerFormatVersion="1">
   <MAINGROUP id="D4tV16" name="TestMicroModulation">
     <GROUP id="{AF8A32D3-677E-84C5-8414-854B93CA1AAC}" name="Source">
-      <GROUP id="{1005DEF6-B287-9500-87F6-1121CEDDA119}" name="scale_files">
-        <FILE id="cbe8Ux" name="empty_scale.scl" compile="0" resource="1" file="Source/scale_files/empty_scale.scl"/>
-      </GROUP>
+      <FILE id="v4eSRX" name="TestUtilities.h" compile="0" resource="0" file="Source/TestUtilities.h"/>
+      <FILE id="Dapha7" name="TestModulate.h" compile="0" resource="0" file="Source/TestModulate.h"
+            xcodeResource="0"/>
+      <FILE id="JkLiSg" name="TestFileParsing.h" compile="0" resource="0"
+            file="Source/TestFileParsing.h"/>
       <GROUP id="{73F96391-DDA1-6776-A43C-C98126A6D667}" name="Catch">
         <FILE id="fQOw8R" name="catch_amalgamated.cpp" compile="1" resource="0"
               file="../../Catch/catch_amalgamated.cpp"/>

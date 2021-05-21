@@ -85,6 +85,17 @@ public:
         else return false; // if file didn't open, return false;
     }
     
+    
+    float getFreq(char midiNote)
+    {
+        assert(midiNote >= 0);
+        assert(midiNote <= 127);
+        
+        
+        return -1;
+    }
+    
+    
     struct Scale{
         std::string description;
         std::vector<float> notes;
