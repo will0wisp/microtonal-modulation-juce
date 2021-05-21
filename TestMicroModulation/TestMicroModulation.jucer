@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="xftNG6" name="TestMicroModulation" projectType="consoleapp"
+              useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
+              jucerFormatVersion="1">
+  <MAINGROUP id="D4tV16" name="TestMicroModulation">
+    <GROUP id="{AF8A32D3-677E-84C5-8414-854B93CA1AAC}" name="Source">
+      <GROUP id="{1005DEF6-B287-9500-87F6-1121CEDDA119}" name="scale_files">
+        <FILE id="cbe8Ux" name="empty_scale.scl" compile="0" resource="1" file="Source/scale_files/empty_scale.scl"/>
+      </GROUP>
+      <GROUP id="{73F96391-DDA1-6776-A43C-C98126A6D667}" name="Catch">
+        <FILE id="fQOw8R" name="catch_amalgamated.cpp" compile="1" resource="0"
+              file="../../Catch/catch_amalgamated.cpp"/>
+        <FILE id="LI2X4h" name="catch_amalgamated.hpp" compile="0" resource="0"
+              file="../../Catch/catch_amalgamated.hpp"/>
+      </GROUP>
+      <FILE id="cVtCz5" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="kCLBWj" name="MidiProcessor.h" compile="0" resource="0" file="../MicroModulation/Source/MidiProcessor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="TestMicroModulation"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="TestMicroModulation"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
