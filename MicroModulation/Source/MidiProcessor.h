@@ -53,13 +53,20 @@ public:
                         
                         if(++lineNum > 2)
                         {
-                            if(line.find('/') == std::string::npos){ //line in decimal/cents format
+                            if (line.find('.') != std::string::npos)
+                            { //line in decimal/cents format
                                 scale.notes.push_back( Scale::centsToRatio(std::stof(line)) );
                             }
-                            else{ //line in ratio/fraction format
+                            else if (line.find('/') != std::string::npos)
+                            { //line in ratio/fraction format
                                 size_t divider; // position of '/' in the line
-                                scale.notes.push_back( std::stof(line, &divider) / std::stof(line.substr(divider+1)) );
+                                scale.notes.push_back(std::stof(line, &divider) / std::stof(line.substr(divider+1)));
                             }
+                            else
+                            {
+                                scale.notes.push_back(std::stoi(line));
+                            }
+                            if(scale.notes.back() <= 0) return false; //notes must be positive.
                         }
                         else if(lineNum == 1)
                         {

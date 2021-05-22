@@ -51,6 +51,14 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                                  "1.2\n"
                                                  "1.3\n"));
         }
+        SECTION("Check negative note ratio"){
+            REQUIRE_FALSE(testUtility::loadScale(m,
+                                                 "Check negative note ratio Scale\n"
+                                                 "3\n"
+                                                 "-1/2\n"
+                                                 "1.3\n"
+                                                 "3"));
+        }
         
         SECTION("Check ratio parsing"){
             REQUIRE(testUtility::loadScale(m,
@@ -66,13 +74,23 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(m.scale.notes.at(3) == Catch::Approx(19.0/11.0));
         }
         
+        SECTION("Check integer interpreted as ratio"){ // integers without a decimal should be ratios
+            REQUIRE(testUtility::loadScale(m,
+                                           "Check integer is ratio  Scale\n"
+                                           "2\n"
+                                           "2\n"
+                                           "2.\n"));
+            REQUIRE(m.scale.notes.at(0) == Catch::Approx(2));
+            REQUIRE(m.scale.notes.at(1) == Catch::Approx(1.001156)); //calculated using cents -> ratio formula. 1.00116 is a ratio of 2 cents, about.
+        }
+        
         SECTION("Check cents parsing"){
             REQUIRE(testUtility::loadScale(m,
                                            "Check cents parsing Scale\n"
                                            "4\n"
-                                           "1200\n" //octave. should be ratio of 2
+                                           "1200.\n" //octave. should be ratio of 2
                                            "1200.0\n" //octave. should be ratio of 2
-                                           "2400\n" //2 octaves. should be ratio of 4
+                                           "2400.\n" //2 octaves. should be ratio of 4
                                            "701.955\n" //P5. should be ratio of 3/2
                                            ));
             REQUIRE(m.scale.notes.at(0) == Catch::Approx(2.));
@@ -93,11 +111,11 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "!comment\n"
                                            "4\n"
                                            "!comment\n"
-                                           "1200\n" //octave. should be ratio of 2
+                                           "1200.\n" //octave. should be ratio of 2
                                            "!comment\n"
                                            "!comment\n"
                                            "1200.0\n" //octave. should be ratio of 2
-                                           "2400\n" //2 octaves. should be ratio of 4
+                                           "2400.0\n" //2 octaves. should be ratio of 4
                                            "!comment\n"
                                            "701.955\n" //P5. should be ratio of 3/2
                                            "!comment\n"
@@ -118,9 +136,9 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(testUtility::loadScale(m,
                                            "Test ignore inline comments scale!comment\n"
                                            "4!comment\n"
-                                           "1200!comment\n" //octave. should be ratio of 2
+                                           "1200.!comment\n" //octave. should be ratio of 2
                                            "1200.0              !comment\n" //octave. should be ratio of 2
-                                           "2400!comment\n" //2 octaves. should be ratio of 4
+                                           "2400.0!comment\n" //2 octaves. should be ratio of 4
                                            "701.955 !comment\n" //P5. should be ratio of 3/2
                                            ));
             REQUIRE(m.scale.description == "Test ignore inline comments scale");
@@ -131,4 +149,10 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(m.scale.notes.at(3) == Catch::Approx(3.0f/2.0f));
         }
     }
+}
+
+
+TEST_CASE("Keyboard mapping (.kbm) Files can be loaded")
+{
+    
 }
