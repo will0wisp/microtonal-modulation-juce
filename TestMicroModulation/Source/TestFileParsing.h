@@ -25,15 +25,15 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                     testUtility::loadScale(m,
                                            "0 Note Scale\n"
                                            "0"));
-            REQUIRE(m.scale.notes.size() == 1);
-            REQUIRE(m.scale.notes.at(0) == 1.0);
+            REQUIRE(m.scale.getNotes().size() == 1);
+            REQUIRE(m.scale.getNotes().at(0) == 1.0);
         }
         
         SECTION("Test read scale description"){
             REQUIRE(testUtility::loadScale(m,
                                            "Description\n"
                                            "0"));
-            REQUIRE(m.scale.description == "Description");
+            REQUIRE(m.scale.getDescription() == "Description");
         }
         
         SECTION("Num notes in file incorrect"){
@@ -68,10 +68,10 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "2/3\n"
                                            "3/7\n"
                                            "19/11\n"));
-            REQUIRE(m.scale.notes.at(0) == Catch::Approx(1.0/2.0));
-            REQUIRE(m.scale.notes.at(1) == Catch::Approx(2.0/3.0));
-            REQUIRE(m.scale.notes.at(2) == Catch::Approx(3.0/7.0));
-            REQUIRE(m.scale.notes.at(3) == Catch::Approx(19.0/11.0));
+            REQUIRE(m.scale.getNotes().at(0) == Catch::Approx(1.0/2.0));
+            REQUIRE(m.scale.getNotes().at(1) == Catch::Approx(2.0/3.0));
+            REQUIRE(m.scale.getNotes().at(2) == Catch::Approx(3.0/7.0));
+            REQUIRE(m.scale.getNotes().at(3) == Catch::Approx(19.0/11.0));
         }
         
         SECTION("Check integer interpreted as ratio"){ // integers without a decimal should be ratios
@@ -80,8 +80,8 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "2\n"
                                            "2\n"
                                            "2.\n"));
-            REQUIRE(m.scale.notes.at(0) == Catch::Approx(2));
-            REQUIRE(m.scale.notes.at(1) == Catch::Approx(1.001156)); //calculated using cents -> ratio formula. 1.00116 is a ratio of 2 cents, about.
+            REQUIRE(m.scale.getNotes().at(0) == Catch::Approx(2));
+            REQUIRE(m.scale.getNotes().at(1) == Catch::Approx(1.001156)); //calculated using cents -> ratio formula. 1.00116 is a ratio of 2 cents, about.
         }
         
         SECTION("Check cents parsing"){
@@ -93,10 +93,10 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "2400.\n" //2 octaves. should be ratio of 4
                                            "701.955\n" //P5. should be ratio of 3/2
                                            ));
-            REQUIRE(m.scale.notes.at(0) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(1) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(2) == Catch::Approx(4.));
-            REQUIRE(m.scale.notes.at(3) == Catch::Approx(3.0f/2.0f));
+            REQUIRE(m.scale.getNotes().at(0) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(1) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(2) == Catch::Approx(4.));
+            REQUIRE(m.scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
         }
         
         
@@ -122,12 +122,12 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "!comment\n"
                                            "!comment\n"
                                            "!comment\n"));
-            REQUIRE(m.scale.description == "Test ignore comment lines Scale");
-            REQUIRE(m.scale.notes.size() == 4);
-            REQUIRE(m.scale.notes.at(0) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(1) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(2) == Catch::Approx(4.));
-            REQUIRE(m.scale.notes.at(3) == Catch::Approx(3.0f/2.0f));
+            REQUIRE(m.scale.getDescription() == "Test ignore comment lines Scale");
+            REQUIRE(m.scale.getNotes().size() == 4);
+            REQUIRE(m.scale.getNotes().at(0) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(1) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(2) == Catch::Approx(4.));
+            REQUIRE(m.scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
         }
         
         //TODO make this dependency part of the testing
@@ -141,12 +141,12 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "4!/2\n"                         //should be a ratio of 4
                                            "701.955 !comment\n"             //P5. should be ratio of 3/2
                                            ));
-            REQUIRE(m.scale.description == "Test ignore inline comments scale");
-            REQUIRE(m.scale.notes.size() == 4);
-            REQUIRE(m.scale.notes.at(0) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(1) == Catch::Approx(2.));
-            REQUIRE(m.scale.notes.at(2) == Catch::Approx(4.));
-            REQUIRE(m.scale.notes.at(3) == Catch::Approx(3.0f/2.0f));
+            REQUIRE(m.scale.getDescription() == "Test ignore inline comments scale");
+            REQUIRE(m.scale.getNotes().size() == 4);
+            REQUIRE(m.scale.getNotes().at(0) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(1) == Catch::Approx(2.));
+            REQUIRE(m.scale.getNotes().at(2) == Catch::Approx(4.));
+            REQUIRE(m.scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
         }
     }
 }

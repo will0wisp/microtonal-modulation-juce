@@ -1,9 +1,7 @@
 #pragma once
 
-#include <cmath>
-#include <fstream>
+
 #include <string>
-#include <regex>
 
 #include "JuceHeader.h"
 
@@ -13,6 +11,10 @@
 class MidiProcessor
 {
 public:
+    
+    /**
+     The main process block for Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
+     */
     void process(juce::MidiBuffer& midiMessages)
     {
         juce::MidiMessage message;
@@ -28,6 +30,7 @@ public:
         midiMessages.swapWith(processedBuffer);
     }
     
+        
     /**
      Reads in a .scl file.
      @param sclPath the path of the file.
@@ -42,8 +45,6 @@ public:
     {
         assert(midiNote >= 0);
         assert(midiNote <= 127);
-        
-        
         return -1;
     }
     

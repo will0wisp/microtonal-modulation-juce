@@ -38,9 +38,14 @@ public:
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
-    std::string getDescription() {return this->description;}
+    std::string getDescription(){return this->description;}
     void setDescription(std::string d){this->description = d;}
     
+    std::vector<float> getNotes(){return this->notes;}
+    void setNotes(std::vector<float> n){this->notes = n;}
+    
+    KeyboardMap getMap(){return this->map;}
+    void setMap(KeyboardMap k){this->map = k;}
     /**
      @param midiNote the midiNote coming in. Ranges [0,127];
      @return calculated frequency based on midiNote
@@ -52,9 +57,8 @@ public:
     bool loadSclFile(std::string sclPath);
     bool loadKbmFile(std::string kbmPath);
 
+private:
     std::string description;
     std::vector<float> notes;
-
-private:
     KeyboardMap map;
 };
