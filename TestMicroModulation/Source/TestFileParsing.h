@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "/Users/NevetssteveN/Desktop/Development/Catch/catch_amalgamated.hpp"
+#include "Catch/catch_amalgamated.hpp"
 //User-written Code
-#include "/Users/NevetssteveN/Desktop/Development/MicroModulation/MicroModulation/Source/MidiProcessor.h"
+#include "../../MicroModulation/Source/MidiProcessor.h"
 #include "TestUtilities.h"
 
 
