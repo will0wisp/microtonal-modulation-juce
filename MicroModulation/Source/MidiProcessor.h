@@ -6,6 +6,7 @@
 #include "JuceHeader.h"
 
 #include "Scale.h"
+#include "KeyboardMap.h"
 
 
 class MidiProcessor
@@ -39,4 +40,5 @@ public:
     
     juce::MidiBuffer processedBuffer;
     Scale scale;
+    KeyboardMap kbMap;
 };

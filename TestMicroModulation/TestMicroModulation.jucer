@@ -11,15 +11,16 @@
         <FILE id="DfTClW" name="catch_amalgamated.hpp" compile="0" resource="0"
               file="Source/Catch/catch_amalgamated.hpp"/>
       </GROUP>
+      <FILE id="JQQjGm" name="KeyboardMap.cpp" compile="1" resource="0" file="../MicroModulation/Source/KeyboardMap.cpp"/>
       <FILE id="hcucNP" name="KeyboardMap.h" compile="0" resource="0" file="../MicroModulation/Source/KeyboardMap.h"/>
       <FILE id="wGhopU" name="Scale.h" compile="0" resource="0" file="../MicroModulation/Source/Scale.h"/>
       <FILE id="Cg1NbD" name="Scale.cpp" compile="1" resource="0" file="../MicroModulation/Source/Scale.cpp"/>
+      <FILE id="kCLBWj" name="MidiProcessor.h" compile="0" resource="0" file="../MicroModulation/Source/MidiProcessor.h"/>
       <FILE id="Dapha7" name="TestModulate.h" compile="0" resource="0" file="Source/TestModulate.h"
             xcodeResource="0"/>
-      <FILE id="JkLiSg" name="TestFileParsing.h" compile="0" resource="0"
-            file="Source/TestFileParsing.h"/>
+      <FILE id="JkLiSg" name="TestReadScl.h" compile="0" resource="0" file="Source/TestReadScl.h"/>
+      <FILE id="QDJwLF" name="TestReadKbm.h" compile="0" resource="0" file="Source/TestReadKbm.h"/>
       <FILE id="cVtCz5" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="kCLBWj" name="MidiProcessor.h" compile="0" resource="0" file="../MicroModulation/Source/MidiProcessor.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>

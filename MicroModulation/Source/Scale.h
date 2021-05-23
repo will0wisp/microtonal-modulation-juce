@@ -19,14 +19,15 @@
 #include <cmath>
 #include <string>
 
-#include "KeyboardMap.h"
+//#include "KeyboardMap.h"
 
+//TODO: Add complete documentation
 class Scale
 {
 public:
     Scale();
     Scale(std::string sclPath);
-    Scale(std::string sclPath, std::string kbmPath);
+    virtual ~Scale(){}
     // ==============================================================================
     // Static Stuff
     // ==============================================================================
@@ -44,15 +45,12 @@ public:
     std::vector<float> getNotes(){return this->notes;}
     void setNotes(std::vector<float> n){this->notes = n;}
     
-    KeyboardMap getMap(){return this->map;}
-    void setMap(KeyboardMap k){this->map = k;}
     /**
      @param midiNote the midiNote coming in. Ranges [0,127];
      @return calculated frequency based on midiNote
      */
-    float getFreq(char midiNote);
-    void modulate(char pivot, char center);
-    
+   // virtual float getFreq(signed char midiNote);
+   // virtual void modulate();
     
     bool loadSclFile(std::string sclPath);
     /*
@@ -60,11 +58,25 @@ public:
      @param sclString a string that is formatted like a .scl file. to be loaded
      */
     bool loadSclString(std::string sclString);
-    
-    bool loadKbmFile(std::string kbmPath);
 
-private:
+    bool loadKbmFile(std::string kbmPath);
+    bool loadKbmString(std::string kbmString);
+
+protected:
     std::string description;
     std::vector<float> notes;
-    KeyboardMap map;
+    
+    /*
+     Helper function for loadSclString() (and KeyboardMap::loadKbmString() ).
+     @param contents The contents to be written to the file.
+     note: cstdio::remove() must be called on this file!!!!
+     @return path to the tmp file.
+     */
+    std::string makeAndWriteTmpFile(std::string contents);
+    
+    /*
+     Helper function for file reading.
+     Removes leading white space and comments from a .scl or .kbm file line.
+     */
+    std::string removeLineSpaceAndComments(std::string line);
 };

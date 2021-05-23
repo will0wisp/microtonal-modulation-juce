@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "/Users/NevetssteveN/Desktop/Development/Catch/catch_amalgamated.hpp"
-
-//User Written code
-#include "/Users/NevetssteveN/Desktop/Development/MicroModulation/MicroModulation/Source/MidiProcessor.h"
+//catch2 unit testing
+#include "Catch/catch_amalgamated.hpp"
 //Unit-tests
-#include "TestFileParsing.h"
+#include "TestReadScl.h"
+#include "TestReadKbm.h"
 #include "TestModulate.h"

@@ -8,17 +8,19 @@
   ==============================================================================
 */
 
+#include <cstdio>
 #include <fstream>
 #include <string>
 #include <regex>
-#include <unistd.h>
 
 #include "Scale.h"
 
 Scale::Scale(){
     
 }
-bool Scale::loadSclFile(std::string sclPath){
+
+bool Scale::loadSclFile(std::string sclPath)
+{
     std::ifstream sclFile(sclPath);
     std::string line;
     if(sclFile.is_open())
@@ -29,17 +31,9 @@ bool Scale::loadSclFile(std::string sclPath){
         {
             while(getline(sclFile, line))
             {
-                line = std::regex_replace(line, std::regex("^\\s+"), std::string("")); //remove initial whitespace
-                if(line.at(0) != '!') // lines starting with '!' are comments
+                line = removeLineSpaceAndComments(line);
+                if(line != "") //if our line wasn't just a comment line
                 {
-                    //removes terminal inline comment, if there is one.
-                    size_t commentStart = line.find('!');
-                    if(commentStart != std::string::npos)
-                    {
-                        line = line.substr(0, commentStart);
-                    }
-                    
-                    
                     if(++lineNum > 2)
                     {
                         if (line.find('.') != std::string::npos)
@@ -81,16 +75,35 @@ bool Scale::loadSclFile(std::string sclPath){
     else return false; // if file didn't open, return false;
 }
 
-bool Scale::loadSclString(std::string sclString){
-    //Make temporary file path
-    char tmpfilePath[80]= "/tmp/tempscale.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
-    mkstemp(tmpfilePath);
-    //write sclFile to tmpFile
-    FILE* tmpFile = fopen(tmpfilePath, "w");
-    fputs(sclString.c_str(), tmpFile);
-    fclose(tmpFile);
-    
+bool Scale::loadSclString(std::string sclString)
+{
+    std::string tmpfilePath = makeAndWriteTmpFile(sclString);
+
     bool output = loadSclFile(tmpfilePath);
-    unlink(tmpfilePath);
+    remove(tmpfilePath.c_str());
     return output;
 }
+
+std::string Scale::makeAndWriteTmpFile(std::string contents)
+{
+    //Make temporary file path
+    char tmpfilePath[80]= "/tmp/microModTmpFile.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
+    mkstemp(tmpfilePath);
+    //write contents to tmpFile
+    FILE* tmpFile = fopen(tmpfilePath, "w");
+    fputs(contents.c_str(), tmpFile);
+    fclose(tmpFile);
+    
+    return tmpfilePath;
+    
+}
+
+
+std::string Scale::removeLineSpaceAndComments(std::string line)
+{
+    std::string output = std::regex_replace(line, std::regex("^\\s+"), std::string("")); //remove initial whitespace
+    output = std::regex_replace(output, std::regex("!.*"), std::string("")); //remove inline comments
+    return output;
+}
+
+
