@@ -106,7 +106,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(testUtility::loadScale(m,
                                            "!comment\n"
                                            "!comment\n"
-                                           "!comment\n"
+                                           "    !comment\n"
                                            "Test ignore comment lines Scale\n"
                                            "!comment\n"
                                            "4\n"
@@ -136,10 +136,10 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(testUtility::loadScale(m,
                                            "Test ignore inline comments scale!comment\n"
                                            "4!comment\n"
-                                           "1200.!comment\n" //octave. should be ratio of 2
+                                           "1200.!comment\n"                //octave. should be ratio of 2
                                            "1200.0              !comment\n" //octave. should be ratio of 2
-                                           "2400.0!comment\n" //2 octaves. should be ratio of 4
-                                           "701.955 !comment\n" //P5. should be ratio of 3/2
+                                           "4!/2\n"                         //should be a ratio of 4
+                                           "701.955 !comment\n"             //P5. should be ratio of 3/2
                                            ));
             REQUIRE(m.scale.description == "Test ignore inline comments scale");
             REQUIRE(m.scale.notes.size() == 4);

@@ -11,6 +11,7 @@
 		448174C61525E964E5C8D455 /* ConsoleApp */ = {isa = PBXBuildFile; fileRef = 6820D34A996CB8E61A66E21D; };
 		650EC7A5BB22593255562040 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = F6A4EA5DE0F7933029240355; };
 		7F71800DE12CFAF8AE71BDF0 /* catch_amalgamated.cpp */ = {isa = PBXBuildFile; fileRef = 0ED1820C9D0F3CA8D125C3F6; };
+		8545439B8762B5CA015AD762 /* Scale.cpp */ = {isa = PBXBuildFile; fileRef = 0151A4AD8B5CDE8896CFFC21; };
 		856CB9BF891996A7E4E701C0 /* Accelerate.framework */ = {isa = PBXBuildFile; fileRef = 0484F7508CA967FE9E65ACF0; };
 		861CB0ABD23E90D58651B786 /* Cocoa.framework */ = {isa = PBXBuildFile; fileRef = 141383C714D4A3522B91FF1C; };
 		8673292F831A72145AAECF83 /* include_juce_audio_basics.mm */ = {isa = PBXBuildFile; fileRef = 615F12FE98B289A834ADD3D9; };
@@ -22,9 +23,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0151A4AD8B5CDE8896CFFC21 /* Scale.cpp */ /* Scale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Scale.cpp; path = ../../../MicroModulation/Source/Scale.cpp; sourceTree = SOURCE_ROOT; };
 		0484F7508CA967FE9E65ACF0 /* Accelerate.framework */ /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0ED1820C9D0F3CA8D125C3F6 /* catch_amalgamated.cpp */ /* catch_amalgamated.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = catch_amalgamated.cpp; path = ../../../../Catch/catch_amalgamated.cpp; sourceTree = SOURCE_ROOT; };
 		141383C714D4A3522B91FF1C /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		19ABB46DA5A0211400DAE0D6 /* KeyboardMap.h */ /* KeyboardMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KeyboardMap.h; path = ../../../MicroModulation/Source/KeyboardMap.h; sourceTree = SOURCE_ROOT; };
 		1FC0B83A1A44B6807AE90DC4 /* include_juce_data_structures.mm */ /* include_juce_data_structures.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = ../../JuceLibraryCode/include_juce_data_structures.mm; sourceTree = SOURCE_ROOT; };
 		3151AB5B98A1644B72070690 /* IOKit.framework */ /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		42F03B833919B1C1C444739A /* MidiProcessor.h */ /* MidiProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiProcessor.h; path = ../../../MicroModulation/Source/MidiProcessor.h; sourceTree = SOURCE_ROOT; };
@@ -33,6 +36,7 @@
 		5475C332EAEB457918209573 /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
 		615F12FE98B289A834ADD3D9 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
 		6820D34A996CB8E61A66E21D /* ConsoleApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestMicroModulation; sourceTree = BUILT_PRODUCTS_DIR; };
+		714756ED9DE1AC3A3F96CCEE /* Scale.h */ /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Scale.h; path = ../../../MicroModulation/Source/Scale.h; sourceTree = SOURCE_ROOT; };
 		77D11F60489E577BE5B5F529 /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		84F49E82BE1A360556E511E7 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
 		8F5E4FCBD2991CCAC6DC88E0 /* include_juce_core.mm */ /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
@@ -81,6 +85,9 @@
 		2A589892A1C71C6C2A89C966 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				19ABB46DA5A0211400DAE0D6,
+				714756ED9DE1AC3A3F96CCEE,
+				0151A4AD8B5CDE8896CFFC21,
 				C59EA129833642AA037AA37B,
 				4AB33A959059B83406F5B0A5,
 				FFC8925D7D7102D5D3734F85,
@@ -215,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8545439B8762B5CA015AD762,
 				7F71800DE12CFAF8AE71BDF0,
 				A016DFD91E96ED4578B12904,
 				8673292F831A72145AAECF83,

@@ -3,8 +3,11 @@
 #include <cmath>
 #include <fstream>
 #include <string>
+#include <regex>
 
 #include "JuceHeader.h"
+
+#include "Scale.h"
 
 
 class MidiProcessor
@@ -41,6 +44,7 @@ public:
             {
                 while(getline(sclFile, line))
                 {
+                    line = std::regex_replace(line, std::regex("^\\s+"), std::string("")); //remove initial whitespace
                     if(line.at(0) != '!') // lines starting with '!' are comments
                     {
                         //removes terminal inline comment, if there is one.
@@ -106,6 +110,15 @@ public:
     struct Scale{
         std::string description;
         std::vector<float> notes;
+        
+        struct Mapping{
+            
+        };
+        
+        struct defaults{
+            
+        };
+        
         
         static float centsToRatio(float cents){
             return std::pow(M_E, (cents * std::log(2.0) / 1200) );
