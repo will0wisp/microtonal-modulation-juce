@@ -24,6 +24,7 @@
 class Scale
 {
 public:
+    Scale();
     Scale(std::string sclPath);
     Scale(std::string sclPath, std::string kbmPath);
     // ==============================================================================
@@ -50,9 +51,10 @@ public:
     
     bool loadSclFile(std::string sclPath);
     bool loadKbmFile(std::string kbmPath);
-private:
+
     std::string description;
     std::vector<float> notes;
-    
+
+private:
     KeyboardMap map;
 };

@@ -25,6 +25,7 @@
 class KeyboardMap
 {
 public:
+    KeyboardMap(){}
     KeyboardMap(std::string kbmPath);
     KeyboardMap(int scaleLength);
 //    KeyboardMap(Scale s);
