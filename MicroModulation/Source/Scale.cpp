@@ -8,18 +8,16 @@
   ==============================================================================
 */
 
-#include <cmath>
 #include <fstream>
 #include <string>
 #include <regex>
+#include <unistd.h>
 
 #include "Scale.h"
 
 Scale::Scale(){
     
 }
-
-    
 bool Scale::loadSclFile(std::string sclPath){
     std::ifstream sclFile(sclPath);
     std::string line;
@@ -81,4 +79,18 @@ bool Scale::loadSclFile(std::string sclPath){
         return true;
     }
     else return false; // if file didn't open, return false;
+}
+
+bool Scale::loadSclString(std::string sclString){
+    //Make temporary file path
+    char tmpfilePath[80]= "/tmp/tempscale.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
+    mkstemp(tmpfilePath);
+    //write sclFile to tmpFile
+    FILE* tmpFile = fopen(tmpfilePath, "w");
+    fputs(sclString.c_str(), tmpFile);
+    fclose(tmpFile);
+    
+    bool output = loadSclFile(tmpfilePath);
+    unlink(tmpfilePath);
+    return output;
 }

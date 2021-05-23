@@ -30,17 +30,6 @@ public:
         midiMessages.swapWith(processedBuffer);
     }
     
-        
-    /**
-     Reads in a .scl file.
-     @param sclPath the path of the file.
-     @return true if file is read successfully. false otherwise
-     */
-    bool loadSclFile(std::string sclPath){
-        return scale.loadSclFile(sclPath);
-    }
-    
-    
     float getFreq(char midiNote)
     {
         assert(midiNote >= 0);

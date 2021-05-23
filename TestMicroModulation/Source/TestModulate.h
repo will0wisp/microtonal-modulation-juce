@@ -13,8 +13,6 @@
 #include "Catch/catch_amalgamated.hpp"
 //User-written Code
 #include "../../MicroModulation/Source/MidiProcessor.h"
-#include "TestUtilities.h"
-
 
 
 TEST_CASE("The user can modulate between scales")

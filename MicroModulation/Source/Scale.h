@@ -55,6 +55,12 @@ public:
     
     
     bool loadSclFile(std::string sclPath);
+    /*
+     Loads a scale based on a .scl file stored in a string.
+     @param sclString a string that is formatted like a .scl file. to be loaded
+     */
+    bool loadSclString(std::string sclString);
+    
     bool loadKbmFile(std::string kbmPath);
 
 private:

@@ -7,8 +7,6 @@
 #include "Catch/catch_amalgamated.hpp"
 //User-written Code
 #include "../../MicroModulation/Source/MidiProcessor.h"
-#include "TestUtilities.h"
-
 
 TEST_CASE( "Scale (.scl) Files can be loaded") {
     
@@ -16,13 +14,13 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
 
     SECTION("test MidiProcessor::loadSclFile()"){
         SECTION("Given bad path"){
-            REQUIRE_FALSE(m.loadSclFile(""));
+            REQUIRE_FALSE(m.scale.loadSclFile(""));
         }
         
         // A file with 0 notes should result in 1 note in the scale (with ratio 1.0).
         SECTION("Test File with 0 Notes"){
             REQUIRE(
-                    testUtility::loadScale(m,
+                    m.scale.loadSclString(
                                            "0 Note Scale\n"
                                            "0"));
             REQUIRE(m.scale.getNotes().size() == 1);
@@ -30,14 +28,14 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
         
         SECTION("Test read scale description"){
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "Description\n"
                                            "0"));
             REQUIRE(m.scale.getDescription() == "Description");
         }
         
         SECTION("Num notes in file incorrect"){
-            REQUIRE_FALSE(testUtility::loadScale(m,
+            REQUIRE_FALSE(m.scale.loadSclString(
                                                  "Wrong Number Note Scale\n"
                                                  "1\n"
                                                  "1.2\n"
@@ -45,14 +43,14 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
         
         SECTION("Check num notes correct"){
-            REQUIRE_FALSE(testUtility::loadScale(m,
+            REQUIRE_FALSE(m.scale.loadSclString(
                                                  "Check num notes correct Scale\n"
                                                  "1\n"
                                                  "1.2\n"
                                                  "1.3\n"));
         }
         SECTION("Check negative note ratio"){
-            REQUIRE_FALSE(testUtility::loadScale(m,
+            REQUIRE_FALSE(m.scale.loadSclString(
                                                  "Check negative note ratio Scale\n"
                                                  "3\n"
                                                  "-1/2\n"
@@ -61,7 +59,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
         
         SECTION("Check ratio parsing"){
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "Check ratio parsing Scale\n"
                                            "4\n"
                                            "1/2\n"
@@ -75,7 +73,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
         
         SECTION("Check integer interpreted as ratio"){ // integers without a decimal should be ratios
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "Check integer is ratio  Scale\n"
                                            "2\n"
                                            "2\n"
@@ -85,7 +83,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
         
         SECTION("Check cents parsing"){
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "Check cents parsing Scale\n"
                                            "4\n"
                                            "1200.\n" //octave. should be ratio of 2
@@ -103,7 +101,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         //TODO make this dependency part of the testing.
         //Note: this scale is the same as "Check cents parsing", and is dependant on that passing
         SECTION("Test ignore comment lines"){ // comments start with '!'
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "!comment\n"
                                            "!comment\n"
                                            "    !comment\n"
@@ -133,7 +131,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         //TODO make this dependency part of the testing
         //Note: this scale is the same as "Check cents parsing", and is dependant on that passing
         SECTION("Test ignore inline comments"){ //
-            REQUIRE(testUtility::loadScale(m,
+            REQUIRE(m.scale.loadSclString(
                                            "Test ignore inline comments scale!comment\n"
                                            "4!comment\n"
                                            "1200.!comment\n"                //octave. should be ratio of 2
