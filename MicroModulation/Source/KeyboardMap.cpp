@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    KeyboardMap.cpp
-    Created: 23 May 2021 5:06:31pm
-    Author:  Willow Weiner
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ KeyboardMap.cpp
+ Created: 23 May 2021 5:06:31pm
+ Author:  Willow Weiner
+ 
+ ==============================================================================
+ */
 
 #include <cstdio>
 #include <fstream>
@@ -32,10 +32,12 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                     if(++lineNum > 7)
                     {
                         mapping.push_back(std::stoi(line));
+                        if(mapping.back() <= 0) return false;
                     }
                     else if(lineNum == 1) //then line = the size of map. after how many keys the pattern repeats.
                     {
                         mappingSize = std::stoi(line);
+                        if(mappingSize <= 0 ) return false;
                     }
                     else if(lineNum == 2) //first midi note number to retune
                     {
@@ -47,7 +49,8 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                     }
                     else if(lineNum == 4) //middle note
                     {
-                        middleNote = std::stoi(line);
+                        middleNoteFreqPair.first = std::stoi(line);
+                        if(middleNoteFreqPair.first < 0 || middleNoteFreqPair.first > 127) return false;
                     }
                     else if(lineNum == 5) //midi reference note
                     {
@@ -56,26 +59,29 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                     else if(lineNum == 6) //frequence of reference midi note
                     {
                         referenceMidiFreqPair.second = std::stof(line);
+                        if(referenceMidiFreqPair.second <= 0.0) return false;
                     }
                     else if(lineNum == 7) //scale number to consider formal octave.
                     {
                         formalOctaveScaleDegree = std::stoi(line);
+                        if(formalOctaveScaleDegree < 0 || notes.size() < formalOctaveScaleDegree) return false;
                     }
-
+                    
                 }
             }
             kbmFile.close();
             
-            if(mapping.size() > mappingSize) return false;
+            if(lineNum < 7) return false; //in this case, not all meta values were read.
+            
+            //fill rest of mappings with -1
             for(size_t i = mapping.size(); i < mappingSize ; i++)
             {
                 mapping.push_back(-1);
             }
             
-            if(mapping.size() != mappingSize) return false;
-            if(numNotes == 0){
-                notes.push_back(1.0);
-            }
+            if(mapping.size() != mappingSize) return false; //wrong mapping size
+            
+            calcMiddleNoteFreq();
         }
         catch (...) { return false; } // if formatted incorrectly, return false
         return true;
@@ -85,8 +91,47 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
 bool KeyboardMap::loadKbmString(std::string kbmString)
 {
     std::string tmpfilePath = makeAndWriteTmpFile(kbmString);
-
+    
     bool output = loadKbmFile(tmpfilePath);
     remove(tmpfilePath.c_str());
     return output;
+}
+
+//TODO: write this
+//TODO: test this
+float KeyboardMap::getFreq(signed char midiNoteNum)
+{
+    return notes.at(getScaleDegree(midiNoteNum)) //the ratio for midinote
+    * pow( notes.at(formalOctaveScaleDegree), getOctave(midiNoteNum) ) //takes care of octave shift
+    * middleNoteFreqPair.second;
+}
+
+//TODO: write this
+//TODO: test this
+void KeyboardMap::modulate(signed char center, signed char pivot)
+{
+    
+}
+
+//TODO: test this
+int KeyboardMap::getScaleDegree(signed char midiNoteNum)
+{
+    long index = (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+    if(index < 0) index += mapping.size();
+    return mapping.at(index);
+}
+
+//TODO: write this
+//TODO: test this
+int KeyboardMap::getOctave(signed char midiNoteNum)
+{
+    (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+}
+
+
+//TODO: write this
+//TODO: test this
+void KeyboardMap::calcMiddleNoteFreq()
+{
+    
 }

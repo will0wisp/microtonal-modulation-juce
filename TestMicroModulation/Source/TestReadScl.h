@@ -12,7 +12,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
     
     Scale scale;
 
-    SECTION("test MidiProcessor::loadSclFile()"){
+    SECTION("test Scale::loadSclFile()"){
         SECTION("Given bad path"){
             REQUIRE_FALSE(scale.loadSclFile(""));
         }
