@@ -18,8 +18,9 @@
       <FILE id="kCLBWj" name="MidiProcessor.h" compile="0" resource="0" file="../MicroModulation/Source/MidiProcessor.h"/>
       <FILE id="Dapha7" name="TestModulate.h" compile="0" resource="0" file="Source/TestModulate.h"
             xcodeResource="0"/>
-      <FILE id="JkLiSg" name="TestReadScl.h" compile="0" resource="0" file="Source/TestReadScl.h"/>
-      <FILE id="QDJwLF" name="TestReadKbm.h" compile="0" resource="0" file="Source/TestReadKbm.h"/>
+      <FILE id="JkLiSg" name="TestScale.h" compile="0" resource="0" file="Source/TestScale.h"/>
+      <FILE id="QDJwLF" name="TestKeyboardMap.h" compile="0" resource="0"
+            file="Source/TestKeyboardMap.h"/>
       <FILE id="cVtCz5" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>

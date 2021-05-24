@@ -20,9 +20,9 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
     if(kbmFile.is_open())
     {
         int lineNum = 0;
-        int numNotes = -1;
         try
         {
+            mapping.clear();
             int mappingSize;
             while(getline(kbmFile, line))
             {
@@ -66,7 +66,6 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                         formalOctaveScaleDegree = std::stoi(line);
                         if(formalOctaveScaleDegree < 0 || notes.size() < formalOctaveScaleDegree) return false;
                     }
-                    
                 }
             }
             kbmFile.close();
@@ -97,7 +96,6 @@ bool KeyboardMap::loadKbmString(std::string kbmString)
     return output;
 }
 
-//TODO: write this
 //TODO: test this
 float KeyboardMap::getFreq(signed char midiNoteNum)
 {
@@ -116,16 +114,27 @@ void KeyboardMap::modulate(signed char center, signed char pivot)
 //TODO: test this
 int KeyboardMap::getScaleDegree(signed char midiNoteNum)
 {
-    long index = (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
-    if(index < 0) index += mapping.size();
+    assert(mapping.size() > 0);
+    assert(midiNoteNum >= 0);
+    int index;
+    if(midiNoteNum >= middleNoteFreqPair.first)
+    {
+        index = (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+    }
+    else{
+        index = mapping.size() - (middleNoteFreqPair.first - midiNoteNum) % mapping.size();
+        if(index == mapping.size()) index = 0;
+    }
     return mapping.at(index);
+    
 }
 
 //TODO: write this
 //TODO: test this
 int KeyboardMap::getOctave(signed char midiNoteNum)
 {
-    (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+    //  (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+    return -1;
 }
 
 

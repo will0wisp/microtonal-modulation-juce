@@ -7,6 +7,6 @@
 //catch2 unit testing
 #include "Catch/catch_amalgamated.hpp"
 //Unit-tests
-#include "TestReadScl.h"
-#include "TestReadKbm.h"
+#include "TestScale.h"
+#include "TestKeyboardMap.h"
 #include "TestModulate.h"

@@ -87,7 +87,7 @@ bool Scale::loadSclString(std::string sclString)
 std::string Scale::makeAndWriteTmpFile(std::string contents)
 {
     //Make temporary file path
-    char tmpfilePath[80]= "/tmp/microModTmpFile.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
+    char tmpfilePath[80]= "/tmp/microMod.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
     mkstemp(tmpfilePath);
     //write contents to tmpFile
     FILE* tmpFile = fopen(tmpfilePath, "w");

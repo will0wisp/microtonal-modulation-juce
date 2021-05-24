@@ -33,14 +33,13 @@
 		3151AB5B98A1644B72070690 /* IOKit.framework */ /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		42F03B833919B1C1C444739A /* MidiProcessor.h */ /* MidiProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiProcessor.h; path = ../../../MicroModulation/Source/MidiProcessor.h; sourceTree = SOURCE_ROOT; };
 		4AB33A959059B83406F5B0A5 /* TestModulate.h */ /* TestModulate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestModulate.h; path = ../../Source/TestModulate.h; sourceTree = SOURCE_ROOT; };
+		4CD9908F26BC3D2AAB30AADF /* TestScale.h */ /* TestScale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestScale.h; path = ../../Source/TestScale.h; sourceTree = SOURCE_ROOT; };
 		511519F737C777042CAC8DBA /* Main.cpp */ /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../Source/Main.cpp; sourceTree = SOURCE_ROOT; };
 		5475C332EAEB457918209573 /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
 		615F12FE98B289A834ADD3D9 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
 		6820D34A996CB8E61A66E21D /* ConsoleApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestMicroModulation; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B797E2391A9B7807B44C1FA /* TestReadKbm.h */ /* TestReadKbm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestReadKbm.h; path = ../../Source/TestReadKbm.h; sourceTree = SOURCE_ROOT; };
 		714756ED9DE1AC3A3F96CCEE /* Scale.h */ /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Scale.h; path = ../../../MicroModulation/Source/Scale.h; sourceTree = SOURCE_ROOT; };
 		7289331F574B6FBBEF32B856 /* catch_amalgamated.cpp */ /* catch_amalgamated.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = catch_amalgamated.cpp; path = ../../Source/Catch/catch_amalgamated.cpp; sourceTree = SOURCE_ROOT; };
-		7318D69D9B322F7ED6093E44 /* TestReadScl.h */ /* TestReadScl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestReadScl.h; path = ../../Source/TestReadScl.h; sourceTree = SOURCE_ROOT; };
 		77D11F60489E577BE5B5F529 /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		84F49E82BE1A360556E511E7 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
 		8F5E4FCBD2991CCAC6DC88E0 /* include_juce_core.mm */ /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
@@ -48,6 +47,7 @@
 		9C718BC9D5FCA60D260A5602 /* juce_audio_basics */ /* juce_audio_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_basics; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_audio_basics; sourceTree = "<absolute>"; };
 		B017A6728AEBAE8E424B4A73 /* KeyboardMap.cpp */ /* KeyboardMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KeyboardMap.cpp; path = ../../../MicroModulation/Source/KeyboardMap.cpp; sourceTree = SOURCE_ROOT; };
 		BED5C9F8002ED75035622ADD /* Foundation.framework */ /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D0361129820B848995E78969 /* TestKeyboardMap.h */ /* TestKeyboardMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestKeyboardMap.h; path = ../../Source/TestKeyboardMap.h; sourceTree = SOURCE_ROOT; };
 		F39125D461FE380D6178BB26 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
 		F6A4EA5DE0F7933029240355 /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -94,8 +94,8 @@
 				0151A4AD8B5CDE8896CFFC21,
 				42F03B833919B1C1C444739A,
 				4AB33A959059B83406F5B0A5,
-				7318D69D9B322F7ED6093E44,
-				6B797E2391A9B7807B44C1FA,
+				4CD9908F26BC3D2AAB30AADF,
+				D0361129820B848995E78969,
 				511519F737C777042CAC8DBA,
 			);
 			name = Source;

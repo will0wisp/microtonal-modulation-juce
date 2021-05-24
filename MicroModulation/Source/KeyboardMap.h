@@ -62,6 +62,10 @@ public:
     void modulate(signed char center, signed char pivot);
     
     
+    int getScaleDegree(signed char midiNoteNum);
+    int getOctave(signed char midiNoteNum);
+    void calcMiddleNoteFreq();
+    
 private:
     //parameters.
     std::pair<signed char, signed char> rangeToRetune;
@@ -70,9 +74,6 @@ private:
     size_t formalOctaveScaleDegree;
     std::vector<int> mapping;
     //functions
-    int getScaleDegree(signed char midiNoteNum);
-    int getOctave(signed char midiNoteNum);
-    void calcMiddleNoteFreq();
     
     
     //defaults

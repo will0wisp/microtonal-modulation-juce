@@ -9,6 +9,7 @@
       <FILE id="YnCVpV" name="Scale.cpp" compile="1" resource="0" file="Source/Scale.cpp"/>
       <FILE id="LrLrLy" name="Scale.h" compile="0" resource="0" file="Source/Scale.h"/>
       <FILE id="w2QDCj" name="KeyboardMap.h" compile="0" resource="0" file="Source/KeyboardMap.h"/>
+      <FILE id="pSdm5d" name="KeyboardMap.cpp" compile="1" resource="0" file="Source/KeyboardMap.cpp"/>
       <FILE id="mAqmjM" name="MidiProcessor.h" compile="0" resource="0" file="Source/MidiProcessor.h"/>
       <FILE id="kqA90E" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
