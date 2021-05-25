@@ -111,7 +111,10 @@ void KeyboardMap::modulate(signed char center, signed char pivot)
     
 }
 
-//TODO: test this
+/*
+ Returns the scale degree for a given midi note
+ */
+//TODO: fix so that it only works when midiNoteNum is in the correct midiRange
 int KeyboardMap::getScaleDegree(signed char midiNoteNum)
 {
     assert(mapping.size() > 0);
@@ -129,18 +132,20 @@ int KeyboardMap::getScaleDegree(signed char midiNoteNum)
     
 }
 
-//TODO: write this
-//TODO: test this
+//this could be a signed char
 int KeyboardMap::getOctave(signed char midiNoteNum)
 {
-    //  (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
-    return -1;
+    signed char diff = midiNoteNum -  middleNoteFreqPair.first;
+    int output = (int) diff / (int) mapping.size();
+    if(diff < 0 && diff % (int) mapping.size() != 0) output--;//because division is symettric around 0, we need to decrement the octave when diff is negative. 
+    return output;
 }
 
 
-//TODO: write this
 //TODO: test this
 void KeyboardMap::calcMiddleNoteFreq()
 {
-    
+    middleNoteFreqPair.second = referenceMidiFreqPair.second / notes.at(getScaleDegree(referenceMidiFreqPair.first))
+    * notes.at(getScaleDegree(middleNoteFreqPair.first))
+    * pow(notes.at(formalOctaveScaleDegree), getOctave(middleNoteFreqPair.first));
 }

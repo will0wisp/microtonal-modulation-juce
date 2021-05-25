@@ -61,11 +61,6 @@ public:
      */
     void modulate(signed char center, signed char pivot);
     
-    
-    int getScaleDegree(signed char midiNoteNum);
-    int getOctave(signed char midiNoteNum);
-    void calcMiddleNoteFreq();
-    
 private:
     //parameters.
     std::pair<signed char, signed char> rangeToRetune;
@@ -75,6 +70,14 @@ private:
     std::vector<int> mapping;
     //functions
     
+    /*
+     Returns the scale degree for a given midi note
+     @param midiNoteNum the midi note number. on [0,127]
+     @return the associated scale degree (of scale stored in this->notes)
+     */
+    int getScaleDegree(signed char midiNoteNum);
+    int getOctave(signed char midiNoteNum);
+    void calcMiddleNoteFreq();
     
     //defaults
     static struct defaults{

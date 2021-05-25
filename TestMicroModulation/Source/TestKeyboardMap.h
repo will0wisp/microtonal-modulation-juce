@@ -11,7 +11,6 @@
 #pragma once
 
 #define private public // so we can test private member functions
-#define protected public
 #include "../../MicroModulation/Source/KeyboardMap.h"
 #include <stdio.h>
 
@@ -188,11 +187,9 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
     int refNote = 69; float refFreq= 440.;
     int formalOctaveScaleDegree=0;
     std::vector<int> mappings={1,2,3,4,5,6};
-    for(int i = 1; i <= numNotes; i++){
-        kb.loadSclString("getScaleDegree test scale\n"
+    kb.loadSclString("getScaleDegree test scale\n"
                          "1\n2\n3\n4\n5\n6\n"
                          );
-    }
         
     for(int test = 0; test < numTests; test++)
     {
@@ -218,10 +215,46 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
         }
     }
 }
-//TEST_CASE("Test KeyboardMap::getFreq")
-//{
-//
-//}
+TEST_CASE("Test KeyboardMap::getOctave")
+{
+    KeyboardMap kb;
+    int numTests = 50;
+    
+    int numNotes = 6;
+    int mapLowBound = 0; int mapHighBound = 127;
+    int middleNote = 60;
+    int refNote = 69; float refFreq= 440.;
+    int formalOctaveScaleDegree=0;
+    std::vector<int> mappings={1,2,3,4,5,6};
+    
+    kb.loadSclString("getScaleDegree test scale\n"
+                         "1\n2\n3\n4\n5\n6\n"
+                         );
+    
+    for(int test = 1; test <= numTests; test++){
+        assert(kb.loadKbmString(makeKbmString(numNotes, mapLowBound, mapHighBound, middleNote, refNote, refFreq, formalOctaveScaleDegree, mappings)));
+        
+        int octave = 0;
+        for(int i = middleNote; i < 128; i+= numNotes)
+        {
+            for(int j = 0; j < numNotes && i+j < 128; j++)
+            {
+                REQUIRE(kb.getOctave(i+j) == octave);
+            }
+            octave++;
+        }
+        octave = 0;
+        for(int i = middleNote; i>=0 && i < 128; i-= numNotes)
+        {
+            for(int j = 0; j < numNotes && i+j < 128; j++)
+            {
+                REQUIRE(kb.getOctave(i+j) == octave);
+            }
+            octave--;
+        }
+    }
+
+}
 
 
 //TEST_CASE("Test KeyboardMap::modulate")

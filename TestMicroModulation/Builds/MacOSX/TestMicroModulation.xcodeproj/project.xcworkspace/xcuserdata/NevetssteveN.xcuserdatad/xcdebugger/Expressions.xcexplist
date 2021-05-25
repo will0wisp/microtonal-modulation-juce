@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "KeyboardMap::getOctave(signed char):KeyboardMap.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "(int) midiNoteNum - middleNoteFreqPair.first">
+            </PersistentString>
+            <PersistentString
+               value = "((int)midiNoteNum - middleNoteFreqPair.first) / (int)mapping.size()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardMap::getScaleDegree(signed char):KeyboardMap.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "____C_A_T_C_H____T_E_S_T____31():TestKeyboardMap.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "i+j">
+            </PersistentString>
+            <PersistentString
+               value = "midiNoteNum - middleNoteFreqPair.first">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
