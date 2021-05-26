@@ -30,26 +30,13 @@ KeyboardMap::KeyboardMap(int sclLength, std::string kbmPath)
     loadKbmFile(kbmPath);
 }
 
-
-
 bool KeyboardMap::loadKbmFile(std::string kbmPath)
 {
     std::ifstream kbmFile(kbmPath);
     std::string line;
     if(kbmFile.is_open())
     {
-        
-        struct StoredVals{ // we're going to revert to these values if the file isn't read correctly
-            StoredVals(KeyboardMap& kb)
-                :retune(kb.rangeToRetune), middle(kb.middleNoteFreqPair), ref(kb.referenceMidiFreqPair), octave(kb.formalOctaveScaleDegree), mp(kb.mapping)
-            {}
-            std::pair<signed char, signed char> retune;
-            std::pair<signed char, float> middle;
-            std::pair<signed char,float> ref;
-            size_t octave;
-            std::vector<int> mp;
-        };
-        StoredVals beforeRead = StoredVals(*this);
+        StoredKeyboardMap beforeRead = StoredKeyboardMap(*this);
         bool fileReadCorrectly = true;
         
         int lineNum = 0;
@@ -135,6 +122,8 @@ bool KeyboardMap::loadKbmString(std::string kbmString)
     remove(tmpfilePath.c_str());
     return output;
 }
+
+
 
 ////TODO: test this
 //float KeyboardMap::getFreq(signed char midiNoteNum)

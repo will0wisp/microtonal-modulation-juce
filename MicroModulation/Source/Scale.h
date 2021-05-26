@@ -28,12 +28,28 @@ public:
     Scale();
     Scale(std::string sclPath);
     Scale(std::string sclPath, std::string kbmPath);
-    virtual ~Scale(){}
+    
+    struct StoredScale
+    {
+        StoredScale(Scale& s)
+            :d(s.getDescription()), n(s.getNotes()), kbm(s.getKeyboardMap())
+        {}
+        
+        bool equals(Scale& s)
+        {
+            return d == s.description
+            && n == s.notes;
+                //&& kbm == s.kbm;
+        }
+        std::string d;
+        std::vector<float> n;
+        KeyboardMap kbm;
+    };
     // ==============================================================================
     // Static Stuff
     // ==============================================================================
     static float centsToRatio(float cents){
-        return std::pow(M_E, (cents * std::log(2.0) / 1200) );
+        return std::pow(M_E, (cents * std::log(2.0) / 1200.0) );
     }
     
     // ==============================================================================
@@ -44,6 +60,8 @@ public:
     
     std::vector<float> getNotes(){return this->notes;}
     void setNotes(std::vector<float> n){this->notes = n;}
+    
+    KeyboardMap getKeyboardMap(){return this->kbm;}
     
     // ==============================================================================
     // File loading

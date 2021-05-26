@@ -25,8 +25,13 @@ bool Scale::loadSclFile(std::string sclPath)
     std::string line;
     if(sclFile.is_open())
     {
+        StoredScale beforeRead = StoredScale(*this);
+        bool fileReadCorrectly = true;
+        
         int lineNum = 0;
         int numNotes = -1;
+        
+        
         try
         {
             while(getline(sclFile, line))
@@ -34,43 +39,55 @@ bool Scale::loadSclFile(std::string sclPath)
                 line = utils::removeLineSpaceAndComments(line);
                 if(line != "") //if our line wasn't just a comment line
                 {
-                    if(++lineNum > 2)
+                    switch(++lineNum)
                     {
-                        if (line.find('.') != std::string::npos)
-                        { //line in decimal/cents format
-                            notes.push_back( Scale::centsToRatio(std::stof(line)) );
-                        }
-                        else if (line.find('/') != std::string::npos)
-                        { //line in ratio/fraction format
-                            size_t divider; // position of '/' in the line
-                            notes.push_back(std::stof(line, &divider) / std::stof(line.substr(divider+1)));
-                        }
-                        else
-                        {
-                            notes.push_back(std::stoi(line));
-                        }
-                        if(notes.back() <= 0) return false; //notes must be positive.
-                    }
-                    else if(lineNum == 1)
-                    {
-                        description = line;
-                    }
-                    else if(lineNum == 2)
-                    {
-                        numNotes = std::stoi(line);
-                        if(numNotes < 0) return false; //there need to be at least 0 notes!!!
+                        case 1:
+                            description = line;
+                            break;
+                        case 2:
+                            numNotes = std::stoi(line);
+                            if(numNotes < 0) fileReadCorrectly = false; //there need to be at least 0 notes!!!
+                            break;
+                        default:
+                            if (line.find('.') != std::string::npos)
+                            { //line in decimal/cents format
+                                notes.push_back( Scale::centsToRatio(std::stof(line)) );
+                            }
+                            else if (line.find('/') != std::string::npos)
+                            { //line in ratio/fraction format
+                                size_t divider; // position of '/' in the line
+                                notes.push_back(std::stof(line, &divider) / std::stof(line.substr(divider+1)));
+                            }
+                            else
+                            {
+                                notes.push_back(std::stoi(line));
+                            }
+                            if(notes.back() <= 0) fileReadCorrectly = false; //notes must be positive.
                     }
                 }
+                if(!fileReadCorrectly) break; // we don't need to keep reading if there is already an error!
             }
             sclFile.close();
             
-            if(notes.size() != numNotes) return false;
+            if(notes.size() != numNotes) fileReadCorrectly = false;
             if(numNotes == 0){
                 notes.push_back(1.0);
             }
         }
-        catch (...) { return false; } // if formatted incorrectly, return false
-        return true;
+        catch (...) {fileReadCorrectly = false; } // if formatted incorrectly, return false
+        
+        if(fileReadCorrectly)
+        {
+            kbm = KeyboardMap((int)notes.size());
+            return true;
+        }
+        else // if the file isn't read correctly, return to previous state and return false
+        {
+            description = beforeRead.d;
+            notes = beforeRead.n;
+            kbm = beforeRead.kbm;
+            return false;
+        }
     }
     else return false; // if file didn't open, return false;
 }
@@ -93,3 +110,24 @@ bool Scale::loadKbmString(std::string kbmString)
 {
     return kbm.loadKbmString(kbmString);
 }
+
+
+//
+///*
+// Returns the frequency that should be played back.
+// @param midiNoteNum the midiNote number.
+// @return the frequncy that is associated with that midi note number.
+// */
+//float Scale::getFreq(signed char midiNoteNum)
+//{
+//    kbm.getScaleDegree(signed char midiNoteNum)
+//}
+///*
+// Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
+// @param center midino
+// @param pivot
+// */
+//void Scale::modulate(signed char center, signed char pivot)
+//{
+//    
+//}

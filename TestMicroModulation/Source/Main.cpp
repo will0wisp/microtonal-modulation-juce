@@ -8,5 +8,5 @@
 #include "Catch/catch_amalgamated.hpp"
 //Unit-tests
 #include "TestScale.h"
-//#include "TestKeyboardMap.h"
+#include "TestKeyboardMap.h"
 //#include "TestModulate.h"

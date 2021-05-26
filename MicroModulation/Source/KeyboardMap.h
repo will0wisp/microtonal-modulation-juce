@@ -28,6 +28,29 @@ public:
     KeyboardMap(int scaleLength);
     KeyboardMap(int scaleLength, std::string kbmPath);
 
+    //TODO: define equals ('==') operator
+    
+    //TODO: include a StoredKeyboardMap store(KeyboardMap kb) function.
+    struct StoredKeyboardMap{
+        StoredKeyboardMap(KeyboardMap& kb)
+            :retune(kb.rangeToRetune), middle(kb.middleNoteFreqPair), ref(kb.referenceMidiFreqPair), octave(kb.formalOctaveScaleDegree), mp(kb.mapping)
+        {}
+        
+        bool equals(const KeyboardMap& kb)
+        {
+            return retune == kb.rangeToRetune
+                && middle == kb.middleNoteFreqPair
+                && ref == kb.referenceMidiFreqPair
+                && octave == kb.formalOctaveScaleDegree
+                && mp == kb.mapping;
+        }
+        std::pair<signed char, signed char> retune;
+        std::pair<signed char, float> middle;
+        std::pair<signed char,float> ref;
+        size_t octave;
+        std::vector<int> mp;
+    };
+    
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================

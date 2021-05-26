@@ -11,10 +11,16 @@
 TEST_CASE( "Scale (.scl) Files can be loaded") {
     
     Scale scale;
+    Scale::StoredScale before = Scale::StoredScale(scale);
 
+    
+    //TODO: define equals ('==') operator
+    
+    //TODO: include a StoredScale store(Scale s) function.
     SECTION("test Scale::loadSclFile()"){
         SECTION("Given bad path"){
             REQUIRE_FALSE(scale.loadSclFile(""));
+            REQUIRE(before.equals(scale));
         }
         
         // A file with 0 notes should result in 1 note in the scale (with ratio 1.0).
@@ -40,6 +46,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                                  "1\n"
                                                  "1.2\n"
                                                  "1.3\n"));
+            REQUIRE(before.equals(scale));
         }
         
         SECTION("Check num notes correct"){
@@ -48,6 +55,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                                  "1\n"
                                                  "1.2\n"
                                                  "1.3\n"));
+            REQUIRE(before.equals(scale));
         }
         SECTION("Check negative note ratio"){
             REQUIRE_FALSE(scale.loadSclString(
@@ -56,6 +64,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                                  "-1/2\n"
                                                  "1.3\n"
                                                  "3"));
+            REQUIRE(before.equals(scale));
         }
         
         SECTION("Check ratio parsing"){
