@@ -69,6 +69,7 @@
 		2D367E3971A31F38189531D8 /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		357D4C444774AF6B2F9C85B6 /* AudioToolbox.framework */ /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		378E2AA515B0A3670C86D469 /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_graphics; sourceTree = "<absolute>"; };
+		37B21B9BD16316421FC9181A /* utils.h */ /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../../Source/utils.h; sourceTree = SOURCE_ROOT; };
 		37E62C703C330013EAADDE26 /* MidiProcessor.h */ /* MidiProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiProcessor.h; path = ../../Source/MidiProcessor.h; sourceTree = SOURCE_ROOT; };
 		4A1E07DC88868C1DBBB9EBE4 /* CoreMIDI.framework */ /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		4DFE13C5A751C035E24B0B9C /* PluginEditor.cpp */ /* PluginEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginEditor.cpp; path = ../../Source/PluginEditor.cpp; sourceTree = SOURCE_ROOT; };
@@ -184,6 +185,7 @@
 		5EC0784A1E41526554C3A76B /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				37B21B9BD16316421FC9181A,
 				6EFDF549C363881622D07EE9,
 				9634022DF462465FD125327F,
 				C6297FF973C12B138812D3BE,

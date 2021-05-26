@@ -19,7 +19,7 @@
 #include <cmath>
 #include <string>
 
-//#include "KeyboardMap.h"
+#include "KeyboardMap.h"
 
 //TODO: Add complete documentation
 class Scale
@@ -27,6 +27,7 @@ class Scale
 public:
     Scale();
     Scale(std::string sclPath);
+    Scale(std::string sclPath, std::string kbmPath);
     virtual ~Scale(){}
     // ==============================================================================
     // Static Stuff
@@ -35,7 +36,6 @@ public:
         return std::pow(M_E, (cents * std::log(2.0) / 1200) );
     }
     
-    static std::string strToTmpFilePath(std::string fileContents);
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
@@ -44,6 +44,10 @@ public:
     
     std::vector<float> getNotes(){return this->notes;}
     void setNotes(std::vector<float> n){this->notes = n;}
+    
+    // ==============================================================================
+    // File loading
+    // ==============================================================================
     
     /**
      @param midiNote the midiNote coming in. Ranges [0,127];
@@ -62,21 +66,34 @@ public:
     bool loadKbmFile(std::string kbmPath);
     bool loadKbmString(std::string kbmString);
 
-protected:
+    
+    
+    /*
+     Returns the frequency that should be played back.
+     @param midiNoteNum the midiNote number.
+     @return the frequncy that is associated with that midi note number.
+     */
+    float getFreq(signed char midiNoteNum);
+    /*
+     Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
+     @param center midino
+     @param pivot
+     */
+    void modulate(signed char center, signed char pivot);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+private:
     std::string description;
     std::vector<float> notes;
-    
-    /*
-     Helper function for loadSclString() (and KeyboardMap::loadKbmString() ).
-     @param contents The contents to be written to the file.
-     note: cstdio::remove() must be called on this file!!!!
-     @return path to the tmp file.
-     */
-    std::string makeAndWriteTmpFile(std::string contents);
-    
-    /*
-     Helper function for file reading.
-     Removes leading white space and comments from a .scl or .kbm file line.
-     */
-    std::string removeLineSpaceAndComments(std::string line);
+    KeyboardMap kbm;
+
 };

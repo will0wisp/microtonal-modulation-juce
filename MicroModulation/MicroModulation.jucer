@@ -6,6 +6,7 @@
               pluginFormats="buildVST3">
   <MAINGROUP id="HBc4lb" name="MicroModulation">
     <GROUP id="{BEE8BB2A-8E3F-2F27-C658-FF2EFCE2CEE8}" name="Source">
+      <FILE id="qa63Mc" name="utils.h" compile="0" resource="0" file="Source/utils.h"/>
       <FILE id="YnCVpV" name="Scale.cpp" compile="1" resource="0" file="Source/Scale.cpp"/>
       <FILE id="LrLrLy" name="Scale.h" compile="0" resource="0" file="Source/Scale.h"/>
       <FILE id="w2QDCj" name="KeyboardMap.h" compile="0" resource="0" file="Source/KeyboardMap.h"/>

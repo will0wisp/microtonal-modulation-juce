@@ -11,9 +11,9 @@
 #include <cstdio>
 #include <fstream>
 #include <string>
-#include <regex>
 
 #include "Scale.h"
+#include "utils.h"
 
 Scale::Scale(){
     
@@ -31,7 +31,7 @@ bool Scale::loadSclFile(std::string sclPath)
         {
             while(getline(sclFile, line))
             {
-                line = removeLineSpaceAndComments(line);
+                line = utils::removeLineSpaceAndComments(line);
                 if(line != "") //if our line wasn't just a comment line
                 {
                     if(++lineNum > 2)
@@ -77,33 +77,19 @@ bool Scale::loadSclFile(std::string sclPath)
 
 bool Scale::loadSclString(std::string sclString)
 {
-    std::string tmpfilePath = makeAndWriteTmpFile(sclString);
+    std::string tmpfilePath = utils::makeAndWriteTmpFile(sclString);
 
     bool output = loadSclFile(tmpfilePath);
     remove(tmpfilePath.c_str());
     return output;
 }
 
-std::string Scale::makeAndWriteTmpFile(std::string contents)
+//probably don't actually need these
+bool Scale::loadKbmFile(std::string kbmPath)
 {
-    //Make temporary file path
-    char tmpfilePath[80]= "/tmp/microMod.XXXXXX"; //don't know what 80 size is about. took it from stackexchange
-    mkstemp(tmpfilePath);
-    //write contents to tmpFile
-    FILE* tmpFile = fopen(tmpfilePath, "w");
-    fputs(contents.c_str(), tmpFile);
-    fclose(tmpFile);
-    
-    return tmpfilePath;
-    
+    return kbm.loadKbmFile(kbmPath);
 }
-
-
-std::string Scale::removeLineSpaceAndComments(std::string line)
+bool Scale::loadKbmString(std::string kbmString)
 {
-    std::string output = std::regex_replace(line, std::regex("^\\s+"), std::string("")); //remove initial whitespace
-    output = std::regex_replace(output, std::regex("!.*"), std::string("")); //remove inline comments
-    return output;
+    return kbm.loadKbmString(kbmString);
 }
-
-

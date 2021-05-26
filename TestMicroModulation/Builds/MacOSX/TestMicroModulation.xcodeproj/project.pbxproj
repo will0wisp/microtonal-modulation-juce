@@ -48,6 +48,7 @@
 		B017A6728AEBAE8E424B4A73 /* KeyboardMap.cpp */ /* KeyboardMap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KeyboardMap.cpp; path = ../../../MicroModulation/Source/KeyboardMap.cpp; sourceTree = SOURCE_ROOT; };
 		BED5C9F8002ED75035622ADD /* Foundation.framework */ /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D0361129820B848995E78969 /* TestKeyboardMap.h */ /* TestKeyboardMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestKeyboardMap.h; path = ../../Source/TestKeyboardMap.h; sourceTree = SOURCE_ROOT; };
+		F2090891D58117A312BFE145 /* utils.h */ /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../../../MicroModulation/Source/utils.h; sourceTree = SOURCE_ROOT; };
 		F39125D461FE380D6178BB26 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/NevetssteveN/Desktop/Development/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
 		F6A4EA5DE0F7933029240355 /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -88,15 +89,16 @@
 			isa = PBXGroup;
 			children = (
 				1AAE3D22CBB9564BD0D5712A,
+				F2090891D58117A312BFE145,
 				B017A6728AEBAE8E424B4A73,
 				19ABB46DA5A0211400DAE0D6,
 				714756ED9DE1AC3A3F96CCEE,
 				0151A4AD8B5CDE8896CFFC21,
 				42F03B833919B1C1C444739A,
+				511519F737C777042CAC8DBA,
 				4AB33A959059B83406F5B0A5,
 				4CD9908F26BC3D2AAB30AADF,
 				D0361129820B848995E78969,
-				511519F737C777042CAC8DBA,
 			);
 			name = Source;
 			sourceTree = "<group>";

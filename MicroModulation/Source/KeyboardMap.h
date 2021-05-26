@@ -20,15 +20,14 @@
 #include <string>
 #include <vector>
 
-#include "Scale.h"
 
-class KeyboardMap: public Scale
+class KeyboardMap
 {
 public:
-    KeyboardMap(){}
-    KeyboardMap(std::string kbmPath);
+    KeyboardMap();
     KeyboardMap(int scaleLength);
-    
+    KeyboardMap(int scaleLength, std::string kbmPath);
+
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
@@ -49,11 +48,13 @@ public:
     
     
     /*
-     Returns the frequency that should be played back.
-     @param midiNoteNum the midiNote number.
-     @return the frequncy that is associated with that midi note number.
+     Returns the scale degree for a given midi note
+     @param midiNoteNum the midi note number. on [0,127]
+     @return the associated scale degree (of scale stored in this->notes)
      */
-    float getFreq(signed char midiNoteNum);
+    int getScaleDegree(signed char midiNoteNum);
+    int getOctave(signed char midiNoteNum);
+    
     /*
      Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
      @param center midino
@@ -62,7 +63,8 @@ public:
     void modulate(signed char center, signed char pivot);
     
 private:
-    //parameters.
+    size_t scaleLength;
+    //.kbm file parameters.
     std::pair<signed char, signed char> rangeToRetune;
     std::pair<signed char, float> middleNoteFreqPair;
     std::pair<signed char,float> referenceMidiFreqPair;
@@ -70,13 +72,6 @@ private:
     std::vector<int> mapping;
     //functions
     
-    /*
-     Returns the scale degree for a given midi note
-     @param midiNoteNum the midi note number. on [0,127]
-     @return the associated scale degree (of scale stored in this->notes)
-     */
-    int getScaleDegree(signed char midiNoteNum);
-    int getOctave(signed char midiNoteNum);
     void calcMiddleNoteFreq();
     
     //defaults
