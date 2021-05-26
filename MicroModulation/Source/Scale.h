@@ -32,7 +32,7 @@ public:
     struct StoredScale
     {
         StoredScale(Scale& s)
-            :d(s.getDescription()), n(s.getNotes()), kbm(s.getKeyboardMap())
+            :d(s.getDescription()), n(s.getNotes()), kbm(s.getKeyboardMap()), ff(s.getFundamentalFreq())
         {}
         
         bool equals(Scale& s)
@@ -44,6 +44,7 @@ public:
         std::string d;
         std::vector<float> n;
         KeyboardMap kbm;
+        float ff;
     };
     // ==============================================================================
     // Static Stuff
@@ -62,6 +63,9 @@ public:
     void setNotes(std::vector<float> n){this->notes = n;}
     
     KeyboardMap getKeyboardMap(){return this->kbm;}
+    void setKeyboardMap(KeyboardMap kb){this->kbm = kb;}
+    
+    float getFundamentalFreq(){return this->fundamentalFreq;}
     
     // ==============================================================================
     // File loading
@@ -113,5 +117,8 @@ private:
     std::string description;
     std::vector<float> notes;
     KeyboardMap kbm;
+    float fundamentalFreq; //the frequency corresponding to the middle note in kbm
 
+    
+    void calcFundamentalFreq();
 };

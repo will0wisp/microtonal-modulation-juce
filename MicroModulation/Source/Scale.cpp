@@ -34,6 +34,7 @@ bool Scale::loadSclFile(std::string sclPath)
         
         try
         {
+            notes.clear();
             while(getline(sclFile, line))
             {
                 line = utils::removeLineSpaceAndComments(line);
@@ -79,6 +80,7 @@ bool Scale::loadSclFile(std::string sclPath)
         if(fileReadCorrectly)
         {
             kbm = KeyboardMap((int)notes.size());
+            calcFundamentalFreq();
             return true;
         }
         else // if the file isn't read correctly, return to previous state and return false
@@ -104,30 +106,47 @@ bool Scale::loadSclString(std::string sclString)
 //probably don't actually need these
 bool Scale::loadKbmFile(std::string kbmPath)
 {
-    return kbm.loadKbmFile(kbmPath);
+    bool output = kbm.loadKbmFile(kbmPath);
+    calcFundamentalFreq();
+    return output;
 }
 bool Scale::loadKbmString(std::string kbmString)
 {
-    return kbm.loadKbmString(kbmString);
+    bool output = kbm.loadKbmString(kbmString);
+    calcFundamentalFreq();
+    return output;
 }
 
 
-//
-///*
-// Returns the frequency that should be played back.
-// @param midiNoteNum the midiNote number.
-// @return the frequncy that is associated with that midi note number.
-// */
-//float Scale::getFreq(signed char midiNoteNum)
-//{
-//    kbm.getScaleDegree(signed char midiNoteNum)
-//}
-///*
-// Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
-// @param center midino
-// @param pivot
-// */
-//void Scale::modulate(signed char center, signed char pivot)
-//{
-//    
-//}
+//TODO: test this
+/*
+ Returns the frequency that should be played back.
+ @param midiNoteNum the midiNote number.
+ @return the frequncy that is associated with that midi note number.
+ */
+float Scale::getFreq(signed char midiNoteNum)
+{
+    return notes.at(kbm.getScaleDegree(midiNoteNum-1))  //TODO: figure out why the hell we need a -1 here
+    * pow( notes.at(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1)) //TODO: figure out why the hell we need a -1 here
+    * fundamentalFreq;
+}
+/*
+ Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
+ @param center midino
+ @param pivot
+ */
+void Scale::modulate(signed char center, signed char pivot)
+{
+    
+}
+
+
+
+
+void Scale::calcFundamentalFreq()
+{
+    fundamentalFreq = kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))
+    * notes.at(kbm.getScaleDegree(kbm.getMiddleNoteFreqPair().first))
+    * pow(notes.at(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(kbm.getMiddleNoteFreqPair().first));
+    //kbm.getMiddleNoteFreqPair().second = fundamentalFreq;
+}

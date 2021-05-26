@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <string>
@@ -70,14 +71,20 @@ static std::string makeKbmString(int numNotes,
 }
 
 
-static std::string makeSclString(std::string description,std::vector<std::string> notes)
+static std::string makeSclString(std::string description, std::string numNotes, std::vector<std::string> notes)
 {
-    std::string output = description + "\n";
+    std::string output = description + "\n" + numNotes + "\n";
     for(std::string n : notes)
     {
         output = output + n + "\n";
     }
     return output;
+}
+
+
+static double getMidiNoteInHertz (const int noteNumber, const double frequencyOfA)
+{
+    return frequencyOfA * std::pow (2.0, (noteNumber - 69) / 12.0);
 }
 
 }

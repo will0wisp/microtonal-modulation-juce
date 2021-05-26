@@ -7,6 +7,7 @@
 #include "Catch/catch_amalgamated.hpp"
 //User-written Code
 #include "../../MicroModulation/Source/Scale.h"
+#include "../../MicroModulation/Source/utils.h"
 
 TEST_CASE( "Scale (.scl) Files can be loaded") {
     
@@ -156,4 +157,16 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
         }
     }
+}
+
+TEST_CASE("Midi notes can be converted into frequencies.")
+{
+    Scale s;
+    s.loadSclString(utils::makeSclString("12-TET", "12", {"100.0", "200.0", "300.0", "400.0", "500.0", "600.0", "700.0", "800.0", "900.0", "1000.0", "1100.0", "1200.0"}));
+    
+    for(int noteNum = 60; noteNum < 128; noteNum++)
+    {
+        REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
+    }
+                                        
 }

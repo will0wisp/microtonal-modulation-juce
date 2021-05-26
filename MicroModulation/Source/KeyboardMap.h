@@ -93,17 +93,5 @@ private:
     std::pair<signed char,float> referenceMidiFreqPair;
     size_t formalOctaveScaleDegree;
     std::vector<int> mapping;
-    //functions
-    
-    void calcMiddleNoteFreq();
-    
-    //defaults
-    static struct defaults{
-        const std::pair<signed char, signed char> rangeToRetune = std::pair<signed char, signed char>(0,127); //standard midi range
-        const std::pair<signed char, float> middleNoteFreqPair = std::pair<signed char, float>(60, 261.62556530059863467784999352330470136445386034203983086418048943);//middle c. freq computed with wolfram alpha formula: e^(300 * ln(2) / 1200)*220.
-        const std::pair<signed char,float> referenceMidiFreqPair = std::pair<signed char,float>(69, 440.0f); //A is mapped to 440Hz.
-    } defaults;
-    
-    //functions
     
 };

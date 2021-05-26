@@ -3,6 +3,20 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Scale::getFreq(signed char):Scale.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "notes.at(kbm.getScaleDegree(midiNoteNum))">
+            </PersistentString>
+            <PersistentString
+               value = "notes.at(kbm.getScaleDegree(midiNoteNum)) * fundamentalFreq">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Scale::loadSclFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):Scale.cpp">
+      </ContextState>
+      <ContextState
          contextName = "KeyboardMap::getOctave(signed char):KeyboardMap.cpp">
          <PersistentStrings>
             <PersistentString
@@ -17,6 +31,9 @@
          contextName = "KeyboardMap::getScaleDegree(signed char):KeyboardMap.cpp">
       </ContextState>
       <ContextState
+         contextName = "____C_A_T_C_H____T_E_S_T____14():TestScale.h">
+      </ContextState>
+      <ContextState
          contextName = "____C_A_T_C_H____T_E_S_T____31():TestKeyboardMap.h">
          <PersistentStrings>
             <PersistentString
@@ -26,6 +43,20 @@
                value = "midiNoteNum - middleNoteFreqPair.first">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Scale::calcFundamentalFreq():Scale.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "____C_A_T_C_H____T_E_S_T____0():TestScale.h">
+      </ContextState>
+      <ContextState
+         contextName = "____C_A_T_C_H____T_E_S_T____14():TestKeyboardMap.h">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

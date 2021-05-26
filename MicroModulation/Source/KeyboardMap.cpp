@@ -123,17 +123,6 @@ bool KeyboardMap::loadKbmString(std::string kbmString)
     return output;
 }
 
-
-
-////TODO: test this
-//float KeyboardMap::getFreq(signed char midiNoteNum)
-//{
-//    return notes.at(getScaleDegree(midiNoteNum)) //the ratio for midinote
-//    * pow( notes.at(formalOctaveScaleDegree), getOctave(midiNoteNum) ) //takes care of octave shift
-//    * middleNoteFreqPair.second;
-//}
-
-
 /*
  Returns the scale degree for a given midi note
  */
@@ -163,12 +152,3 @@ int KeyboardMap::getOctave(signed char midiNoteNum)
     if(diff < 0 && diff % (int) mapping.size() != 0) output--;//because division is symettric around 0, we need to decrement the octave when diff is negative.
     return output;
 }
-
-
-////TODO: test this
-//void KeyboardMap::calcMiddleNoteFreq()
-//{
-//    middleNoteFreqPair.second = referenceMidiFreqPair.second / notes.at(getScaleDegree(referenceMidiFreqPair.first))
-//    * notes.at(getScaleDegree(middleNoteFreqPair.first))
-//    * pow(notes.at(formalOctaveScaleDegree), getOctave(middleNoteFreqPair.first));
-//}
