@@ -14,7 +14,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Scale::loadSclFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):Scale.cpp">
+         contextName = "____C_A_T_C_H____T_E_S_T____14():TestScale.h">
       </ContextState>
       <ContextState
          contextName = "KeyboardMap::getOctave(signed char):KeyboardMap.cpp">
@@ -31,7 +31,20 @@
          contextName = "KeyboardMap::getScaleDegree(signed char):KeyboardMap.cpp">
       </ContextState>
       <ContextState
-         contextName = "____C_A_T_C_H____T_E_S_T____14():TestScale.h">
+         contextName = "Scale::calcFundamentalFreq():Scale.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Scale::loadSclFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):Scale.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "line.size() &gt;= 0">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "____C_A_T_C_H____T_E_S_T____31():TestKeyboardMap.h">
@@ -45,15 +58,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Scale::calcFundamentalFreq():Scale.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "____C_A_T_C_H____T_E_S_T____0():TestScale.h">
       </ContextState>
       <ContextState
-         contextName = "____C_A_T_C_H____T_E_S_T____0():TestScale.h">
+         contextName = "____C_A_T_C_H____T_E_S_T____17():TestKeyboardMap.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "kb.getMapping(i)">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "____C_A_T_C_H____T_E_S_T____14():TestKeyboardMap.h">

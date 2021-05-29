@@ -19,13 +19,15 @@
 #include <cmath>
 #include <string>
 
+#include "JuceHeader.h"
+
 #include "KeyboardMap.h"
 
 //TODO: Add complete documentation
 class Scale
 {
 public:
-    Scale();
+    Scale(){}
     Scale(std::string sclPath);
     Scale(std::string sclPath, std::string kbmPath);
     
@@ -78,7 +80,9 @@ public:
    // virtual float getFreq(signed char midiNote);
    // virtual void modulate();
     
+    
     bool loadSclFile(std::string sclPath);
+    bool loadSclFile(juce::File sclFile);
     /*
      Loads a scale based on a .scl file stored in a string.
      @param sclString a string that is formatted like a .scl file. to be loaded
@@ -86,6 +90,7 @@ public:
     bool loadSclString(std::string sclString);
 
     bool loadKbmFile(std::string kbmPath);
+    bool loadKbmFile(juce::File kbmFile);
     bool loadKbmString(std::string kbmString);
 
     
@@ -102,15 +107,6 @@ public:
      @param pivot
      */
     void modulate(signed char center, signed char pivot);
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 private:

@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+#include "UIStructs.h"
+
 //==============================================================================
 /**
 */
@@ -29,5 +31,15 @@ private:
     // access the processor object that created it.
     MicroModulationAudioProcessor& audioProcessor;
 
+    
+    ui_structs::FileLoadingComponent fileComponent;
+    ui_structs::ModulationControlsComponent modulationComponent;
+    
+    //currently unused, from AudioProcessorValueTreeState tutorial.
+    juce::Slider gainSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainSliderAttachment;
+    juce::TextButton textButton;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> textButtonAttachment;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MicroModulationAudioProcessorEditor)
 };

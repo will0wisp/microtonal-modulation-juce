@@ -12,7 +12,7 @@
 class MidiProcessor
 {
 public:
-    
+    MidiProcessor(){}
     /**
      The main process block for Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
      */

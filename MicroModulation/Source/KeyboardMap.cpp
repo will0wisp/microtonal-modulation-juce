@@ -14,8 +14,6 @@
 #include "KeyboardMap.h"
 #include "utils.h"
 
-
-KeyboardMap::KeyboardMap(){}
 KeyboardMap::KeyboardMap(int sclLength)
     :scaleLength(sclLength), rangeToRetune(0,127), middleNoteFreqPair(60, 261.625565), referenceMidiFreqPair(69, 440.0), formalOctaveScaleDegree(sclLength-1)
 {
@@ -79,8 +77,13 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                             if(formalOctaveScaleDegree < 0 || scaleLength < formalOctaveScaleDegree) fileReadCorrectly = false;
                             break;
                         default:
-                            mapping.push_back(std::stoi(line));
-                            if(mapping.back() <= 0) fileReadCorrectly = false;
+                            if(line.at(0) == 'x') { //in this case, we are mapping 'x' to -1.
+                                mapping.push_back(-1);
+                            }
+                            else{
+                                mapping.push_back(std::stoi(line));
+                                if(mapping.back() <= 0) fileReadCorrectly = false;
+                            }
                     }
                     if(!fileReadCorrectly) break; // we don't need to keep reading if there is already an error.
                 }

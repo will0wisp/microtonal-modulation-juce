@@ -3,4 +3,70 @@
    uuid = "C7169A4F-96D6-4661-A0AF-D68639BB6056"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2DD46078-679E-49EE-A687-E3E3C537212E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/TestKeyboardMap.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "TEST_CASE()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "995F9E85-E946-4E9A-943A-C96299085EEB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/TestKeyboardMap.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "TEST_CASE()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "995F9E85-E946-4E9A-943A-C96299085EEB - 24c11f898b23f6f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____17()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestKeyboardMap.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "185"
+                  endingLineNumber = "185"
+                  offsetFromSymbolStart = "20974">
+               </Location>
+               <Location
+                  uuid = "995F9E85-E946-4E9A-943A-C96299085EEB - 24c11f898b23f6f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____17()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestKeyboardMap.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "185"
+                  endingLineNumber = "185"
+                  offsetFromSymbolStart = "20979">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

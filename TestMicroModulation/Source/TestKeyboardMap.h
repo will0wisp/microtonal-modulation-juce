@@ -157,12 +157,33 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                60,
                                                69,440.0,
                                                0,
-                                               {})));
+                                               (std::vector<int>){})));
         int mappingSize = 6;
         REQUIRE(kb.getMapping().size() == 6);
         for(int i = 0; i < mappingSize; i++)
         {
             REQUIRE(kb.getMapping(i) == -1);
+        }
+    }
+    
+    SECTION("Test 'x' mappings read as -1.")
+    {
+        REQUIRE(kb.loadKbmString(utils::makeKbmString(6,
+                                               0,127,
+                                               60,
+                                               69,440.0,
+                                               1,
+                                               {"x","1","x","x", "1", "x"})));
+        int mappingSize = 6;
+        REQUIRE(kb.getMapping().size() == 6);
+        for(int i = 0; i < mappingSize; i++)
+        {
+            if(i == 1 || i == 4){
+                REQUIRE(kb.getMapping(i) == 1);
+            }
+            else {
+                REQUIRE(kb.getMapping(i) == -1);
+            }
         }
     }
     

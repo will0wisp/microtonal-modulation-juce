@@ -12,12 +12,10 @@
 #include <fstream>
 #include <string>
 
+#include "JuceHeader.h"
+
 #include "Scale.h"
 #include "utils.h"
-
-Scale::Scale(){
-    
-}
 
 bool Scale::loadSclFile(std::string sclPath)
 {
@@ -30,7 +28,6 @@ bool Scale::loadSclFile(std::string sclPath)
         
         int lineNum = 0;
         int numNotes = -1;
-        
         
         try
         {
@@ -50,18 +47,22 @@ bool Scale::loadSclFile(std::string sclPath)
                             if(numNotes < 0) fileReadCorrectly = false; //there need to be at least 0 notes!!!
                             break;
                         default:
-                            if (line.find('.') != std::string::npos)
-                            { //line in decimal/cents format
-                                notes.push_back( Scale::centsToRatio(std::stof(line)) );
+                            size_t divider;
+                            float num = std::stof(line, &divider);
+                            
+                            if(line.substr(0,divider+1).find('.') != std::string::npos)//if the value contains a decimal (need +1 so things like "200." will be included.
+                            { //then line in decimal/cents format
+                                notes.push_back( Scale::centsToRatio(num));
                             }
-                            else if (line.find('/') != std::string::npos)
-                            { //line in ratio/fraction format
-                                size_t divider; // position of '/' in the line
-                                notes.push_back(std::stof(line, &divider) / std::stof(line.substr(divider+1)));
-                            }
-                            else
-                            {
-                                notes.push_back(std::stoi(line));
+                            else {
+                                line = line.substr(divider); //trimming off the first value
+                                utils::removeLineSpaceAndComments(line);  //trimming off any additional white space
+                                if(line.size() > 0 && line.at(0) == '/') {//if the next char is a '/', we are in ratio format.
+                                    line = line.substr(1); //remove '/' charachter
+                                    notes.push_back(num / (float)std::stoi(line));
+                                } else {
+                                    notes.push_back(num);//if we don't have a '/' or a '.', then treat num as an int ratio
+                                }
                             }
                             if(notes.back() <= 0) fileReadCorrectly = false; //notes must be positive.
                     }
@@ -94,6 +95,11 @@ bool Scale::loadSclFile(std::string sclPath)
     else return false; // if file didn't open, return false;
 }
 
+
+bool Scale::loadSclFile(juce::File sclFile)
+{
+    return loadSclFile(sclFile.getFullPathName().toStdString());
+}
 bool Scale::loadSclString(std::string sclString)
 {
     std::string tmpfilePath = utils::makeAndWriteTmpFile(sclString);
@@ -109,6 +115,10 @@ bool Scale::loadKbmFile(std::string kbmPath)
     bool output = kbm.loadKbmFile(kbmPath);
     calcFundamentalFreq();
     return output;
+}
+bool Scale::loadKbmFile(juce::File kbmFile)
+{
+    return loadKbmFile(kbmFile.getFullPathName().toStdString());
 }
 bool Scale::loadKbmString(std::string kbmString)
 {

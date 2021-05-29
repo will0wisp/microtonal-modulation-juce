@@ -24,7 +24,7 @@
 class KeyboardMap
 {
 public:
-    KeyboardMap();
+    KeyboardMap(){}
     KeyboardMap(int scaleLength);
     KeyboardMap(int scaleLength, std::string kbmPath);
 
@@ -50,12 +50,15 @@ public:
         size_t octave;
         std::vector<int> mp;
     };
+    // ==============================================================================
+    // Static
+    // ==============================================================================
     
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
     std::vector<int> getMapping(){return this->mapping;}
-    signed char getMapping(size_t scaleDegree){return this->mapping.at(scaleDegree);}
+    int getMapping(size_t scaleDegree){return this->mapping.at(scaleDegree);}
     
     std::pair<signed char, signed char> getRangeToRetune(){return this->rangeToRetune;}
     std::pair<signed char, float> getMiddleNoteFreqPair(){return this->middleNoteFreqPair;}

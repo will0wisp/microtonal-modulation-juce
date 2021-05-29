@@ -20,7 +20,8 @@ MicroModulationAudioProcessor::MicroModulationAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        apvst(*this, nullptr, "Parameters", createParameters())
 #endif
 {
 }
@@ -166,4 +167,18 @@ void MicroModulationAudioProcessor::setStateInformation (const void* data, int s
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MicroModulationAudioProcessor();
+}
+
+
+juce::AudioProcessorValueTreeState::ParameterLayout MicroModulationAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("GAIN", "Gain", 0.0f, 1.0f, 0.5f));
+    
+    
+    
+    //Params::
+    
+    return {params.begin(), params.end()};
 }

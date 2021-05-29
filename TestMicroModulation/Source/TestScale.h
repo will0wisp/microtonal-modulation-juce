@@ -156,6 +156,23 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(scale.getNotes().at(2) == Catch::Approx(4.));
             REQUIRE(scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
         }
+        
+        SECTION("Test ignore line after notes"){ //
+            REQUIRE(scale.loadSclString(
+                                           "Test ignore inline comments scale!comment\n"
+                                           "4\n"
+                                           "1200.\n"                //octave. should be ratio of 2
+                                           "1200.0xcj lkdjfx zlckdsf\n" //octave. should be ratio of 2
+                                           "4/1.999\n"               //should be a ratio of 4, as the ".9999" should be ignored
+                                           "701.955 xldkfj\n"             //P5. should be ratio of 3/2
+                                           ));
+            REQUIRE(scale.getDescription() == "Test ignore inline comments scale");
+            REQUIRE(scale.getNotes().size() == 4);
+            REQUIRE(scale.getNotes().at(0) == Catch::Approx(2.));
+            REQUIRE(scale.getNotes().at(1) == Catch::Approx(2.));
+            REQUIRE(scale.getNotes().at(2) == Catch::Approx(4.));
+            REQUIRE(scale.getNotes().at(3) == Catch::Approx(3.0f/2.0f));
+        }
     }
 }
 

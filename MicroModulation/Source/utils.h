@@ -48,6 +48,8 @@ static std::string removeLineSpaceAndComments(std::string line)
 {
     std::string output = std::regex_replace(line, std::regex("^\\s+"), std::string("")); //remove initial whitespace
     output = std::regex_replace(output, std::regex("!.*"), std::string("")); //remove inline comments
+    //TODO: test following line. i'm not sure if this actually works, and is a hack solution to a bug.
+    output = std::regex_replace(output, std::regex("\r$"), std::string("")); //remove lone /r .
     return output;
 }
 
@@ -70,6 +72,25 @@ static std::string makeKbmString(int numNotes,
     return output;
 }
 
+static std::string makeKbmString(int numNotes,
+                                 int mapLowBound, int mapHighBound,
+                                 int middleNote,
+                                 int refNote, float refFreq,
+                                 int formalOctaveScaleDegree,
+                                 std::vector<std::string> mappings)
+{
+    std::string output = std::to_string(numNotes) + "\n"
+    + std::to_string(mapLowBound) + "\n" + std::to_string(mapHighBound) + "\n"
+    + std::to_string(middleNote) + "\n"
+    + std::to_string(refNote) + "\n" + std::to_string(refFreq) + "\n"
+    + std::to_string(formalOctaveScaleDegree) + "\n";
+    for(std::string s : mappings)
+    {
+        output = output + s + "\n";
+    }
+    return output;
+}
+
 
 static std::string makeSclString(std::string description, std::string numNotes, std::vector<std::string> notes)
 {
@@ -87,4 +108,4 @@ static double getMidiNoteInHertz (const int noteNumber, const double frequencyOf
     return frequencyOfA * std::pow (2.0, (noteNumber - 69) / 12.0);
 }
 
-}
+}  // end namespace utils
