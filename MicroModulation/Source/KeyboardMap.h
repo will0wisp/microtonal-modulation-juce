@@ -63,6 +63,7 @@ public:
     std::pair<signed char, signed char> getRangeToRetune(){return this->rangeToRetune;}
     std::pair<signed char, float> getMiddleNoteFreqPair(){return this->middleNoteFreqPair;}
     std::pair<signed char, float> getRefererenceMidiFreqPair(){return this->referenceMidiFreqPair;}
+
     size_t getFormalOctaveScaleDegree(){return this->formalOctaveScaleDegree;}
     // ==============================================================================
     //

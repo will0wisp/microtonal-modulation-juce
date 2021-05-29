@@ -42,9 +42,10 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
             REQUIRE(kb.getRefererenceMidiFreqPair().first == 5);
             REQUIRE(kb.getRefererenceMidiFreqPair().second == 6.0);
         }
+        //note formal octave is 1-indexed in the file. in .getFormalOctaveScaleDegree, it is 0-indexed. this is why we add 1.
         SECTION("Test formal octave read correctly")
         {
-            REQUIRE(kb.getFormalOctaveScaleDegree() == 7);
+            REQUIRE(kb.getFormalOctaveScaleDegree() + 1 == 7);
         }
     }
     SECTION("Test bad meta values.")
@@ -76,13 +77,13 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          2,3,
                                                          -1, //out of range
                                                          5,6.0,
-                                                         7,
+                                                         1,
                                                          {1})));
             REQUIRE_FALSE(kb.loadKbmString(utils::makeKbmString(1,
                                                          2,3,
                                                          128, //out of range
                                                          5,6.0,
-                                                         7,
+                                                         1,
                                                          {1})));
             REQUIRE(before.equals(kb));
         }
@@ -92,7 +93,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          2,3,
                                                          4,
                                                          5,-1.0,//out of range
-                                                         7,
+                                                         1,
                                                          {1})));
             REQUIRE(before.equals(kb));
                                            
@@ -100,7 +101,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          2,3,
                                                          4,
                                                          5,0.0,//out of range
-                                                         7,
+                                                         1,
                                                          {1})));
             REQUIRE(before.equals(kb));
         }
@@ -120,7 +121,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          2,3,
                                                          4,
                                                          5,6.0,
-                                                         -1,//out of range
+                                                         0,//out of range
                                                          {1})));
             REQUIRE(before.equals(kb));
         }
@@ -147,7 +148,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                      0,127,
                                                      60,
                                                      69,440.0,
-                                                     0,
+                                                     1,
                                                      {7,6,5,4,3,2,1})));//7 mappings. should only be 6 here.
     }
     SECTION("Test mappings left out read as -1.")
@@ -156,7 +157,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                0,127,
                                                60,
                                                69,440.0,
-                                               0,
+                                               1,
                                                (std::vector<int>){})));
         int mappingSize = 6;
         REQUIRE(kb.getMapping().size() == 6);
@@ -208,7 +209,7 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
 //        mapLowBound = rand() % 127;
 //        mapHighBound = mapLowBound + rand() % (127 - mapLowBound);
         refNote = rand() % 128;
-        formalOctaveScaleDegree = rand() % 6;
+        formalOctaveScaleDegree = rand() % 6 + 1; // + 1, because is 1-indexed in file
         
         assert(kb.loadKbmString(utils::makeKbmString(numNotes, mapLowBound, mapHighBound, middleNote, refNote, refFreq, formalOctaveScaleDegree, mappings)));
         REQUIRE(kb.getScaleDegree(middleNote) == 1); //tests middleNote is the first mapped note
@@ -235,7 +236,7 @@ TEST_CASE("Test KeyboardMap::getOctave")
     int mapLowBound = 0; int mapHighBound = 127;
     int middleNote = 60;
     int refNote = 69; float refFreq= 440.;
-    int formalOctaveScaleDegree=0;
+    int formalOctaveScaleDegree=6;
     std::vector<int> mappings={1,2,3,4,5,6};
      
     for(int test = 1; test <= numTests; test++){

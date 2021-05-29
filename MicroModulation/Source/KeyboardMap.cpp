@@ -73,8 +73,9 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                             if(referenceMidiFreqPair.second <= 0.0) fileReadCorrectly = false;
                             break;
                         case 7: //scale number to consider formal octave.
-                            formalOctaveScaleDegree = std::stoi(line);
-                            if(formalOctaveScaleDegree < 0 || scaleLength < formalOctaveScaleDegree) fileReadCorrectly = false;
+                            //this value is 1-indexed in the file. We want it to be 0-indexed, so subtract 1.
+                            formalOctaveScaleDegree = std::stoi(line) - 1;
+                            if(formalOctaveScaleDegree < 0 || formalOctaveScaleDegree >= scaleLength) fileReadCorrectly = false;
                             break;
                         default:
                             if(line.at(0) == 'x') { //in this case, we are mapping 'x' to -1.
@@ -82,7 +83,7 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                             }
                             else{
                                 mapping.push_back(std::stoi(line));
-                                if(mapping.back() <= 0) fileReadCorrectly = false;
+                                if(mapping.back() < 0) fileReadCorrectly = false;
                             }
                     }
                     if(!fileReadCorrectly) break; // we don't need to keep reading if there is already an error.

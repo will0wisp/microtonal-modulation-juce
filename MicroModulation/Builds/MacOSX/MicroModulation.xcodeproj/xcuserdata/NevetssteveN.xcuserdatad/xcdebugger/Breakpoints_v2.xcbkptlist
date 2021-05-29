@@ -39,15 +39,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8771AF90-B11C-430B-B076-14866BA0E8C2"
-            shouldBeEnabled = "Yes"
+            uuid = "DD24F5E8-794C-4200-BEC0-548E0A15C776"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../Source/UIStructs.h"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "buttonClicked(button)"
             landmarkType = "7">
          </BreakpointContent>
