@@ -40,6 +40,12 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "0"));
             REQUIRE(scale.getDescription() == "Description");
         }
+        SECTION("Test read empty scale description"){
+            REQUIRE(scale.loadSclString(
+                                           "\n"
+                                           "0"));
+            REQUIRE(scale.getDescription() == "");
+        }
         
         SECTION("Num notes in file incorrect"){
             REQUIRE_FALSE(scale.loadSclString(

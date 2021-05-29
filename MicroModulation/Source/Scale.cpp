@@ -34,6 +34,12 @@ bool Scale::loadSclFile(std::string sclPath)
             notes.clear();
             while(getline(sclFile, line))
             {
+                //TODO: HACK maybe change implementation so we don't need an extra if block
+                if(lineNum == 0 && utils::removeWhiteSpace(line) == ""){//handles files with empty descriptions. hacky.
+                    description = "";
+                    lineNum++;
+                }
+                
                 line = utils::removeLineSpaceAndComments(line);
                 if(line != "") //if our line wasn't just a comment line
                 {

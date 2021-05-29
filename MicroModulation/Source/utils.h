@@ -53,6 +53,14 @@ static std::string removeLineSpaceAndComments(std::string line)
     return output;
 }
 
+static std::string removeWhiteSpace(std::string line)
+{
+    std::string output = std::regex_replace(line, std::regex("\s+"), std::string("")); //remove initial whitespace
+    output = std::regex_replace(output, std::regex("\r$"), std::string("")); //remove lone /r .
+    return output;
+}
+
+
 static std::string makeKbmString(int numNotes,
                                  int mapLowBound, int mapHighBound,
                                  int middleNote,

@@ -68,5 +68,149 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A34C3FA9-C415-41F9-B999-391E7BCF0120"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/TestScale.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "TEST_CASE()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "A34C3FA9-C415-41F9-B999-391E7BCF0120 - 2be6e08d9a164cde"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "167"
+                  endingLineNumber = "167"
+                  offsetFromSymbolStart = "25890">
+               </Location>
+               <Location
+                  uuid = "A34C3FA9-C415-41F9-B999-391E7BCF0120 - 2be6e08d9a164cde"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "167"
+                  endingLineNumber = "167"
+                  offsetFromSymbolStart = "25895">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5A5ACA58-A840-457C-BA4D-D641391DC46D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/TestScale.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "TEST_CASE()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "5A5ACA58-A840-457C-BA4D-D641391DC46D - 2be6e08d9a167032"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "139"
+                  endingLineNumber = "139"
+                  offsetFromSymbolStart = "18214">
+               </Location>
+               <Location
+                  uuid = "5A5ACA58-A840-457C-BA4D-D641391DC46D - 2be6e08d9a167032"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "139"
+                  endingLineNumber = "139"
+                  offsetFromSymbolStart = "18219">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A074B384-1AC5-4010-9CF9-39232E1094FB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/TestScale.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "TEST_CASE()"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "A074B384-1AC5-4010-9CF9-39232E1094FB - 2be6e08d9a1672a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "17710">
+               </Location>
+               <Location
+                  uuid = "A074B384-1AC5-4010-9CF9-39232E1094FB - 2be6e08d9a1672a1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "____C_A_T_C_H____T_E_S_T____0()"
+                  moduleName = "TestMicroModulation"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/NevetssteveN/Desktop/Development/MicroModulation/TestMicroModulation/Source/TestScale.h"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "17715">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
