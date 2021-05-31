@@ -11,7 +11,7 @@
  Created: 21 May 2021 10:03:02pm
  Author:  Willow Weiner
  
- ==============================================================================
+ =============================================================================
  */
 
 #pragma once
@@ -27,27 +27,11 @@
 class Scale
 {
 public:
-    Scale(){}
-    Scale(std::string sclPath);
-    Scale(std::string sclPath, std::string kbmPath);
+    Scale(juce::UndoManager& um);
+    Scale(juce::UndoManager& um, std::string sclPath);
+    Scale(juce::UndoManager& um, std::string sclPath, std::string kbmPath);
     
-    struct StoredScale
-    {
-        StoredScale(Scale& s)
-            :d(s.getDescription()), n(s.getNotes()), kbm(s.getKeyboardMap()), ff(s.getFundamentalFreq())
-        {}
-        
-        bool equals(Scale& s)
-        {
-            return d == s.description
-            && n == s.notes;
-                //&& kbm == s.kbm;
-        }
-        std::string d;
-        std::vector<float> n;
-        KeyboardMap kbm;
-        float ff;
-    };
+    juce::ValueTree scaleValues;
     // ==============================================================================
     // Static Stuff
     // ==============================================================================
@@ -58,29 +42,30 @@ public:
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
-    std::string getDescription(){return this->description;}
-    void setDescription(std::string d){this->description = d;}
+
+    juce::Array<juce::var>& getNotes(){
+        jassert(scaleValues.hasProperty("notes"));
+        jassert(scaleValues.getProperty("notes").isArray());
+        return *(scaleValues.getProperty("notes").getArray());
+    }
+    float getNote(int i) {
+        if(i >= getNotes().size() || i < 0) return -1;
+        return getNotes().getUnchecked(i);
+    }
+    void setNotes(juce::Array<juce::var> newNotes) {
+        jassert(scaleValues.hasProperty("notes"));
+        scaleValues.getPropertyAsValue("notes", &undoManager).setValue(juce::var(newNotes));
+    }
     
-    std::vector<float> getNotes(){return this->notes;}
-    void setNotes(std::vector<float> n){this->notes = n;}
     
+    std::string getDescription(){ return scaleValues.getProperty("description").toString().toStdString();}
+
     KeyboardMap getKeyboardMap(){return this->kbm;}
     void setKeyboardMap(KeyboardMap kb){this->kbm = kb;}
-    
-    float getFundamentalFreq(){return this->fundamentalFreq;}
-    
+
     // ==============================================================================
     // File loading
     // ==============================================================================
-    
-    /**
-     @param midiNote the midiNote coming in. Ranges [0,127];
-     @return calculated frequency based on midiNote
-     */
-   // virtual float getFreq(signed char midiNote);
-   // virtual void modulate();
-    
-    
     bool loadSclFile(std::string sclPath);
     bool loadSclFile(juce::File sclFile);
     /*
@@ -110,11 +95,8 @@ public:
     
     
 private:
-    std::string description;
-    std::vector<float> notes;
-    KeyboardMap kbm;
-    float fundamentalFreq; //the frequency corresponding to the middle note in kbm
-
     
+    juce::UndoManager& undoManager;
+    KeyboardMap kbm;
     void calcFundamentalFreq();
 };

@@ -20,11 +20,13 @@
 #include <string>
 #include <vector>
 
+#include "JuceHeader.h"
+
 
 class KeyboardMap
 {
 public:
-    KeyboardMap(){}
+    KeyboardMap();
     KeyboardMap(int scaleLength);
     KeyboardMap(int scaleLength, std::string kbmPath);
 
@@ -50,6 +52,9 @@ public:
         size_t octave;
         std::vector<int> mp;
     };
+    
+    juce::ValueTree kbmValues;
+    
     // ==============================================================================
     // Static
     // ==============================================================================

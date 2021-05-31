@@ -12,7 +12,7 @@
 class MidiProcessor
 {
 public:
-    MidiProcessor(){}
+    MidiProcessor(juce::UndoManager& um) : undoManager(um), scale(um){}
     /**
      The main process block for Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
      */
@@ -39,6 +39,7 @@ public:
     }
     
     juce::MidiBuffer processedBuffer;
+    juce::UndoManager& undoManager;
     Scale scale;
     KeyboardMap kbMap;
 };

@@ -21,7 +21,7 @@ MicroModulationAudioProcessor::MicroModulationAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-        apvst(*this, nullptr, "Parameters", createParameters())
+        apvst(*this, nullptr, "Parameters", createParameters()), midiProcessor(undoManager)
 #endif
 {
 }

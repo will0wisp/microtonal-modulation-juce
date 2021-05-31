@@ -12,6 +12,8 @@
 
 #include <stdio.h>
 
+#include "Catch/catch_amalgamated.hpp"
+
 #include "../../MicroModulation/Source/KeyboardMap.h"
 #include "../../MicroModulation/Source/utils.h"
 
@@ -19,7 +21,7 @@
 TEST_CASE("Test KeyboardMap::loadKbmFile")
 {
     
-    KeyboardMap kb;
+    KeyboardMap kb(7);
     SECTION("Test meta values read correctly.")
     {
         kb.loadKbmString(utils::makeKbmString(1,

@@ -11,11 +11,18 @@
 #include <cstdio>
 #include <fstream>
 
+#include "JuceHeader.h"
+
 #include "KeyboardMap.h"
 #include "utils.h"
 
+KeyboardMap::KeyboardMap() : kbmValues(juce::Identifier("keyboardMap"))
+{
+    
+}
+
 KeyboardMap::KeyboardMap(int sclLength)
-    :scaleLength(sclLength), rangeToRetune(0,127), middleNoteFreqPair(60, 261.625565), referenceMidiFreqPair(69, 440.0), formalOctaveScaleDegree(sclLength-1)
+    : scaleLength(sclLength), rangeToRetune(0,127), middleNoteFreqPair(60, 261.625565), referenceMidiFreqPair(69, 440.0), formalOctaveScaleDegree(sclLength-1)
 {
     for(int i = 0; i < sclLength; i++)
     {
