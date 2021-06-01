@@ -20,10 +20,11 @@
 //TODO: test that the kbm doesn't get changed if the load is failed
 TEST_CASE("Test KeyboardMap::loadKbmFile")
 {
-    
-    KeyboardMap kb(7);
+    juce::UndoManager um;
+    KeyboardMap kb(um);
     SECTION("Test meta values read correctly.")
     {
+        KeyboardMap kb(um, 7);
         kb.loadKbmString(utils::makeKbmString(1,
                                        2,3,
                                        4,
@@ -32,17 +33,17 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                        {1}));
         SECTION("Test range to remap")
         {
-            REQUIRE(kb.getRangeToRetune().first == 2);
-            REQUIRE(kb.getRangeToRetune().second == 3);
+            REQUIRE(kb.getRetuneRangeLowerBound() == 2);
+            REQUIRE(kb.getRetuneRangeUpperBound() == 3);
         }
         SECTION("Test middle note read correctly")
         {
-            REQUIRE(kb.getMiddleNoteFreqPair().first == 4);
+            REQUIRE(kb.getMiddleNote() == 4);
         }
         SECTION("Test midi reference note and freq read correctly")
         {
-            REQUIRE(kb.getRefererenceMidiFreqPair().first == 5);
-            REQUIRE(kb.getRefererenceMidiFreqPair().second == 6.0);
+            REQUIRE(kb.getReferenceMidiNote() == 5);
+            REQUIRE(kb.getReferenceFreq() == 6.0);
         }
         //note formal octave is 1-indexed in the file. in .getFormalOctaveScaleDegree, it is 0-indexed. this is why we add 1.
         SECTION("Test formal octave read correctly")
@@ -52,8 +53,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
     }
     SECTION("Test bad meta values.")
     {
-        KeyboardMap kb;
-
+        KeyboardMap kb(um);
         kb.loadKbmFile(utils::makeKbmString(2,
                                             1, 127,
                                             45,
@@ -61,7 +61,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                             2,
                                             {1, 2}));
         
-        KeyboardMap::StoredKeyboardMap before(kb);
+        juce::ValueTree before = kb.keyboardMapValues.createCopy();
         
         SECTION("Bad mapping size.")
         {
@@ -71,7 +71,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          5,6.0,
                                                          7,
                                                          {1})));
-            REQUIRE(before.equals(kb));
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
         }
         SECTION("Bad middle note.")
         {
@@ -87,7 +87,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          5,6.0,
                                                          1,
                                                          {1})));
-            REQUIRE(before.equals(kb));
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
         }
         SECTION("Bad frequency reference.")
         {
@@ -97,27 +97,27 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          5,-1.0,//out of range
                                                          1,
                                                          {1})));
-            REQUIRE(before.equals(kb));
-                                           
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
+
             REQUIRE_FALSE(kb.loadKbmString(utils::makeKbmString(1,
                                                          2,3,
                                                          4,
                                                          5,0.0,//out of range
                                                          1,
                                                          {1})));
-            REQUIRE(before.equals(kb));
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
         }
         SECTION("Bad formal octave scale degree")
         {
-            KeyboardMap kb(10);
-            before = KeyboardMap::StoredKeyboardMap(kb);
+            KeyboardMap kb(um, 10);
+            juce::ValueTree before = kb.keyboardMapValues.createCopy();
             REQUIRE_FALSE(kb.loadKbmString(utils::makeKbmString(1,
                                                          2,3,
                                                          4,
                                                          5,6.0,
                                                          11,//out of range
                                                          {1})));
-            REQUIRE(before.equals(kb));
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
 
             REQUIRE_FALSE(kb.loadKbmString(utils::makeKbmString(1,
                                                          2,3,
@@ -125,13 +125,13 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                          5,6.0,
                                                          0,//out of range
                                                          {1})));
-            REQUIRE(before.equals(kb));
+            REQUIRE(kb.keyboardMapValues.isEquivalentTo(before));
         }
         
     }
     SECTION("Test mappings read correctly")
     {//TODO: something is fishy in this test. If we delete some of the notes in the .scl string, it still passes, even though it shouldn't.
-        KeyboardMap kb(14);
+        KeyboardMap kb(um, 14);
         kb.loadKbmString(utils::makeKbmString(5,
                                        2,3,
                                        4,
@@ -152,9 +152,11 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
                                                      69,440.0,
                                                      1,
                                                      {7,6,5,4,3,2,1})));//7 mappings. should only be 6 here.
+
     }
     SECTION("Test mappings left out read as -1.")
     {
+        KeyboardMap kb(um, 6);
         REQUIRE(kb.loadKbmString(utils::makeKbmString(6,
                                                0,127,
                                                60,
@@ -171,6 +173,7 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
     
     SECTION("Test 'x' mappings read as -1.")
     {
+        KeyboardMap kb(um, 6);
         REQUIRE(kb.loadKbmString(utils::makeKbmString(6,
                                                0,127,
                                                60,
@@ -195,7 +198,8 @@ TEST_CASE("Test KeyboardMap::loadKbmFile")
 
 TEST_CASE("Test KeyboardMap::getScaleDegree")
 {
-    KeyboardMap kb(6);
+    juce::UndoManager um;
+    KeyboardMap kb(um, 6);
     int numTests = 50;
     
     int numNotes = 6;
@@ -231,7 +235,8 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
 }
 TEST_CASE("Test KeyboardMap::getOctave")
 {
-    KeyboardMap kb(6);
+    juce::UndoManager um;
+    KeyboardMap kb(um, 6);
     int numTests = 50;
     
     int numNotes = 6;

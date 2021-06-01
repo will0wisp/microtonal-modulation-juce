@@ -4,8 +4,9 @@
  Scale.h
  
    
- This class provides a wrapper for the Scala '.scl' file type.
- It allows users to use custom scales, based on ratios and 
+ This class acts as a wrapper for the Scala '.scl' file type.
+ It allows users to use custom scales with intervals based on ratios or specified in cents of a semitone.
+ This class also translates MIDI note numbers into frequency information, with help from the KeyboardMap class.
     
  
  Created: 21 May 2021 10:03:02pm
@@ -35,6 +36,8 @@ public:
     // ==============================================================================
     // Static Stuff
     // ==============================================================================
+    //TODO: move this to utils.h, maybe? It may be able to just be a private function, as well.
+    //It is something that may be helpful to have, which is why I have put it here.
     static float centsToRatio(float cents){
         return std::pow(M_E, (cents * std::log(2.0) / 1200.0) );
     }
@@ -61,7 +64,7 @@ public:
     std::string getDescription(){ return scaleValues.getProperty("description").toString().toStdString();}
 
     KeyboardMap getKeyboardMap(){return this->kbm;}
-    void setKeyboardMap(KeyboardMap kb){this->kbm = kb;}
+    //void setKeyboardMap(KeyboardMap kb){this->kbm = kb;}
 
     // ==============================================================================
     // File loading

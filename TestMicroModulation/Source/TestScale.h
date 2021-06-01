@@ -23,7 +23,6 @@ TEST_CASE("Scale::getNotes() works correctly.")
 TEST_CASE( "Scale (.scl) Files can be loaded") {
     juce::UndoManager um;
     Scale scale(um);
-    //Scale::StoredScale before = Scale::StoredScale(scale);
 
     juce::ValueTree before = scale.scaleValues.createCopy();
 
@@ -197,7 +196,7 @@ TEST_CASE("Midi notes can be converted into frequencies.")
     Scale s(um);
     s.loadSclString(utils::makeSclString("12-TET", "12", {"100.0", "200.0", "300.0", "400.0", "500.0", "600.0", "700.0", "800.0", "900.0", "1000.0", "1100.0", "1200.0"}));
     
-    for(int noteNum = 60; noteNum < 128; noteNum++)
+    for(int noteNum = 0; noteNum < 128; noteNum++)
     {
         REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
     }

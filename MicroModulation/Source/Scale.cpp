@@ -17,11 +17,13 @@
 #include "Scale.h"
 #include "utils.h"
 
-Scale::Scale(juce::UndoManager& um): scaleValues(juce::Identifier("scale")), undoManager(um)
+Scale::Scale(juce::UndoManager& um): scaleValues(juce::Identifier("scale")), undoManager(um), kbm(um)
 {
     scaleValues.setProperty(juce::Identifier("description"), "", &undoManager);
-    scaleValues.setProperty(juce::Identifier("notes"), (juce::Array<juce::var>){}, &undoManager);
+    scaleValues.setProperty(juce::Identifier("notes"), juce::Array<juce::var>(), &undoManager);
     scaleValues.setProperty(juce::Identifier("fundamentalFreq"), juce::var(440.0f), &undoManager);
+    
+    scaleValues.addChild(kbm.keyboardMapValues, -1, &undoManager);
 }
 Scale::Scale(juce::UndoManager& um, std::string sclPath): Scale(um) { loadSclFile(sclPath); }
 Scale::Scale(juce::UndoManager& um, std::string sclPath, std::string kbmPath): Scale(um, sclPath) { loadKbmFile(kbmPath); }
@@ -96,7 +98,7 @@ bool Scale::loadSclFile(std::string sclPath)
         
         if(fileReadCorrectly)
         {
-            kbm = KeyboardMap((int)getNotes().size());
+            kbm.setToDefaultMapping(getNotes().size());
             calcFundamentalFreq();
             return true;
         }
@@ -156,8 +158,8 @@ float Scale::getFreq(signed char midiNoteNum)
     
     
     
-    return (float) getNotes().getReference(kbm.getScaleDegree(midiNoteNum-1))
-    * pow( (float)getNotes().getReference((int)kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
+    return (float) getNote(kbm.getScaleDegree(midiNoteNum-1))
+    * pow( (float)getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
     * (float) scaleValues.getProperty("fundamentalFreq");
 }
 /*
@@ -172,20 +174,14 @@ void Scale::modulate(signed char center, signed char pivot)
 
 
 
-
+/*
+ Calculates the 'fundamental' or reference frequency for the scale. This corresponds to the frequency that this->kbm.getMiddleNote() is mapped to.
+ */
 void Scale::calcFundamentalFreq()
 {
-    //    fundamentalFreq = kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))
-    //    * notes.at(kbm.getScaleDegree(kbm.getMiddleNoteFreqPair().first))
-    //    * pow(notes.at(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(kbm.getMiddleNoteFreqPair().first));
-    //    //kbm.getMiddleNoteFreqPair().second = fundamentalFreq;
-    //
     scaleValues.setProperty("fundamentalFreq",
-                            kbm.getRefererenceMidiFreqPair().second
-                            / (float) getNotes().getReference(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair()
-                                                                                 .first))
-                            * (float) getNotes().getReference(kbm.getScaleDegree(kbm.getMiddleNoteFreqPair().first))
-                            * pow( (float) getNotes().getReference(kbm.getFormalOctaveScaleDegree()),
-                                  kbm.getOctave(kbm.getMiddleNoteFreqPair().first)),
+                            kbm.getReferenceFreq() / (float) getNote( kbm.getScaleDegree(kbm.getReferenceMidiNote()) ) //freq of first note in Notes at refernce octave
+                            * (float) getNote(kbm.getScaleDegree( kbm.getMiddleNote()) ) //ratio/note corresponding to the middlenote.
+                            * pow( (float) getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(kbm.getMiddleNote())), //octave multiplier for middle note
                             &undoManager);
 }

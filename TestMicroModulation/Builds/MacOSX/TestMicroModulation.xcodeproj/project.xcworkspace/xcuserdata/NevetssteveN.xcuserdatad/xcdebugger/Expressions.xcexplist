@@ -3,7 +3,7 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "____C_A_T_C_H____T_E_S_T____0():TestKeyboardMap.h">
+         contextName = "juce::ArrayBase&lt;juce::var, juce::DummyCriticalSection&gt;::getFirst() const:juce_ArrayBase.h">
       </ContextState>
       <ContextState
          contextName = "____C_A_T_C_H____T_E_S_T____31():TestKeyboardMap.h">
@@ -18,6 +18,20 @@
       </ContextState>
       <ContextState
          contextName = "KeyboardMap::getScaleDegree(signed char):KeyboardMap.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardMap::loadKbmFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):KeyboardMap.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "octaveScaleDegree &lt; 0">
+            </PersistentString>
+            <PersistentString
+               value = "(keyboardMapValues.getProperty(&quot;scaleLength&quot;))">
+            </PersistentString>
+            <PersistentString
+               value = "keyboardMapValues.getProperty(&quot;scaleLength&quot;).operator int()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "KeyboardMap::getOctave(signed char):KeyboardMap.cpp">
@@ -56,30 +70,35 @@
          contextName = "Scale::loadSclFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):Scale.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "getNotes().getFirst()">
-            </PersistentString>
-            <PersistentString
                value = "getNotes().size()">
             </PersistentString>
+            <PersistentString
+               value = "getNotes().getFirst()">
+            </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "juce::ArrayBase&lt;juce::var, juce::DummyCriticalSection&gt;::getFirst() const:juce_ArrayBase.h">
       </ContextState>
       <ContextState
          contextName = "juce::var::var(juce::var const&amp;):juce_Variant.cpp">
       </ContextState>
       <ContextState
-         contextName = "Scale::getNotes():Scale.h">
+         contextName = "____C_A_T_C_H____T_E_S_T____21():TestKeyboardMap.h">
          <PersistentStrings>
             <PersistentString
-               value = "getNotes().getFirst()">
+               value = "kb.getMiddleNote()">
             </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Scale::getNotes():Scale.h">
+         <PersistentStrings>
             <PersistentString
                value = "getNotes()">
             </PersistentString>
             <PersistentString
                value = "getNotes().size()">
+            </PersistentString>
+            <PersistentString
+               value = "getNotes().getFirst()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -87,10 +106,13 @@
          contextName = "Scale::getFreq(signed char):Scale.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "notes.at(kbm.getScaleDegree(midiNoteNum))">
+               value = "getNote(kbm.getFormalOctaveScaleDegree())">
             </PersistentString>
             <PersistentString
-               value = "notes.at(kbm.getScaleDegree(midiNoteNum)) * fundamentalFreq">
+               value = "kbm.getFormalOctaveScaleDegree()">
+            </PersistentString>
+            <PersistentString
+               value = "getNote(kbm.getScaleDegree(midiNoteNum-1))">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -101,7 +123,7 @@
          contextName = "juce::Array&lt;juce::var, juce::DummyCriticalSection, 0&gt;::getFirst() const:juce_Array.h">
       </ContextState>
       <ContextState
-         contextName = "KeyboardMap::loadKbmFile(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;):KeyboardMap.cpp">
+         contextName = "____C_A_T_C_H____T_E_S_T____0():TestKeyboardMap.h">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

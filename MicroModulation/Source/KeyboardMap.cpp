@@ -16,23 +16,39 @@
 #include "KeyboardMap.h"
 #include "utils.h"
 
-KeyboardMap::KeyboardMap() : kbmValues(juce::Identifier("keyboardMap"))
+KeyboardMap::KeyboardMap(juce::UndoManager& um) : keyboardMapValues(juce::Identifier("keyboardMap")), undoManager(um)
 {
-    
+    setDefaultValues();
 }
 
-KeyboardMap::KeyboardMap(int sclLength)
-    : scaleLength(sclLength), rangeToRetune(0,127), middleNoteFreqPair(60, 261.625565), referenceMidiFreqPair(69, 440.0), formalOctaveScaleDegree(sclLength-1)
+KeyboardMap::KeyboardMap(juce::UndoManager& um, int sclLength) : KeyboardMap(um) { setToDefaultMapping(sclLength); }
+KeyboardMap::KeyboardMap(juce::UndoManager& um, int sclLength, std::string kbmPath) : KeyboardMap(um)
 {
-    for(int i = 0; i < sclLength; i++)
-    {
-        mapping.push_back(i);
-    }
-}
-KeyboardMap::KeyboardMap(int sclLength, std::string kbmPath)
-    :scaleLength(sclLength)
-{
+    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), sclLength, &undoManager);
     loadKbmFile(kbmPath);
+}
+
+void KeyboardMap::setDefaultValues()
+{
+    keyboardMapValues.setProperty(juce::Identifier("retuneRangeLowerBound"), (signed char) 0, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("returnRangeUpperBound"), (signed char) 127, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("middleNote"), (signed char) 60, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("referenceNote"), (signed char) 69, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("referenceFreq"),  440.f, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("formalOctaveScaleDegree"), -1, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), -1, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("mapping"), juce::Array<juce::var>(), &undoManager);
+}
+
+void KeyboardMap::setToDefaultMapping(int scaleLength)
+{
+    setDefaultValues();
+    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), scaleLength, &undoManager);
+    keyboardMapValues.setProperty(juce::Identifier("formalOctaveScaleDegree"), scaleLength - 1, &undoManager);
+    for(int i = 0; i < scaleLength; i++)
+    {
+        getMapping().add(juce::var(i));
+    }
 }
 
 bool KeyboardMap::loadKbmFile(std::string kbmPath)
@@ -41,15 +57,14 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
     std::string line;
     if(kbmFile.is_open())
     {
-        StoredKeyboardMap beforeRead = StoredKeyboardMap(*this);
+        undoManager.beginNewTransaction();
         bool fileReadCorrectly = true;
+        getMapping().clear();
         
-        int lineNum = 0;
-        int mappingSize;
-
         try
         {
-            mapping.clear();
+            int lineNum = 0;
+            int mappingSize;
             while(getline(kbmFile, line))
             {
                 line = utils::removeLineSpaceAndComments(line);
@@ -62,64 +77,68 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                             if(mappingSize <= 0 ) return false;
                             break;
                         case 2: //first midi note number to retune
-                            rangeToRetune.first = std::stoi(line);
+                            keyboardMapValues.setProperty("retuneRangeLowerBound", std::stoi(line), &undoManager);
                             break;
                         case 3: //last midi note number to retune
-                            rangeToRetune.second = std::stoi(line);
+                            keyboardMapValues.setProperty("returnRangeUpperBound", std::stoi(line), &undoManager);
                             break;
                         case 4: // middle note
-                            middleNoteFreqPair.first = std::stoi(line);
-                            middleNoteFreqPair.second = -1;
-                            if(middleNoteFreqPair.first < 0 || middleNoteFreqPair.first > 127) fileReadCorrectly = false;
+                        {
+                            int middleNote = std::stoi(line);
+                            keyboardMapValues.setProperty("middleNote", middleNote, &undoManager);
+                            if(middleNote < 0 || middleNote > 127) fileReadCorrectly = false;
                             break;
+                        }
                         case 5: //midi reference note
-                            referenceMidiFreqPair.first = std::stoi(line);
+                            keyboardMapValues.setProperty("referenceNote", std::stoi(line), &undoManager);
                             break;
                         case 6: //frequency of reference midi note
-                            referenceMidiFreqPair.second = std::stof(line);
-                            if(referenceMidiFreqPair.second <= 0.0) fileReadCorrectly = false;
+                        {
+                            float refFreq = std::stof(line);
+                            keyboardMapValues.setProperty("referenceFreq", refFreq, &undoManager);
+                            if(refFreq <= 0.0) fileReadCorrectly = false;
                             break;
+                        }
                         case 7: //scale number to consider formal octave.
+                        {
                             //this value is 1-indexed in the file. We want it to be 0-indexed, so subtract 1.
-                            formalOctaveScaleDegree = std::stoi(line) - 1;
-                            if(formalOctaveScaleDegree < 0 || formalOctaveScaleDegree >= scaleLength) fileReadCorrectly = false;
+                            int octaveScaleDegree = std::stoi(line) - 1;
+                            keyboardMapValues.setProperty("formalOctaveScaleDegree", octaveScaleDegree, &undoManager);
+                            if(octaveScaleDegree < 0 || octaveScaleDegree >= static_cast<int>(keyboardMapValues.getProperty("scaleLength"))) fileReadCorrectly = false;
                             break;
+                        }
                         default:
                             if(line.at(0) == 'x') { //in this case, we are mapping 'x' to -1.
-                                mapping.push_back(-1);
+                                getMapping().add(-1);
                             }
                             else{
-                                mapping.push_back(std::stoi(line));
-                                if(mapping.back() < 0) fileReadCorrectly = false;
+                                int mappingVal = std::stoi(line);
+                                getMapping().add(mappingVal);
+                                if(mappingVal < 0) fileReadCorrectly = false;
                             }
                     }
                     if(!fileReadCorrectly) break; // we don't need to keep reading if there is already an error.
                 }
             }
             kbmFile.close();
+            
+            
+            if(fileReadCorrectly && (lineNum < 7)) fileReadCorrectly = false; // if lineNum < 7, not all meta values were read.
+            if(fileReadCorrectly) // we don't need to do this if there is already an error.
+            {
+                for(size_t i = getMapping().size(); i < mappingSize ; i++) {getMapping().add(-1);}//fill rest of the mappings with -1
+                if(getMapping().size() != mappingSize) fileReadCorrectly = false; //wrong mapping size
+            }
         }
         catch (...) {fileReadCorrectly = false;} // if formatted incorrectly, return false
         
-        
-        if(fileReadCorrectly && (lineNum < 7)) fileReadCorrectly = false; // if lineNum < 7, not all meta values were read.
-        if(fileReadCorrectly) // we don't need to do this if there is already an error.
-        {
-            for(size_t i = mapping.size(); i < mappingSize ; i++) {mapping.push_back(-1);}//fill rest of mappings with -1
-            if(mapping.size() != mappingSize) fileReadCorrectly = false; //wrong mapping size
-            //wrong mapping size
-        }
         if(fileReadCorrectly)
         {
-            //calcMiddleNoteFreq();
             return true;
         }
         else
         {
-            rangeToRetune = beforeRead.retune;
-            middleNoteFreqPair = beforeRead.middle;
-            referenceMidiFreqPair = beforeRead.ref;
-            formalOctaveScaleDegree = beforeRead.octave;
-            mapping = beforeRead.mp;
+            undoManager.undo();
             return false;
         }
     }
@@ -140,26 +159,24 @@ bool KeyboardMap::loadKbmString(std::string kbmString)
 //TODO: fix so that it only works when midiNoteNum is in the correct midiRange
 int KeyboardMap::getScaleDegree(signed char midiNoteNum)
 {
-    assert(mapping.size() > 0);
-    assert(midiNoteNum >= 0);
+    assert(getMapping().size() > 0);
     int index;
-    if(midiNoteNum >= middleNoteFreqPair.first)
+    if(midiNoteNum >= getMiddleNote())
     {
-        index = (midiNoteNum - middleNoteFreqPair.first) % mapping.size();
+        index = (midiNoteNum - getMiddleNote()) % getMapping().size();
     }
     else{
-        index = mapping.size() - (middleNoteFreqPair.first - midiNoteNum) % mapping.size();
-        if(index == mapping.size()) index = 0;
+        index = getMapping().size() - (getMiddleNote() - midiNoteNum) % getMapping().size();
+        if(index == getMapping().size()) index = 0;
     }
-    return mapping.at(index);
-    
+    return getMapping(index);
 }
 
 //this could be a signed char
 int KeyboardMap::getOctave(signed char midiNoteNum)
 {
-    signed char diff = midiNoteNum -  middleNoteFreqPair.first;
-    int output = (int) diff / (int) mapping.size();
-    if(diff < 0 && diff % (int) mapping.size() != 0) output--;//because division is symettric around 0, we need to decrement the octave when diff is negative.
+    signed char diff = midiNoteNum -  getMiddleNote();
+    int output = (int) diff / (int) getMapping().size();
+    if(diff < 0 && diff % (int) getMapping().size() != 0) output--;//because division is symettric around 0, we need to decrement the octave when diff is negative.
     return output;
 }

@@ -3,12 +3,11 @@
  
  KeyboardMap.h
  
- This class provides a wrapper for the Scala '.kbm' file type.
+ This class acts as a wrapper for the Scala '.kbm' file type.
  It allows users to configure which input midi note numbers are matched to which Scale Degree.
  See more here: http://www.huygens-fokker.org/scala/help.htm#mappings 
  
  
- Note, throught this project, char's are used to represent midi notes, as 8 bit values.
  Created: 21 May 2021 10:20:59pm
  Author:  Willow Weiner
  
@@ -26,59 +25,65 @@
 class KeyboardMap
 {
 public:
-    KeyboardMap();
-    KeyboardMap(int scaleLength);
-    KeyboardMap(int scaleLength, std::string kbmPath);
+    KeyboardMap(juce::UndoManager& um);
+    KeyboardMap(juce::UndoManager& um, int scaleLength);
+    KeyboardMap(juce::UndoManager& um, int scaleLength, std::string kbmPath);
 
-    //TODO: define equals ('==') operator
-    
-    //TODO: include a StoredKeyboardMap store(KeyboardMap kb) function.
-    struct StoredKeyboardMap{
-        StoredKeyboardMap(KeyboardMap& kb)
-            :retune(kb.rangeToRetune), middle(kb.middleNoteFreqPair), ref(kb.referenceMidiFreqPair), octave(kb.formalOctaveScaleDegree), mp(kb.mapping)
-        {}
+    juce::ValueTree keyboardMapValues;
         
-        bool equals(const KeyboardMap& kb)
-        {
-            return retune == kb.rangeToRetune
-                && middle == kb.middleNoteFreqPair
-                && ref == kb.referenceMidiFreqPair
-                && octave == kb.formalOctaveScaleDegree
-                && mp == kb.mapping;
-        }
-        std::pair<signed char, signed char> retune;
-        std::pair<signed char, float> middle;
-        std::pair<signed char,float> ref;
-        size_t octave;
-        std::vector<int> mp;
-    };
-    
-    juce::ValueTree kbmValues;
-    
-    // ==============================================================================
-    // Static
-    // ==============================================================================
-    
+    /* Sets the mapping to a default state, based on the length of the scale.
+     The default state is a linear, one-note-per-key mapping. For example, if we define the center midi note =: 'c',
+     we get the default mapping:
+     
+     MIDI NOTE NUM         -> SCALE DEGREE
+     ...
+     c- scaleLength        -> 0
+     c-scaleLength + 1     -> 1
+     ...
+     c-2                   -> scaleLength - 2
+     c-1                   -> scaleLength - 1
+     c                     -> 0
+     c+1                   -> 1
+     c+2                   -> 2
+     ...
+     c+ scaleLength - 1    -> scaleLength - 1
+     c+ scaleLength        -> 0
+     ...
+     
+     @param scaleLength. The number of notes in the scale this map is serviceing.
+     */
+    void setToDefaultMapping(int scaleLength);
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
-    std::vector<int> getMapping(){return this->mapping;}
-    int getMapping(size_t scaleDegree){return this->mapping.at(scaleDegree);}
+    //TODO: move these definitions to .cpp file.
+    juce::Array<juce::var>& getMapping(){
+        jassert(keyboardMapValues.hasProperty("mapping"));
+        jassert(keyboardMapValues.getProperty("mapping").isArray());
+        return *(keyboardMapValues.getProperty("mapping").getArray());
+    }
+    int getMapping(int midiNote){
+        if(midiNote >= getMapping().size() || midiNote < 0) return -1;
+        return getMapping().getUnchecked(midiNote);
+    }
     
-    std::pair<signed char, signed char> getRangeToRetune(){return this->rangeToRetune;}
-    std::pair<signed char, float> getMiddleNoteFreqPair(){return this->middleNoteFreqPair;}
-    std::pair<signed char, float> getRefererenceMidiFreqPair(){return this->referenceMidiFreqPair;}
-
-    size_t getFormalOctaveScaleDegree(){return this->formalOctaveScaleDegree;}
+    int getRetuneRangeUpperBound(){return keyboardMapValues.getProperty("returnRangeUpperBound");}
+    int getRetuneRangeLowerBound(){return keyboardMapValues.getProperty("retuneRangeLowerBound");}
+    int getMiddleNote(){return keyboardMapValues.getProperty("middleNote");}
+    int getReferenceMidiNote(){return keyboardMapValues.getProperty("referenceNote");}
+    float getReferenceFreq(){return keyboardMapValues.getProperty("referenceFreq");}
+    int getFormalOctaveScaleDegree(){return keyboardMapValues.getProperty("formalOctaveScaleDegree");}
+    
     // ==============================================================================
-    //
+    // File Parsing
     // ==============================================================================
-    
-    
     bool loadKbmFile(std::string kbmPath);
     bool loadKbmString(std::string kbmString);
     
     
+    // ==============================================================================
+    // Main functionality
+    // ==============================================================================
     /*
      Returns the scale degree for a given midi note
      @param midiNoteNum the midi note number. on [0,127]
@@ -95,12 +100,7 @@ public:
     void modulate(signed char center, signed char pivot);
     
 private:
-    size_t scaleLength;
-    //.kbm file parameters.
-    std::pair<signed char, signed char> rangeToRetune;
-    std::pair<signed char, float> middleNoteFreqPair;
-    std::pair<signed char,float> referenceMidiFreqPair;
-    size_t formalOctaveScaleDegree;
-    std::vector<int> mapping;
+    juce::UndoManager& undoManager;
     
+    void setDefaultValues();
 };
