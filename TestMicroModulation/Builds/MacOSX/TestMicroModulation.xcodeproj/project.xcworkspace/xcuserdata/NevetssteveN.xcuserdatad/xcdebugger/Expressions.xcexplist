@@ -37,10 +37,10 @@
          contextName = "KeyboardMap::getOctave(signed char):KeyboardMap.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "(int) midiNoteNum - middleNoteFreqPair.first">
+               value = "getMapping().size()">
             </PersistentString>
             <PersistentString
-               value = "((int)midiNoteNum - middleNoteFreqPair.first) / (int)mapping.size()">
+               value = "(int)getMiddleNote()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -53,7 +53,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "juce::NamedValueSet::copyToXmlAttributes(juce::XmlElement&amp;) const:juce_NamedValueSet.cpp">
+         contextName = "____C_A_T_C_H____T_E_S_T____21():TestKeyboardMap.h">
+         <PersistentStrings>
+            <PersistentString
+               value = "kb.getMiddleNote()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "____C_A_T_C_H____T_E_S_T____14():TestScale.h">
@@ -62,7 +67,19 @@
          contextName = "Scale::calcFundamentalFreq():Scale.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "kbm.getRefererenceMidiFreqPair().second / notes.at(kbm.getScaleDegree(kbm.getRefererenceMidiFreqPair().first))">
+               value = "kbm.getOctave(kbm.getMiddleNote())">
+            </PersistentString>
+            <PersistentString
+               value = "(float) getNote(kbm.getScaleDegree( kbm.getMiddleNote()) )">
+            </PersistentString>
+            <PersistentString
+               value = "(float) getNote(kbm.getFormalOctaveScaleDegree())">
+            </PersistentString>
+            <PersistentString
+               value = "kbm.getOctave(kbm.getReferenceMidiNote())">
+            </PersistentString>
+            <PersistentString
+               value = "kbm.getReferenceFreq() / (float) getNote( kbm.getScaleDegree(kbm.getReferenceMidiNote()) ) ">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -73,7 +90,7 @@
                value = "getNotes().size()">
             </PersistentString>
             <PersistentString
-               value = "getNotes().getFirst()">
+               value = "getNotes().getUnchecked(0).operator float()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -81,24 +98,19 @@
          contextName = "juce::var::var(juce::var const&amp;):juce_Variant.cpp">
       </ContextState>
       <ContextState
-         contextName = "____C_A_T_C_H____T_E_S_T____21():TestKeyboardMap.h">
-         <PersistentStrings>
-            <PersistentString
-               value = "kb.getMiddleNote()">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "juce::NamedValueSet::copyToXmlAttributes(juce::XmlElement&amp;) const:juce_NamedValueSet.cpp">
       </ContextState>
       <ContextState
          contextName = "Scale::getNotes():Scale.h">
          <PersistentStrings>
             <PersistentString
+               value = "getNotes().getFirst()">
+            </PersistentString>
+            <PersistentString
                value = "getNotes()">
             </PersistentString>
             <PersistentString
                value = "getNotes().size()">
-            </PersistentString>
-            <PersistentString
-               value = "getNotes().getFirst()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -106,10 +118,13 @@
          contextName = "Scale::getFreq(signed char):Scale.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "getNote(kbm.getFormalOctaveScaleDegree())">
+               value = "kbm.getFormalOctaveScaleDegree()">
             </PersistentString>
             <PersistentString
-               value = "kbm.getFormalOctaveScaleDegree()">
+               value = "(int) midiNoteNum">
+            </PersistentString>
+            <PersistentString
+               value = "getNote(kbm.getFormalOctaveScaleDegree())">
             </PersistentString>
             <PersistentString
                value = "getNote(kbm.getScaleDegree(midiNoteNum-1))">

@@ -81,25 +81,30 @@ public:
     bool loadKbmFile(juce::File kbmFile);
     bool loadKbmString(std::string kbmString);
 
-    
+    bool hasSclLoaded(){return hasScl;}
     
     /*
      Returns the frequency that should be played back.
      @param midiNoteNum the midiNote number.
      @return the frequncy that is associated with that midi note number.
      */
-    float getFreq(signed char midiNoteNum);
+    float getFreq(juce::int8 midiNoteNum);
     /*
      Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
      @param center midino
      @param pivot
      */
-    void modulate(signed char center, signed char pivot);
-    
+    void modulate(juce::int8 center, juce::int8 pivot);
     
 private:
     
     juce::UndoManager& undoManager;
     KeyboardMap kbm;
     void calcFundamentalFreq();
+    bool hasScl; //TODO: conver this to a scaleValues property
+    
+    juce::Array<float> calculatedFreqs; //stores frequencyies that have already been calculated so that getFreq() is more efficient.
+    void initCalculatedFreqs();
+    bool freqHasBeenCalculated(juce::int8 midiNoteNum);
+
 };

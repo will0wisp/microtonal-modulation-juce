@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
             endingLineNumber = "29"
-            landmarkName = "KeyboardMap::KeyboardMap(sclLength)"
+            landmarkName = "KeyboardMap::KeyboardMap(um, sclLength, kbmPath)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -81,6 +81,22 @@
             startingLineNumber = "16"
             endingLineNumber = "16"
             landmarkName = "MicroModulationAudioProcessorEditor::MicroModulationAudioProcessorEditor(p)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "656F439A-D355-48F4-9670-AC0122C5FBCD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/MidiProcessor.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "MidiProcessor(um)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

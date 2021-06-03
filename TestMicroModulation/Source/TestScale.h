@@ -188,8 +188,19 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
             REQUIRE(scale.getNotes().getUnchecked(3) == Catch::Approx(3.0f/2.0f));
         }
     }
+
+    SECTION("test Scale::hasSclLoaded")
+    {
+        REQUIRE(!scale.hasSclLoaded());
+        scale.loadSclString("0 Note Scale\n"
+                            "0");
+        REQUIRE(scale.hasSclLoaded());
+        
+    }
 }
 
+
+//TODO: improove coverage. this is absolutely atrocious.
 TEST_CASE("Midi notes can be converted into frequencies.")
 {
     juce::UndoManager um; 
@@ -200,5 +211,12 @@ TEST_CASE("Midi notes can be converted into frequencies.")
     {
         REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
     }
+    
+    s.loadSclString(utils::makeSclString("12-TET", "1", {"100.0"}));
+    for(int noteNum = 60; noteNum < 128; noteNum++)
+    {
+        REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
+    }
+    
                                         
 }

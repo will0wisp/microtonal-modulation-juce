@@ -17,13 +17,15 @@
 #include "Scale.h"
 #include "utils.h"
 
-Scale::Scale(juce::UndoManager& um): scaleValues(juce::Identifier("scale")), undoManager(um), kbm(um)
+Scale::Scale(juce::UndoManager& um): scaleValues(juce::Identifier("scale")), undoManager(um), kbm(um), hasScl(false)
 {
     scaleValues.setProperty(juce::Identifier("description"), "", &undoManager);
     scaleValues.setProperty(juce::Identifier("notes"), juce::Array<juce::var>(), &undoManager);
     scaleValues.setProperty(juce::Identifier("fundamentalFreq"), juce::var(440.0f), &undoManager);
     
     scaleValues.addChild(kbm.keyboardMapValues, -1, &undoManager);
+    
+    initCalculatedFreqs();
 }
 Scale::Scale(juce::UndoManager& um, std::string sclPath): Scale(um) { loadSclFile(sclPath); }
 Scale::Scale(juce::UndoManager& um, std::string sclPath, std::string kbmPath): Scale(um, sclPath) { loadKbmFile(kbmPath); }
@@ -100,6 +102,7 @@ bool Scale::loadSclFile(std::string sclPath)
         {
             kbm.setToDefaultMapping(getNotes().size());
             calcFundamentalFreq();
+            hasScl = true;
             return true;
         }
         else // if the file isn't read correctly, return to previous state and return false
@@ -150,24 +153,27 @@ bool Scale::loadKbmString(std::string kbmString)
  @param midiNoteNum the midiNote number.
  @return the frequncy that is associated with that midi note number.
  */
-float Scale::getFreq(signed char midiNoteNum)
+float Scale::getFreq(juce::int8 midiNoteNum)
 {
-    //    return notes.at(kbm.getScaleDegree(midiNoteNum-1))  //TODO: figure out why the hell we need a -1 here
-    //    * pow( notes.at(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1)) //TODO: figure out why the hell we need a -1 here
-    //    * fundamentalFreq;
+    assert(midiNoteNum >= 0);
+    float calculatedFreq = calculatedFreqs.getUnchecked(midiNoteNum);
     
-    
-    
-    return (float) getNote(kbm.getScaleDegree(midiNoteNum-1))
-    * pow( (float)getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
-    * (float) scaleValues.getProperty("fundamentalFreq");
+    if(freqHasBeenCalculated(midiNoteNum)) return calculatedFreq;
+    else{
+        calculatedFreq = (float) getNote(kbm.getScaleDegree(midiNoteNum-1))
+        * pow( (float)getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
+        * (float) scaleValues.getProperty("fundamentalFreq");
+        
+        calculatedFreqs.set(midiNoteNum, calculatedFreq);
+        return calculatedFreq;
+    }
 }
 /*
  Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
  @param center midino
  @param pivot
  */
-void Scale::modulate(signed char center, signed char pivot)
+void Scale::modulate(juce::int8 center, juce::int8 pivot)
 {
     
 }
@@ -182,6 +188,21 @@ void Scale::calcFundamentalFreq()
     scaleValues.setProperty("fundamentalFreq",
                             kbm.getReferenceFreq() / (float) getNote( kbm.getScaleDegree(kbm.getReferenceMidiNote()) ) //freq of first note in Notes at refernce octave
                             * (float) getNote(kbm.getScaleDegree( kbm.getMiddleNote()) ) //ratio/note corresponding to the middlenote.
-                            * pow( (float) getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(kbm.getMiddleNote())), //octave multiplier for middle note
+                            * pow( (float) getNote(kbm.getFormalOctaveScaleDegree()), -kbm.getOctave(kbm.getReferenceMidiNote())), //octave multiplier to get to the middle note from the reference note
                             &undoManager);
+}
+
+
+
+void Scale::initCalculatedFreqs()
+{
+    calculatedFreqs.clearQuick();
+    calculatedFreqs.resize(128); //128, because there are 128 midi values
+    calculatedFreqs.fill(-1.0f);
+}
+
+bool Scale::freqHasBeenCalculated(juce::int8 midiNoteNum)
+{
+    assert(midiNoteNum >= 0);
+    return calculatedFreqs.getUnchecked(midiNoteNum) != -1.0;
 }

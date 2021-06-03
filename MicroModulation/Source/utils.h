@@ -116,4 +116,12 @@ static double getMidiNoteInHertz (const int noteNumber, const double frequencyOf
     return frequencyOfA * std::pow (2.0, (noteNumber - 69) / 12.0);
 }
 
+
+static double freqToMidi(const double freqInHertz, const double frequencyOfA)
+{
+    return log2(freqInHertz / frequencyOfA) * 12.0 + 69.0;
+}
+
 }  // end namespace utils
+
+
