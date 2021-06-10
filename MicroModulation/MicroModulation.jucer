@@ -2,8 +2,7 @@
 
 <JUCERPROJECT id="hFQKW4" name="MicroModulation" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
-              pluginFormats="buildVST3">
+              pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="HBc4lb" name="MicroModulation">
     <GROUP id="{BEE8BB2A-8E3F-2F27-C658-FF2EFCE2CEE8}" name="Source">
       <FILE id="qa63Mc" name="utils.h" compile="0" resource="0" file="Source/utils.h"/>

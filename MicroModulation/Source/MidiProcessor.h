@@ -15,10 +15,10 @@ private:
     bool hasSentSetupMessages;
     juce::MidiBuffer setupMessages;
     
-    juce::MPEZoneLayout zoneLayout;
+    juce::MPEZoneLayout zoneLayout; //for channelAssigner
     juce::MPEChannelAssigner channelAssigner;
     
-    juce::Array<juce::int8> midiNoteChannelMap; // midiNoteChannelMap[noteNum] stores which channel noteNum is mapped to, or -1 if noteNum is not currently mapped
+    juce::Array<juce::int8> midiNoteChannelMap; // midiNoteChannelMap[noteNum] stores which channel noteNum is being played on, or -1 if noteNum is not currently mapped/being played
         
     void sendSetupMessages() {
         processedBuffer.addEvents(setupMessages, 0, -1, 0);
@@ -26,23 +26,28 @@ private:
     }
     
     void makeSetupMessages() {
-        zoneLayout.setLowerZone(15, 48, 2);
-        zoneLayout.setUpperZone(0, 48, 2);
+        zoneLayout.setLowerZone(15, 1, 2);
+        zoneLayout.setUpperZone(0, 1, 2);
         setupMessages.addEvents(juce::MPEMessages::setZoneLayout(zoneLayout),
                                 0, -1, 0);
     }
     void initMidiNoteChannelMap() {
         midiNoteChannelMap.resize(128); //128, because there are 128 midi values
-        midiNoteChannelMap.fill(static_cast<juce::int8>(-1));
+        midiNoteChannelMap.fill(static_cast<juce::int8>(-1)); //nothing is currently being played
     }
 public:
-    MidiProcessor(juce::UndoManager& um) : hasSentSetupMessages(false), undoManager(um), scale(um)
+    MidiProcessor(juce::UndoManager& um) : hasSentSetupMessages(false), undoManager(um), scale(um), midiProcessorValues(juce::Identifier("midiProcessor"))
     {
         makeSetupMessages();
         initMidiNoteChannelMap();
+        
+        midiProcessorValues.addChild(scale.scaleValues, -1, &undoManager);
+        
+        midiProcessorValues.setProperty(juce::Identifier("lastNotePlayed"), -1, &undoManager);
     }
     /**
-     The main process block for Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
+     Function for processing Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
+     @param midiMessages The MIDI buffer sent from  PluginProcessor::processBlock. Contains all MIDI for processing.
      */
     void process(juce::MidiBuffer& midiMessages)
     {
@@ -55,7 +60,11 @@ public:
             for(const juce::MidiMessageMetadata metadata : midiMessages)
             {
                 message = metadata.getMessage();
-
+                
+                if(message.isNoteOn())
+                {
+                    midiProcessorValues.setProperty(juce::Identifier("lastNotePlayed"), message.getNoteNumber(), &undoManager);
+                }
                 if(message.isNoteOff()) channelAssigner.noteOff(message.getNoteNumber());
                 if(message.isAllNotesOff()) channelAssigner.allNotesOff();
                 
@@ -68,7 +77,6 @@ public:
                     }
                     message.setChannel(channel);
                     
-                    //TODO: this could be stored to reduce calculation
                     double unRoundedMidiNoteNum = utils::freqToMidi(scale.getFreq(message.getNoteNumber()), 440.0f);
                     double midiNoteNum = std::round(unRoundedMidiNoteNum);
                     message.setNoteNumber(midiNoteNum);
@@ -77,6 +85,7 @@ public:
                     typedef juce::MidiMessage Msg;
                     auto pitchBendVal = Msg::pitchbendToPitchwheelPos(midiNoteNum - unRoundedMidiNoteNum,
                                                                                                      zoneLayout.getLowerZone().perNotePitchbendRange);
+                    //DBG(std::to_string(unRoundedMidiNoteNum)+ + " "+ std::to_string(pitchBendVal));
                     processedBuffer.addEvent(Msg::pitchWheel(channel, pitchBendVal), metadata.samplePosition);
                 }
                 
@@ -94,4 +103,6 @@ public:
     juce::MidiBuffer processedBuffer;
     juce::UndoManager& undoManager;
     Scale scale;
+    
+    juce::ValueTree midiProcessorValues;
 };

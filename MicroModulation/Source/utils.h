@@ -1,5 +1,7 @@
 /*
  ==============================================================================
+ A namespace of static, miscellaneous, utility functions.
+ These are mostly helper functions for file parsing that are useful for testing.
  
  utils.h
  Created: 26 May 2021 11:24:07am
@@ -21,7 +23,7 @@ namespace utils {
 
 /*
  Helper function for Scale::loadSclString() (and KeyboardMap::loadKbmString() ).
- @param contents The contents to be written to the file.
+ @param contents. The string to be written to a new tmp file.
  note: cstdio::remove() must be called on this file!!!!
  @return path to the tmp file.
  */
@@ -42,7 +44,8 @@ static std::string makeAndWriteTmpFile(std::string contents)
 
 /*
  Helper function for file reading.
- Removes leading white space and comments from a .scl or .kbm file line.
+ Removes leading white space and comments (signified by '!') from a .scl or .kbm file line.
+ @param line. The string to remove spaces and comments from.
  */
 static std::string removeLineSpaceAndComments(std::string line)
 {
@@ -52,7 +55,11 @@ static std::string removeLineSpaceAndComments(std::string line)
     output = std::regex_replace(output, std::regex("\r$"), std::string("")); //remove lone /r .
     return output;
 }
-
+/*
+ Removes initial white space and handels possible '/r/n' line breaks from a line in a .scl or .kbm file.
+ @param line. The string to remove white space from.
+ @return The string resluting after white space has been removed from line.
+ */
 static std::string removeWhiteSpace(std::string line)
 {
     std::string output = std::regex_replace(line, std::regex("\s+"), std::string("")); //remove initial whitespace
@@ -60,15 +67,15 @@ static std::string removeWhiteSpace(std::string line)
     return output;
 }
 
-
-static std::string makeKbmString(int numNotes,
+//Depreciated, I think.
+static std::string makeKbmString(int sizeOfMap,
                                  int mapLowBound, int mapHighBound,
                                  int middleNote,
                                  int refNote, float refFreq,
                                  int formalOctaveScaleDegree,
                                  std::vector<int> mappings)
 {
-    std::string output = std::to_string(numNotes) + "\n"
+    std::string output = std::to_string(sizeOfMap) + "\n"
     + std::to_string(mapLowBound) + "\n" + std::to_string(mapHighBound) + "\n"
     + std::to_string(middleNote) + "\n"
     + std::to_string(refNote) + "\n" + std::to_string(refFreq) + "\n"
@@ -80,14 +87,26 @@ static std::string makeKbmString(int numNotes,
     return output;
 }
 
-static std::string makeKbmString(int numNotes,
+/*
+ Makes a string formatted as a .kbm file to use with utils::makeAndWriteTmpFile to load custom Keyboard Maps.
+ @param sizeOfMap After how many notes the mapping repeats.
+ @param mapLowBound The first midi note value to retune.
+ @param mapHighBound The last midi note value to retune.
+ @param middleNote The note value to which the first entry of the mapping should be mapped.
+ @param refNote Reference note for which frequency is given.
+ @param refFreq Frequency to tune the above reference note to.
+ @param formalOctaveScaleDegree The Scale degree to consider as a formal octave. It determines the difference in pitch between adjacent mapping patterns.
+ @param mappings A std::vector<std::string>> that stores which keys should be mapped to which scale degrees.
+ @return A string that is formatted as a .kbm file based on the given parameters.
+ */
+static std::string makeKbmString(int sizeOfMap,
                                  int mapLowBound, int mapHighBound,
                                  int middleNote,
                                  int refNote, float refFreq,
                                  int formalOctaveScaleDegree,
                                  std::vector<std::string> mappings)
 {
-    std::string output = std::to_string(numNotes) + "\n"
+    std::string output = std::to_string(sizeOfMap) + "\n"
     + std::to_string(mapLowBound) + "\n" + std::to_string(mapHighBound) + "\n"
     + std::to_string(middleNote) + "\n"
     + std::to_string(refNote) + "\n" + std::to_string(refFreq) + "\n"
@@ -99,7 +118,13 @@ static std::string makeKbmString(int numNotes,
     return output;
 }
 
-
+/*
+ Makes a string formatted as a .scl file to use with utils::makeAndWriteTmpFile to load custom Scales (tunings)
+ @param description A string that describes the scale/tuning.
+ @param numNotes The number of notes in the scale.
+ @param notes std::vector<std::string>> of ratios/intervals that describe the notes in the scale/tuning.
+ @return A string that is formatted as a .scl file based on the given parameters.
+ */
 static std::string makeSclString(std::string description, std::string numNotes, std::vector<std::string> notes)
 {
     std::string output = description + "\n" + numNotes + "\n";
@@ -110,7 +135,7 @@ static std::string makeSclString(std::string description, std::string numNotes, 
     return output;
 }
 
-
+//Depreciated. Juce has this function built in at juce::MidiMessages::getMidiNoteInHerz;
 static double getMidiNoteInHertz (const int noteNumber, const double frequencyOfA)
 {
     return frequencyOfA * std::pow (2.0, (noteNumber - 69) / 12.0);

@@ -11,8 +11,8 @@
 
 //==============================================================================
 MicroModulationAudioProcessorEditor::MicroModulationAudioProcessorEditor (MicroModulationAudioProcessor& p)
-: AudioProcessorEditor (&p), audioProcessor (p), fileComponent(p.midiProcessor.scale, juce::Colours::palegreen),
-modulationComponent(juce::Colours::blueviolet)
+: AudioProcessorEditor (&p), audioProcessor (p), fileComponent(p.midiProcessor.scale, juce::Colours::darkblue),
+modulationComponent(juce::Colours::blueviolet, p.midiProcessor)
 {
 //    gainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalDrag);
 //    gainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 25);
@@ -23,6 +23,7 @@ modulationComponent(juce::Colours::blueviolet)
     
     
     addAndMakeVisible(fileComponent);
+    
     addAndMakeVisible(modulationComponent);
     
     // Make sure that before the constructor has finished, you've set the

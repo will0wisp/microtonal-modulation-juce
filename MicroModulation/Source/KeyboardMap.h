@@ -56,6 +56,7 @@ public:
     // ==============================================================================
     // Getters and Setters
     // ==============================================================================
+    
     //TODO: move these definitions to .cpp file.
     juce::Array<juce::var>& getMapping(){
         jassert(keyboardMapValues.hasProperty("mapping"));
@@ -89,15 +90,15 @@ public:
      @param midiNoteNum the midi note number. on [0,127]
      @return the associated scale degree (of scale stored in this->notes)
      */
-    int getScaleDegree(signed char midiNoteNum);
-    int getOctave(signed char midiNoteNum);
+    int getScaleDegree(juce::int8 midiNoteNum);
+    int getOctave(juce::int8 midiNoteNum);
     
     /*
      Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
      @param center midino
      @param pivot
      */
-    void modulate(signed char center, signed char pivot);
+    void modulate(juce::int8 center, juce::int8 pivot);
     
 private:
     juce::UndoManager& undoManager;

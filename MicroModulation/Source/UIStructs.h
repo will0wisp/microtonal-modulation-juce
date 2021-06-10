@@ -78,7 +78,7 @@ struct FileLoadingComponent : public juce::Component, public juce::Button::Liste
         }
     }
 private:
-    Scale scale;
+    Scale& scale;
 
     juce::Colour backgroundColour;
     
@@ -90,10 +90,10 @@ private:
     
 };
 
-struct ModulationControlsComponent : public juce::Component
+struct ModulationControlsComponent : public juce::Component, public juce::ValueTree::Listener
 {
 public:
-    ModulationControlsComponent(juce::Colour c): backgroundColour(c), setCenterButton("", juce::Colours::black, juce::Colours::red, juce::Colours::green), curCenterLabel("center: NaN"), curPivotLabel("pivot: NaN"), lastMidiNoteLabel("last note: NaN")
+    ModulationControlsComponent(juce::Colour c, MidiProcessor& mp): backgroundColour(c), midiProcessorVals(mp.midiProcessorValues), setCenterButton("", juce::Colours::black, juce::Colours::red, juce::Colours::green), curCenterLabel("", "center: NaN"), curPivotLabel("", "pivot: NaN"), lastMidiNoteLabel("","last note: NaN")
     {
 //        labels.push_back(&curCenterLabel);
 //        labels.push_back(&curPivotLabel);
@@ -102,7 +102,8 @@ public:
         addAndMakeVisible(curCenterLabel);
         addAndMakeVisible(curPivotLabel);
         addAndMakeVisible(lastMidiNoteLabel);
-
+        
+        midiProcessorVals.addListener(this);
 
     }
 
@@ -119,9 +120,15 @@ public:
         fb.alignContent = juce::FlexBox::AlignContent::center;
 
         
-        fb.items.add(juce::FlexItem(curCenterLabel).withMinWidth(50.f).withMinHeight(50.0f));
-        fb.items.add(juce::FlexItem(curPivotLabel).withMinWidth(50.f).withMinHeight(50.0f));
-        fb.items.add(juce::FlexItem(lastMidiNoteLabel).withMinWidth(50.f).withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(curCenterLabel)
+                     .withMinWidth(50.f)
+                     .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(curPivotLabel)
+                     .withMinWidth(50.f)
+                     .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(lastMidiNoteLabel)
+                     .withMinWidth(50.f)
+                     .withMinHeight(50.0f));
 
 //        for(auto* l : labels) {
 //            fb.items.add(juce::FlexItem(*l).withMinWidth(50.f).withMinHeight(50.0f));
@@ -131,6 +138,21 @@ public:
         fb.performLayout(getLocalBounds().toFloat());
 
     }
+    
+    void valueTreePropertyChanged(juce::ValueTree& tree, const juce::Identifier& property) override
+    {
+        const juce::MessageManagerLock mmLock;
+
+        if(tree.getType() == juce::Identifier("midiProcessor"))
+        {
+            if(property == juce::Identifier("lastNotePlayed"))
+            {
+                lastMidiNoteLabel.setText(tree.getProperty(property), juce::NotificationType::dontSendNotification);
+                
+            }
+        }
+    }
+    
 private:
     juce::Colour backgroundColour;
 
@@ -145,6 +167,9 @@ private:
    // juce::Button modulateButton;
     
     std::vector<juce::Label*> labels;
+    
+    
+    juce::ValueTree midiProcessorVals;
 };
 
 } // end namespace ui_structs

@@ -102,6 +102,7 @@ bool Scale::loadSclFile(std::string sclPath)
         {
             kbm.setToDefaultMapping(getNotes().size());
             calcFundamentalFreq();
+            initCalculatedFreqs();
             hasScl = true;
             return true;
         }
