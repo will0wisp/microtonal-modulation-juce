@@ -90,21 +90,18 @@ private:
     
 };
 
-struct ModulationControlsComponent : public juce::Component, public juce::ValueTree::Listener
+struct ModulationControlsComponent : public juce::Component
 {
 public:
-    ModulationControlsComponent(juce::Colour c, MidiProcessor& mp): backgroundColour(c), midiProcessorVals(mp.midiProcessorValues), setCenterButton("", juce::Colours::black, juce::Colours::red, juce::Colours::green), curCenterLabel("", "center: NaN"), curPivotLabel("", "pivot: NaN"), lastMidiNoteLabel("","last note: NaN")
+    ModulationControlsComponent(juce::Colour c, MidiProcessor& mp): backgroundColour(c),
+    lastMidiNoteLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c),
+    curCenterLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c),
+    curPivotLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c)
+
     {
-//        labels.push_back(&curCenterLabel);
-//        labels.push_back(&curPivotLabel);
-//        labels.push_back(&lastMidiNoteLabel);
-//
+        addAndMakeVisible(lastMidiNoteLabel);
         addAndMakeVisible(curCenterLabel);
         addAndMakeVisible(curPivotLabel);
-        addAndMakeVisible(lastMidiNoteLabel);
-        
-        midiProcessorVals.addListener(this);
-
     }
 
     void paint (juce::Graphics& g) override
@@ -119,57 +116,83 @@ public:
         fb.justifyContent = juce::FlexBox::JustifyContent::center;
         fb.alignContent = juce::FlexBox::AlignContent::center;
 
-        
+
+        fb.items.add(juce::FlexItem(lastMidiNoteLabel)
+                     .withMinWidth(100.f)
+                     .withMinHeight(50.0f));
         fb.items.add(juce::FlexItem(curCenterLabel)
-                     .withMinWidth(50.f)
+                     .withMinWidth(100.f)
                      .withMinHeight(50.0f));
         fb.items.add(juce::FlexItem(curPivotLabel)
-                     .withMinWidth(50.f)
+                     .withMinWidth(100.f)
                      .withMinHeight(50.0f));
-        fb.items.add(juce::FlexItem(lastMidiNoteLabel)
-                     .withMinWidth(50.f)
-                     .withMinHeight(50.0f));
-
-//        for(auto* l : labels) {
-//            fb.items.add(juce::FlexItem(*l).withMinWidth(50.f).withMinHeight(50.0f));
-//        }
-        //fb.items.add(juce::FlexItem(setCenterButton).withMinWidth(50.f).withMinHeight(50.0f));
-        
         fb.performLayout(getLocalBounds().toFloat());
 
     }
     
-    void valueTreePropertyChanged(juce::ValueTree& tree, const juce::Identifier& property) override
-    {
-        const juce::MessageManagerLock mmLock;
-
-        if(tree.getType() == juce::Identifier("midiProcessor"))
-        {
-            if(property == juce::Identifier("lastNotePlayed"))
-            {
-                lastMidiNoteLabel.setText(tree.getProperty(property), juce::NotificationType::dontSendNotification);
-                
-            }
-        }
-    }
-    
 private:
     juce::Colour backgroundColour;
-
-    juce::ShapeButton setCenterButton;
-    juce::Label curCenterLabel;
-
-  //  juce::Button setPivotButton;
-    juce::Label curPivotLabel;
-
-    juce::Label lastMidiNoteLabel;
-
-   // juce::Button modulateButton;
     
-    std::vector<juce::Label*> labels;
+    class ValueLabel : public juce::Component, public juce::Value::Listener
+    {
+    public:
+        ValueLabel(const juce::String text, const juce::Value value, const juce::Colour backgroundColour): text(text), value(value), backgroundColour(backgroundColour)
+        {
+            this->value.addListener(this);
+            
+            textLabel.attachToComponent(&valueLabel, true);
+            setText(text);
+            
+            valueLabel.setText(initialValueText, juce::NotificationType::dontSendNotification);
+            
+            addAndMakeVisible(textLabel);
+            addAndMakeVisible(valueLabel);
+        }
+        void setText(juce::String text)
+        {
+            this->text = text;
+            textLabel.setText(text, juce::NotificationType::dontSendNotification);
+        }
+        void valueChanged(juce::Value& value) override
+        {
+            valueLabel.setText(value.toString(), juce::NotificationType::sendNotification);
+        }
+        void paint (juce::Graphics& g) override
+        {
+            g.fillAll (backgroundColour);
+        }
+
+        void resized() override
+        {
+            juce::FlexBox fb;
+            fb.flexWrap = juce::FlexBox::Wrap::wrap;
+            fb.justifyContent = juce::FlexBox::JustifyContent::center;
+            fb.alignContent = juce::FlexBox::AlignContent::center;
+            
+            fb.items.add(juce::FlexItem(textLabel)
+                         .withMinWidth(50.f)
+                         .withMinHeight(50.0f));
+            fb.items.add(juce::FlexItem(valueLabel)
+                         .withMinWidth(50.f)
+                         .withMinHeight(50.0f));
+            fb.performLayout(getLocalBounds().toFloat());
+        }
+
+    private:
+        const juce::String initialValueText = "NA";
+        
+        juce::String text;
+        juce::Label textLabel;
+            
+        juce::Value value;
+        juce::Label valueLabel;
+        
+        juce::Colour backgroundColour;
+    };
     
-    
-    juce::ValueTree midiProcessorVals;
+    ValueLabel lastMidiNoteLabel;
+    ValueLabel curCenterLabel;
+    ValueLabel curPivotLabel;
 };
 
 } // end namespace ui_structs
