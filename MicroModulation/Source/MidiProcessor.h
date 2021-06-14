@@ -102,6 +102,9 @@ public:
         midiProcessorValues.addChild(scale.scaleValues, -1, &undoManager);
         
         midiProcessorValues.setProperty(juce::Identifier("lastNotePlayed"), -1, &undoManager);
+        midiProcessorValues.setProperty(juce::Identifier("curCenter"), 60, &undoManager);
+        midiProcessorValues.setProperty(juce::Identifier("curPivot"), 60, &undoManager);
+
     }
     /**
      Function for processing Midi messages. Using a .scl file, it retunes the message using MPE and pitchbend.
@@ -132,6 +135,25 @@ public:
         midiMessages.swapWith(processedBuffer);
     }
     
+    /**
+    Sets the center for modulation.
+    @param newCenter. The juce::int8 representation of a Midi Note to set  modulation center to.
+    */
+    void setCenter(juce::var newCenter){ midiProcessorValues.setProperty("curCenter", newCenter, &undoManager);}
+   /**
+    Sets the center for modulation to the last midiNote that was played.
+    */
+   void setCenter() { setCenter(midiProcessorValues.getProperty("lastNotePlayed"));}
+    /**
+     Sets the pivot for modulation.
+     @param newPivot. The juce::int8 representation of a Midi Note to set  modulation pivot to.
+     */
+    void setPivot(juce::var newPivot){ midiProcessorValues.setProperty("curPivot", newPivot, &undoManager);}
+    /**
+     Sets the pivot for modulation to the last midiNote that was played.
+     */
+    void setPivot() { setPivot(midiProcessorValues.getProperty("lastNotePlayed"));}
+
     juce::MidiBuffer processedBuffer;
     juce::UndoManager& undoManager;
     Scale scale;

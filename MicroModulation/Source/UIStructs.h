@@ -15,6 +15,69 @@
 #include "Scale.h"
 
 namespace ui_structs{
+/*
+ A UI Component that displays the real-time value of a juce::Value alongside a text discription.
+ The text discription is to the left of the value.
+ */
+class ValueLabel : public juce::Component, public juce::Value::Listener
+{
+public:
+    ValueLabel(){}
+    ValueLabel(const juce::String text, const juce::Value value, const juce::Colour backgroundColour): text(text), value(value), backgroundColour(backgroundColour)
+    {
+        this->value.addListener(this);
+        
+        textLabel.attachToComponent(&valueLabel, true);
+        setText(text);
+        
+        valueLabel.setText(initialValueText, juce::NotificationType::dontSendNotification);
+        
+        addAndMakeVisible(textLabel);
+        addAndMakeVisible(valueLabel);
+    }
+    void setText(juce::String text)
+    {
+        this->text = text;
+        textLabel.setText(text, juce::NotificationType::dontSendNotification);
+    }
+    void valueChanged(juce::Value& value) override
+    {
+        valueLabel.setText(value.toString(), juce::NotificationType::sendNotification);
+    }
+    void paint (juce::Graphics& g) override
+    {
+        g.fillAll (backgroundColour);
+    }
+
+    void resized() override
+    {
+        juce::FlexBox fb;
+        fb.flexWrap = juce::FlexBox::Wrap::wrap;
+        fb.justifyContent = juce::FlexBox::JustifyContent::center;
+        fb.alignContent = juce::FlexBox::AlignContent::center;
+        
+        fb.items.add(juce::FlexItem(textLabel)
+                     .withMinWidth(50.f)
+                     .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(valueLabel)
+                     .withMinWidth(50.f)
+                     .withMinHeight(50.0f));
+        fb.performLayout(getLocalBounds().toFloat());
+    }
+
+private:
+    const juce::String initialValueText = "NA";
+    
+    juce::String text;
+    juce::Label textLabel;
+        
+    juce::Value value;
+    juce::Label valueLabel;
+    
+    juce::Colour backgroundColour;
+};
+
+
 struct FileLoadingComponent : public juce::Component, public juce::Button::Listener
 {
     //TODO: may need to change Scale s to pass by reference
@@ -24,6 +87,7 @@ struct FileLoadingComponent : public juce::Component, public juce::Button::Liste
         loadSclButton.addListener(this);
         addAndMakeVisible(loadKbmButton);
         loadKbmButton.addListener(this);
+        
         
         addAndMakeVisible(loadedSclLabel);
         addAndMakeVisible(loadedKbmLabel);
@@ -90,18 +154,27 @@ private:
     
 };
 
-struct ModulationControlsComponent : public juce::Component
+struct ModulationControlsComponent : public juce::Component, juce::Button::Listener
 {
 public:
-    ModulationControlsComponent(juce::Colour c, MidiProcessor& mp): backgroundColour(c),
+    ModulationControlsComponent(juce::Colour c, MidiProcessor& mp):
+    midiProcessor(mp),
+    backgroundColour(c),
     lastMidiNoteLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c),
-    curCenterLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c),
-    curPivotLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("lastNotePlayed"), nullptr), c)
-
+    curCenterLabel("Center: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("curCenter"), nullptr), c),
+    curPivotLabel("Pivot: ", mp.midiProcessorValues.getPropertyAsValue(juce::Identifier("curPivot"), nullptr), c),
+    setCenterButton("Set Center"), setPivotButton("Set Pivot")
     {
+        setCenterButton.addListener(this);
+        setPivotButton.addListener(this);
+        
         addAndMakeVisible(lastMidiNoteLabel);
         addAndMakeVisible(curCenterLabel);
         addAndMakeVisible(curPivotLabel);
+        
+        addAndMakeVisible(setCenterButton);
+        addAndMakeVisible(setPivotButton);
+
     }
 
     void paint (juce::Graphics& g) override
@@ -126,73 +199,33 @@ public:
         fb.items.add(juce::FlexItem(curPivotLabel)
                      .withMinWidth(100.f)
                      .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(setCenterButton)
+                     .withMinWidth(100.f)
+                     .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(setPivotButton)
+                     .withMinWidth(100.f)
+                     .withMinHeight(50.0f));
         fb.performLayout(getLocalBounds().toFloat());
 
     }
     
-private:
-    juce::Colour backgroundColour;
-    
-    class ValueLabel : public juce::Component, public juce::Value::Listener
+    void buttonClicked (juce::Button* button) override
     {
-    public:
-        ValueLabel(const juce::String text, const juce::Value value, const juce::Colour backgroundColour): text(text), value(value), backgroundColour(backgroundColour)
-        {
-            this->value.addListener(this);
-            
-            textLabel.attachToComponent(&valueLabel, true);
-            setText(text);
-            
-            valueLabel.setText(initialValueText, juce::NotificationType::dontSendNotification);
-            
-            addAndMakeVisible(textLabel);
-            addAndMakeVisible(valueLabel);
-        }
-        void setText(juce::String text)
-        {
-            this->text = text;
-            textLabel.setText(text, juce::NotificationType::dontSendNotification);
-        }
-        void valueChanged(juce::Value& value) override
-        {
-            valueLabel.setText(value.toString(), juce::NotificationType::sendNotification);
-        }
-        void paint (juce::Graphics& g) override
-        {
-            g.fillAll (backgroundColour);
-        }
-
-        void resized() override
-        {
-            juce::FlexBox fb;
-            fb.flexWrap = juce::FlexBox::Wrap::wrap;
-            fb.justifyContent = juce::FlexBox::JustifyContent::center;
-            fb.alignContent = juce::FlexBox::AlignContent::center;
-            
-            fb.items.add(juce::FlexItem(textLabel)
-                         .withMinWidth(50.f)
-                         .withMinHeight(50.0f));
-            fb.items.add(juce::FlexItem(valueLabel)
-                         .withMinWidth(50.f)
-                         .withMinHeight(50.0f));
-            fb.performLayout(getLocalBounds().toFloat());
-        }
-
-    private:
-        const juce::String initialValueText = "NA";
-        
-        juce::String text;
-        juce::Label textLabel;
-            
-        juce::Value value;
-        juce::Label valueLabel;
-        
-        juce::Colour backgroundColour;
-    };
+        if(button == &setCenterButton) midiProcessor.setCenter();
+        if(button == &setPivotButton) midiProcessor.setPivot();
+        DBG("Button Clicked");
+    }
+    
+private:
+    MidiProcessor& midiProcessor;
+    juce::Colour backgroundColour;
     
     ValueLabel lastMidiNoteLabel;
     ValueLabel curCenterLabel;
     ValueLabel curPivotLabel;
+    
+    juce::TextButton setCenterButton;
+    juce::TextButton setPivotButton;
 };
 
 } // end namespace ui_structs
