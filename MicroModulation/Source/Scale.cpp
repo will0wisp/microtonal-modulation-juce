@@ -176,9 +176,11 @@ float Scale::getFreq(juce::int8 midiNoteNum)
  */
 void Scale::modulate(juce::int8 center, juce::int8 pivot)
 {
-//    undoManager.beginNewTransaction();
-//    initCalculatedFreqs();
-    
+    if(center != pivot) //if center == pivot, modulation does nothing. this can be made more general if optimization is nescicarry
+    {
+        undoManager.beginNewTransaction();
+        initCalculatedFreqs();
+    }
 }
 
 

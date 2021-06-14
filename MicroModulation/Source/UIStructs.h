@@ -213,7 +213,6 @@ public:
     {
         if(button == &setCenterButton) midiProcessor.setCenter();
         if(button == &setPivotButton) midiProcessor.setPivot();
-        DBG("Button Clicked");
     }
     
 private:

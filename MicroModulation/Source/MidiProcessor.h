@@ -153,7 +153,27 @@ public:
      Sets the pivot for modulation to the last midiNote that was played.
      */
     void setPivot() { setPivot(midiProcessorValues.getProperty("lastNotePlayed"));}
-
+    
+    /**
+     Calls scale.modulate() if appropriate
+     */
+    void modulate()
+    {
+        juce::var pivotVar = midiProcessorValues.getProperty(juce::Identifier("curPivot"));
+        juce::var centerVar = midiProcessorValues.getProperty(juce::Identifier("curCenter"));
+        
+        if(pivotVar.isInt() && centerVar.isInt()){
+            int pivot = pivotVar;
+            int center = centerVar;
+            if((pivot >= 0)
+               && (pivot < 128)
+               && (center >= 0)
+               && (center < 128))
+            {
+                scale.modulate(center, pivot);
+            }
+        }
+    }
     juce::MidiBuffer processedBuffer;
     juce::UndoManager& undoManager;
     Scale scale;
