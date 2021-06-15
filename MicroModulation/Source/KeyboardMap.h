@@ -21,6 +21,7 @@
 
 #include "JuceHeader.h"
 
+#include "Identifiers.h"
 
 class KeyboardMap
 {
@@ -59,21 +60,21 @@ public:
     
     //TODO: move these definitions to .cpp file.
     juce::Array<juce::var>& getMapping(){
-        jassert(keyboardMapValues.hasProperty("mapping"));
-        jassert(keyboardMapValues.getProperty("mapping").isArray());
-        return *(keyboardMapValues.getProperty("mapping").getArray());
+        jassert(keyboardMapValues.hasProperty(IDs::keyboardMapping));
+        jassert(keyboardMapValues.getProperty(IDs::keyboardMapping).isArray());
+        return *(keyboardMapValues.getProperty(IDs::keyboardMapping).getArray());
     }
     int getMapping(int midiNote){
         if(midiNote >= getMapping().size() || midiNote < 0) return -1;
         return getMapping().getUnchecked(midiNote);
     }
     
-    int getRetuneRangeUpperBound(){return keyboardMapValues.getProperty("returnRangeUpperBound");}
-    int getRetuneRangeLowerBound(){return keyboardMapValues.getProperty("retuneRangeLowerBound");}
-    int getMiddleNote(){return keyboardMapValues.getProperty("middleNote");}
-    int getReferenceMidiNote(){return keyboardMapValues.getProperty("referenceNote");}
-    float getReferenceFreq(){return keyboardMapValues.getProperty("referenceFreq");}
-    int getFormalOctaveScaleDegree(){return keyboardMapValues.getProperty("formalOctaveScaleDegree");}
+    int getRetuneRangeUpperBound(){return keyboardMapValues.getProperty(IDs::returnRangeUpperBound);}
+    int getRetuneRangeLowerBound(){return keyboardMapValues.getProperty(IDs::retuneRangeLowerBound);}
+    int getMiddleNote(){return keyboardMapValues.getProperty(IDs::middleNote);}
+    int getReferenceMidiNote(){return keyboardMapValues.getProperty(IDs::referenceNote);}
+    float getReferenceFreq(){return keyboardMapValues.getProperty(IDs::referenceFreq);}
+    int getFormalOctaveScaleDegree(){return keyboardMapValues.getProperty(IDs::formalOctaveScaleDegree);}
     
     // ==============================================================================
     // File Parsing

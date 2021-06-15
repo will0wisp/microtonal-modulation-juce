@@ -22,6 +22,7 @@
 
 #include "JuceHeader.h"
 
+#include "Identifiers.h"
 #include "KeyboardMap.h"
 
 //TODO: Add complete documentation
@@ -47,21 +48,21 @@ public:
     // ==============================================================================
 
     juce::Array<juce::var>& getNotes(){
-        jassert(scaleValues.hasProperty("notes"));
-        jassert(scaleValues.getProperty("notes").isArray());
-        return *(scaleValues.getProperty("notes").getArray());
+        jassert(scaleValues.hasProperty(IDs::scaleNotes));
+        jassert(scaleValues.getProperty(IDs::scaleNotes).isArray());
+        return *(scaleValues.getProperty(IDs::scaleNotes).getArray());
     }
     float getNote(int i) {
         if(i >= getNotes().size() || i < 0) return -1;
         return getNotes().getUnchecked(i);
     }
     void setNotes(juce::Array<juce::var> newNotes) {
-        jassert(scaleValues.hasProperty("notes"));
-        scaleValues.getPropertyAsValue("notes", &undoManager).setValue(juce::var(newNotes));
+        jassert(scaleValues.hasProperty(IDs::scaleNotes));
+        scaleValues.getPropertyAsValue(IDs::scaleNotes, &undoManager).setValue(juce::var(newNotes));
     }
     
     
-    std::string getDescription(){ return scaleValues.getProperty("description").toString().toStdString();}
+    std::string getDescription(){ return scaleValues.getProperty(IDs::scaleDescription).toString().toStdString();}
 
     KeyboardMap getKeyboardMap(){return this->kbm;}
     //void setKeyboardMap(KeyboardMap kb){this->kbm = kb;}

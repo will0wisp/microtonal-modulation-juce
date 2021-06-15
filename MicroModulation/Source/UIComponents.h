@@ -17,8 +17,8 @@
 
 namespace ui_components{
 /*
- A UI Component that displays the real-time value of a juce::Value alongside a text discription.
- The text discription is to the left of the value.
+ A UI Component that displays the real-time value of a juce::Value alongside a text description.
+ The text description is to the left of the value.
  */
 class ValueLabel : public juce::Component, public juce::Value::Listener
 {
