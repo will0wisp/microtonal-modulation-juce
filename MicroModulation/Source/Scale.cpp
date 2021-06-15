@@ -48,7 +48,6 @@ bool Scale::loadSclFile(std::string sclPath)
             {
                 //TODO: HACK maybe change implementation so we don't need an extra if block
                 if(lineNum == 0 && utils::removeWhiteSpace(line) == ""){//handles files with empty descriptions. hacky.
-                    //description = "";
                     scaleValues.setProperty(IDs::scaleDescription, juce::var(""), &undoManager);
                     lineNum++;
                 }
@@ -60,7 +59,6 @@ bool Scale::loadSclFile(std::string sclPath)
                     {
                         case 1:
                             scaleValues.setProperty(IDs::scaleDescription, juce::var(line), &undoManager);
-                            //description = line;
                             break;
                         case 2:
                             numNotesToRead = std::stoi(line);
@@ -82,7 +80,6 @@ bool Scale::loadSclFile(std::string sclPath)
                                     noteRatio = noteRatio / (float)std::stoi(line);
                                 }
                             }
-                            //notes.push_back(noteRatio);
                             if(noteRatio <= 0) fileReadCorrectly = false;
                             getNotes().add(noteRatio);
                             //if(notes.back() <= 0) fileReadCorrectly = false; //notes must be positive.
