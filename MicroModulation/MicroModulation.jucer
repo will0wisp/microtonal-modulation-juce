@@ -6,11 +6,13 @@
   <MAINGROUP id="HBc4lb" name="MicroModulation">
     <GROUP id="{BEE8BB2A-8E3F-2F27-C658-FF2EFCE2CEE8}" name="Source">
       <FILE id="qa63Mc" name="utils.h" compile="0" resource="0" file="Source/utils.h"/>
+      <FILE id="jx3Szu" name="Identifiers.h" compile="0" resource="0" file="Source/Identifiers.h"/>
       <FILE id="YnCVpV" name="Scale.cpp" compile="1" resource="0" file="Source/Scale.cpp"/>
       <FILE id="LrLrLy" name="Scale.h" compile="0" resource="0" file="Source/Scale.h"/>
       <FILE id="w2QDCj" name="KeyboardMap.h" compile="0" resource="0" file="Source/KeyboardMap.h"/>
       <FILE id="pSdm5d" name="KeyboardMap.cpp" compile="1" resource="0" file="Source/KeyboardMap.cpp"/>
       <FILE id="mAqmjM" name="MidiProcessor.h" compile="0" resource="0" file="Source/MidiProcessor.h"/>
+      <FILE id="ix9Jm9" name="UIComponents.h" compile="0" resource="0" file="Source/UIComponents.h"/>
       <FILE id="kqA90E" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="u7WVKw" name="PluginProcessor.h" compile="0" resource="0"
@@ -18,7 +20,6 @@
       <FILE id="YSHl5Z" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="pQ4H24" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="ix9Jm9" name="UIStructs.h" compile="0" resource="0" file="Source/UIStructs.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

@@ -11,7 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#include "UIStructs.h"
+#include "UIComponents.h"
 
 //==============================================================================
 /**
@@ -32,8 +32,8 @@ private:
     MicroModulationAudioProcessor& audioProcessor;
 
     
-    ui_structs::FileLoadingComponent fileComponent;
-    ui_structs::ModulationControlsComponent modulationComponent;
+    ui_components::FileLoadingComponent fileComponent;
+    ui_components::ModulationControlsComponent modulationComponent;
     
     //currently unused, from AudioProcessorValueTreeState tutorial.
     juce::Slider gainSlider;

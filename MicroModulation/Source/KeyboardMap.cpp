@@ -13,10 +13,11 @@
 
 #include "JuceHeader.h"
 
+#include "Identifiers.h"  //stores all juce::Identifier s in namespace "IDs"
 #include "KeyboardMap.h"
 #include "utils.h"
 
-KeyboardMap::KeyboardMap(juce::UndoManager& um) : keyboardMapValues(juce::Identifier("keyboardMap")), undoManager(um)
+KeyboardMap::KeyboardMap(juce::UndoManager& um) : keyboardMapValues(IDs::keyboardMap), undoManager(um)
 {
     setDefaultValues();
 }
@@ -24,27 +25,37 @@ KeyboardMap::KeyboardMap(juce::UndoManager& um) : keyboardMapValues(juce::Identi
 KeyboardMap::KeyboardMap(juce::UndoManager& um, int sclLength) : KeyboardMap(um) { setToDefaultMapping(sclLength); }
 KeyboardMap::KeyboardMap(juce::UndoManager& um, int sclLength, std::string kbmPath) : KeyboardMap(um)
 {
-    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), sclLength, &undoManager);
+    keyboardMapValues.setProperty(IDs::scaleLength, sclLength, &undoManager);
     loadKbmFile(kbmPath);
 }
 
 void KeyboardMap::setDefaultValues()
 {
-    keyboardMapValues.setProperty(juce::Identifier("retuneRangeLowerBound"), (signed char) 0, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("returnRangeUpperBound"), (signed char) 127, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("middleNote"), (signed char) 60, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("referenceNote"), (signed char) 69, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("referenceFreq"),  440.f, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("formalOctaveScaleDegree"), -1, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), -1, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("mapping"), juce::Array<juce::var>(), &undoManager);
+    keyboardMapValues.setProperty(IDs::retuneRangeLowerBound,
+                                  (signed char) 0, &undoManager);
+    keyboardMapValues.setProperty(IDs::retuneRangeUpperBound,
+                                  (signed char) 127, &undoManager);
+    keyboardMapValues.setProperty(IDs::middleNote,
+                                  (signed char) 60, &undoManager);
+    keyboardMapValues.setProperty(IDs::referenceNote,
+                                  (signed char) 69, &undoManager);
+    keyboardMapValues.setProperty(IDs::referenceFreq,
+                                  440.f, &undoManager);
+    keyboardMapValues.setProperty(IDs::formalOctaveScaleDegree,
+                                  -1, &undoManager);
+    keyboardMapValues.setProperty(IDs::scaleLength,
+                                  -1, &undoManager);
+    keyboardMapValues.setProperty(IDs::keyboardMapping,
+                                  juce::Array<juce::var>(), &undoManager);
 }
 
 void KeyboardMap::setToDefaultMapping(int scaleLength)
 {
     setDefaultValues();
-    keyboardMapValues.setProperty(juce::Identifier("scaleLength"), scaleLength, &undoManager);
-    keyboardMapValues.setProperty(juce::Identifier("formalOctaveScaleDegree"), scaleLength - 1, &undoManager);
+    keyboardMapValues.setProperty(IDs::scaleLength,
+                                  scaleLength, &undoManager);
+    keyboardMapValues.setProperty(IDs::formalOctaveScaleDegree,
+                                  scaleLength - 1, &undoManager);
     for(int i = 0; i < scaleLength; i++)
     {
         getMapping().add(juce::var(i));
@@ -77,25 +88,25 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                             if(mappingSize <= 0 ) return false;
                             break;
                         case 2: //first midi note number to retune
-                            keyboardMapValues.setProperty("retuneRangeLowerBound", std::stoi(line), &undoManager);
+                            keyboardMapValues.setProperty(IDs::retuneRangeLowerBound, std::stoi(line), &undoManager);
                             break;
                         case 3: //last midi note number to retune
-                            keyboardMapValues.setProperty("returnRangeUpperBound", std::stoi(line), &undoManager);
+                            keyboardMapValues.setProperty(IDs::retuneRangeUpperBound, std::stoi(line), &undoManager);
                             break;
                         case 4: // middle note
                         {
                             int middleNote = std::stoi(line);
-                            keyboardMapValues.setProperty("middleNote", middleNote, &undoManager);
+                            keyboardMapValues.setProperty(IDs::middleNote, middleNote, &undoManager);
                             if(middleNote < 0 || middleNote > 127) fileReadCorrectly = false;
                             break;
                         }
                         case 5: //midi reference note
-                            keyboardMapValues.setProperty("referenceNote", std::stoi(line), &undoManager);
+                            keyboardMapValues.setProperty(IDs::referenceNote, std::stoi(line), &undoManager);
                             break;
                         case 6: //frequency of reference midi note
                         {
                             float refFreq = std::stof(line);
-                            keyboardMapValues.setProperty("referenceFreq", refFreq, &undoManager);
+                            keyboardMapValues.setProperty(IDs::referenceFreq, refFreq, &undoManager);
                             if(refFreq <= 0.0) fileReadCorrectly = false;
                             break;
                         }
@@ -103,8 +114,8 @@ bool KeyboardMap::loadKbmFile(std::string kbmPath)
                         {
                             //this value is 1-indexed in the file. We want it to be 0-indexed, so subtract 1.
                             int octaveScaleDegree = std::stoi(line) - 1;
-                            keyboardMapValues.setProperty("formalOctaveScaleDegree", octaveScaleDegree, &undoManager);
-                            if(octaveScaleDegree < 0 || octaveScaleDegree >= static_cast<int>(keyboardMapValues.getProperty("scaleLength"))) fileReadCorrectly = false;
+                            keyboardMapValues.setProperty(IDs::formalOctaveScaleDegree, octaveScaleDegree, &undoManager);
+                            if(octaveScaleDegree < 0 || octaveScaleDegree >= static_cast<int>(keyboardMapValues.getProperty(IDs::scaleLength))) fileReadCorrectly = false;
                             break;
                         }
                         default:

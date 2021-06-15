@@ -14,14 +14,15 @@
 
 #include "JuceHeader.h"
 
+#include "Identifiers.h"
 #include "Scale.h"
 #include "utils.h"
 
-Scale::Scale(juce::UndoManager& um): scaleValues(juce::Identifier("scale")), undoManager(um), kbm(um), hasScl(false)
+Scale::Scale(juce::UndoManager& um): scaleValues(IDs::scale), undoManager(um), kbm(um), hasScl(false)
 {
-    scaleValues.setProperty(juce::Identifier("description"), "", &undoManager);
-    scaleValues.setProperty(juce::Identifier("notes"), juce::Array<juce::var>(), &undoManager);
-    scaleValues.setProperty(juce::Identifier("fundamentalFreq"), juce::var(440.0f), &undoManager);
+    scaleValues.setProperty(IDs::scaleDescription, "", &undoManager);
+    scaleValues.setProperty(IDs::scaleNotes, juce::Array<juce::var>(), &undoManager);
+    scaleValues.setProperty(IDs::fundamentalFreq, juce::var(440.0f), &undoManager);
     
     scaleValues.addChild(kbm.keyboardMapValues, -1, &undoManager);
     
@@ -48,7 +49,7 @@ bool Scale::loadSclFile(std::string sclPath)
                 //TODO: HACK maybe change implementation so we don't need an extra if block
                 if(lineNum == 0 && utils::removeWhiteSpace(line) == ""){//handles files with empty descriptions. hacky.
                     //description = "";
-                    scaleValues.setProperty("description", juce::var(""), &undoManager);
+                    scaleValues.setProperty(IDs::scaleDescription, juce::var(""), &undoManager);
                     lineNum++;
                 }
                 
@@ -58,7 +59,7 @@ bool Scale::loadSclFile(std::string sclPath)
                     switch(++lineNum)
                     {
                         case 1:
-                            scaleValues.setProperty("description", juce::var(line), &undoManager);
+                            scaleValues.setProperty(IDs::scaleDescription, juce::var(line), &undoManager);
                             //description = line;
                             break;
                         case 2:
@@ -163,7 +164,7 @@ float Scale::getFreq(juce::int8 midiNoteNum)
     else{
         calculatedFreq = (float) getNote(kbm.getScaleDegree(midiNoteNum-1))
         * pow( (float)getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
-        * (float) scaleValues.getProperty("fundamentalFreq");
+        * (float) scaleValues.getProperty(IDs::fundamentalFreq);
         
         calculatedFreqs.set(midiNoteNum, calculatedFreq);
         return calculatedFreq;
@@ -190,7 +191,7 @@ void Scale::modulate(juce::int8 center, juce::int8 pivot)
  */
 void Scale::calcFundamentalFreq()
 {
-    scaleValues.setProperty("fundamentalFreq",
+    scaleValues.setProperty(IDs::fundamentalFreq,
                             kbm.getReferenceFreq() / (float) getNote( kbm.getScaleDegree(kbm.getReferenceMidiNote()) ) //freq of first note in Notes at refernce octave
                             * (float) getNote(kbm.getScaleDegree( kbm.getMiddleNote()) ) //ratio/note corresponding to the middlenote.
                             * pow( (float) getNote(kbm.getFormalOctaveScaleDegree()), -kbm.getOctave(kbm.getReferenceMidiNote())), //octave multiplier to get to the middle note from the reference note
