@@ -32,23 +32,24 @@ public:
 
     juce::ValueTree keyboardMapValues;
         
-    /* Sets the mapping to a default state, based on the length of the scale.
+    /**
+     Sets the mapping to a default state, based on the length of the scale.
      The default state is a linear, one-note-per-key mapping. For example, if we define the center midi note =: 'c',
      we get the default mapping:
      
      MIDI NOTE NUM         -> SCALE DEGREE
      ...
-     c- scaleLength        -> 0
-     c-scaleLength + 1     -> 1
+     c- scaleLength             -> 0
+     c-scaleLength + 1        -> 1
      ...
-     c-2                   -> scaleLength - 2
-     c-1                   -> scaleLength - 1
-     c                     -> 0
-     c+1                   -> 1
-     c+2                   -> 2
+     c-2                               -> scaleLength - 2
+     c-1                               -> scaleLength - 1
+     c                                  -> 0
+     c+1                              -> 1
+     c+2                              -> 2
      ...
-     c+ scaleLength - 1    -> scaleLength - 1
-     c+ scaleLength        -> 0
+     c+ scaleLength - 1      -> scaleLength - 1
+     c+ scaleLength           -> 0
      ...
      
      @param scaleLength. The number of notes in the scale this map is serviceing.
@@ -69,7 +70,7 @@ public:
         return getMapping().getUnchecked(midiNote);
     }
     
-    int getRetuneRangeUpperBound(){return keyboardMapValues.getProperty(IDs::returnRangeUpperBound);}
+    int getRetuneRangeUpperBound(){return keyboardMapValues.getProperty(IDs::retuneRangeUpperBound);}
     int getRetuneRangeLowerBound(){return keyboardMapValues.getProperty(IDs::retuneRangeLowerBound);}
     int getMiddleNote(){return keyboardMapValues.getProperty(IDs::middleNote);}
     int getReferenceMidiNote(){return keyboardMapValues.getProperty(IDs::referenceNote);}
@@ -86,15 +87,24 @@ public:
     // ==============================================================================
     // Main functionality
     // ==============================================================================
-    /*
-     Returns the scale degree for a given midi note
-     @param midiNoteNum the midi note number. on [0,127]
-     @return the associated scale degree (of scale stored in this->notes)
+    /**
+     @param midiNoteNum. The juce::int8 midi note number.
+     @return The int index associated to midiNoteNum in the keyboardMapping.
+     */
+    int getMappingIndex(juce::int8 midiNoteNum);
+    /**
+     * Returns the scale degree for a given midi note
+     * @param midiNoteNum the midi note number. on [0,127]
+     * @return the associated scale degree (of scale stored in this->notes)
      */
     int getScaleDegree(juce::int8 midiNoteNum);
+    /**
+     Returns how how many octaves above (positive) or below (negative) a note is compared to the middleNote.
+     @param
+     */
     int getOctave(juce::int8 midiNoteNum);
     
-    /*
+    /**
      Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
      @param center midino
      @param pivot

@@ -48,13 +48,16 @@ public:
     // ==============================================================================
 
     juce::Array<juce::var>& getNotes(){
-        jassert(scaleValues.hasProperty(IDs::scaleNotes));
-        jassert(scaleValues.getProperty(IDs::scaleNotes).isArray());
+//        jassert(scaleValues.hasProperty(IDs::scaleNotes));
+//        jassert(scaleValues.getProperty(IDs::scaleNotes).isArray());
         return *(scaleValues.getProperty(IDs::scaleNotes).getArray());
     }
-    float getNote(int i) {
-        if(i >= getNotes().size() || i < 0) return -1;
-        return getNotes().getUnchecked(i);
+    float getNoteRatio(int midiNoteNum) {
+        return getNoteRatioOfScaleDegree(kbm.getScaleDegree(midiNoteNum));
+    }
+    float getNoteRatioOfScaleDegree(int scaleDegree) {
+        if(scaleDegree >= getNotes().size() || scaleDegree < 0) return -1;
+        return getNotes().getUnchecked(scaleDegree);
     }
     void setNotes(juce::Array<juce::var> newNotes) {
         jassert(scaleValues.hasProperty(IDs::scaleNotes));
@@ -72,7 +75,7 @@ public:
     // ==============================================================================
     bool loadSclFile(std::string sclPath);
     bool loadSclFile(juce::File sclFile);
-    /*
+    /**
      Loads a scale based on a .scl file stored in a string.
      @param sclString a string that is formatted like a .scl file. to be loaded
      */
@@ -84,13 +87,15 @@ public:
 
     bool hasSclLoaded(){return hasScl;}
     
-    /*
+    /**
      Returns the frequency that should be played back.
      @param midiNoteNum the midiNote number.
      @return the frequncy that is associated with that midi note number.
      */
     float getFreq(juce::int8 midiNoteNum);
-    /*
+
+    
+    /**
      Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
      @param center midino
      @param pivot

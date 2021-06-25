@@ -164,10 +164,13 @@ public:
     lastMidiNoteLabel("Last note: ", mp.midiProcessorValues.getPropertyAsValue(IDs::lastNotePlayed, nullptr), c),
     curCenterLabel("Center: ", mp.midiProcessorValues.getPropertyAsValue(IDs::modCenter, nullptr), c),
     curPivotLabel("Pivot: ", mp.midiProcessorValues.getPropertyAsValue(IDs::modPivot, nullptr), c),
-    setCenterButton("Set Center"), setPivotButton("Set Pivot")
+    setCenterButton("Set Center"), setPivotButton("Set Pivot"),
+    modulateButton("Modulate"), undoButton("Undo")
     {
         setCenterButton.addListener(this);
         setPivotButton.addListener(this);
+        modulateButton.addListener(this);
+        undoButton.addListener(this);
         
         addAndMakeVisible(lastMidiNoteLabel);
         addAndMakeVisible(curCenterLabel);
@@ -175,6 +178,9 @@ public:
         
         addAndMakeVisible(setCenterButton);
         addAndMakeVisible(setPivotButton);
+        
+        addAndMakeVisible(modulateButton);
+        addAndMakeVisible(undoButton);
 
     }
 
@@ -206,6 +212,12 @@ public:
         fb.items.add(juce::FlexItem(setPivotButton)
                      .withMinWidth(100.f)
                      .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(modulateButton)
+                     .withMinWidth(100.f)
+                     .withMinHeight(50.0f));
+        fb.items.add(juce::FlexItem(undoButton)
+                     .withMinWidth(100.f)
+                     .withMinHeight(50.0f));
         fb.performLayout(getLocalBounds().toFloat());
 
     }
@@ -214,6 +226,9 @@ public:
     {
         if(button == &setCenterButton) midiProcessor.setCenter();
         if(button == &setPivotButton) midiProcessor.setPivot();
+        if(button == &modulateButton) midiProcessor.modulate();
+        if(button == &undoButton) midiProcessor.undo();
+
     }
     
 private:
@@ -224,8 +239,13 @@ private:
     ValueLabel curCenterLabel;
     ValueLabel curPivotLabel;
     
+    
     juce::TextButton setCenterButton;
     juce::TextButton setPivotButton;
+    
+    juce::TextButton modulateButton;
+    juce::TextButton undoButton;
+
 };
 
 } // end namespace ui_components

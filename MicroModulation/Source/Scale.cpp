@@ -8,6 +8,7 @@
  ==============================================================================
  */
 
+#include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <string>
@@ -147,7 +148,7 @@ bool Scale::loadKbmString(std::string kbmString)
 
 
 //TODO: test this
-/*
+/**
  Returns the frequency that should be played back.
  @param midiNoteNum the midiNote number.
  @return the frequncy that is associated with that midi note number.
@@ -156,20 +157,20 @@ float Scale::getFreq(juce::int8 midiNoteNum)
 {
     assert(midiNoteNum >= 0);
     float calculatedFreq = calculatedFreqs.getUnchecked(midiNoteNum);
-    
+
     if(freqHasBeenCalculated(midiNoteNum)) return calculatedFreq;
     else{
-        calculatedFreq = (float) getNote(kbm.getScaleDegree(midiNoteNum-1))
-        * pow( (float)getNote(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum-1))
-        * (float) scaleValues.getProperty(IDs::fundamentalFreq);
-        
+        calculatedFreq =  getNoteRatio(midiNoteNum - 1) //I don't know why we need the midiNoteNum - 1 in this function.
+        * pow( getNoteRatio(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum - 1))
+        * static_cast<float>(scaleValues.getProperty(IDs::fundamentalFreq));
+
         calculatedFreqs.set(midiNoteNum, calculatedFreq);
         return calculatedFreq;
     }
 }
-/*
+/**
  Modulates from center to pivot. The frequency-ratios around pivot after modulation will be the same as those around center before modulation.
- @param center midino
+ @param center
  @param pivot
  */
 void Scale::modulate(juce::int8 center, juce::int8 pivot)
@@ -178,20 +179,29 @@ void Scale::modulate(juce::int8 center, juce::int8 pivot)
     {
         undoManager.beginNewTransaction();
         initCalculatedFreqs();
+
+        float prevFundamentalFreq = scaleValues.getProperty(IDs::fundamentalFreq);
+        scaleValues.setProperty(IDs::fundamentalFreq,
+                                prevFundamentalFreq * getNoteRatio(pivot) / getNoteRatio(center)
+                                , &undoManager);
+        
+        
+//        int prevMiddleNote = kbm.keyboardMapValues.getProperty(IDs::middleNote);
+//        kbm.keyboardMapValues.setProperty(IDs::middleNote, prevMiddleNote - kbm.getMappingIndex(center) + kbm.getMappingIndex(pivot), &undoManager);
     }
 }
 
 
 
-/*
+/**
  Calculates the 'fundamental' or reference frequency for the scale. This corresponds to the frequency that this->kbm.getMiddleNote() is mapped to.
  */
 void Scale::calcFundamentalFreq()
 {
     scaleValues.setProperty(IDs::fundamentalFreq,
-                            kbm.getReferenceFreq() / (float) getNote( kbm.getScaleDegree(kbm.getReferenceMidiNote()) ) //freq of first note in Notes at refernce octave
-                            * (float) getNote(kbm.getScaleDegree( kbm.getMiddleNote()) ) //ratio/note corresponding to the middlenote.
-                            * pow( (float) getNote(kbm.getFormalOctaveScaleDegree()), -kbm.getOctave(kbm.getReferenceMidiNote())), //octave multiplier to get to the middle note from the reference note
+                            kbm.getReferenceFreq() / (float) getNoteRatio(kbm.getReferenceMidiNote()) //freq of first note in Notes at refernce octave
+                            * (float) getNoteRatio(kbm.getMiddleNote())
+                            * pow( (float) getNoteRatio(kbm.getFormalOctaveScaleDegree()), -kbm.getOctave(kbm.getReferenceMidiNote())), //octave multiplier to get to the middle note from the reference note
                             &undoManager);
 }
 

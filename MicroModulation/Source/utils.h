@@ -21,7 +21,7 @@
 
 namespace utils {
 
-/*
+/**
  Helper function for Scale::loadSclString() (and KeyboardMap::loadKbmString() ).
  @param contents. The string to be written to a new tmp file.
  note: cstdio::remove() must be called on this file!!!!
@@ -42,7 +42,7 @@ static std::string makeAndWriteTmpFile(std::string contents)
 }
 
 
-/*
+/**
  Helper function for file reading.
  Removes leading white space and comments (signified by '!') from a .scl or .kbm file line.
  @param line. The string to remove spaces and comments from.
@@ -55,7 +55,7 @@ static std::string removeLineSpaceAndComments(std::string line)
     output = std::regex_replace(output, std::regex("\r$"), std::string("")); //remove lone /r .
     return output;
 }
-/*
+/**
  Removes initial white space and handels possible '/r/n' line breaks from a line in a .scl or .kbm file.
  @param line. The string to remove white space from.
  @return The string resluting after white space has been removed from line.
@@ -87,7 +87,7 @@ static std::string makeKbmString(int sizeOfMap,
     return output;
 }
 
-/*
+/**
  Makes a string formatted as a .kbm file to use with utils::makeAndWriteTmpFile to load custom Keyboard Maps.
  @param sizeOfMap After how many notes the mapping repeats.
  @param mapLowBound The first midi note value to retune.
@@ -118,7 +118,7 @@ static std::string makeKbmString(int sizeOfMap,
     return output;
 }
 
-/*
+/**
  Makes a string formatted as a .scl file to use with utils::makeAndWriteTmpFile to load custom Scales (tunings)
  @param description A string that describes the scale/tuning.
  @param numNotes The number of notes in the scale.
@@ -146,6 +146,25 @@ static double freqToMidi(const double freqInHertz, const double frequencyOfA)
 {
     return log2(freqInHertz / frequencyOfA) * 12.0 + 69.0;
 }
+
+
+//function from https://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain/20924698#20924698
+
+static int mod(int a, int n)
+    {
+        if (n == 0)
+            throw std::out_of_range("(a mod 0) is undefined for any a.");
+
+        //puts a in the [-n+1, n-1] range using the remainder operator
+        int remainder = a%n;
+
+        //if the remainder is less than zero, add n to put it in the [0, n-1] range if n is positive
+        //if the remainder is greater than zero, add n to put it in the [n-1, 0] range if n is negative
+        if ((n > 0 && remainder < 0) ||
+            (n < 0 && remainder > 0))
+            return remainder + n;
+        return remainder;
+    }
 
 }  // end namespace utils
 

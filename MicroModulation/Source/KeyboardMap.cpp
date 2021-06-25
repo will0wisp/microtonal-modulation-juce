@@ -164,29 +164,32 @@ bool KeyboardMap::loadKbmString(std::string kbmString)
     return output;
 }
 
-/*
- Returns the scale degree for a given midi note
- */
-//TODO: fix so that it only works when midiNoteNum is in the correct midiRange
-int KeyboardMap::getScaleDegree(signed char midiNoteNum)
+int KeyboardMap::getMappingIndex(juce::int8 midiNoteNum)
 {
     assert(getMapping().size() > 0);
     int index;
     if(midiNoteNum >= getMiddleNote())
     {
-        index = (midiNoteNum - getMiddleNote()) % getMapping().size();
+        index = utils::mod(midiNoteNum - getMiddleNote(), getMapping().size());
     }
     else{
-        index = getMapping().size() - (getMiddleNote() - midiNoteNum) % getMapping().size();
+        index = getMapping().size() - utils::mod((getMiddleNote() - midiNoteNum), getMapping().size());
         if(index == getMapping().size()) index = 0;
     }
-    return getMapping(index);
+    return index;
+}
+/**
+ Returns the scale degree for a given midi note
+ */
+//TODO: fix so that it only works when midiNoteNum is in the correct midiRange
+int KeyboardMap::getScaleDegree(juce::int8 midiNoteNum)
+{
+    return getMapping(getMappingIndex(midiNoteNum));
 }
 
-//this could be a signed char
-int KeyboardMap::getOctave(signed char midiNoteNum)
+int KeyboardMap::getOctave(juce::int8 midiNoteNum)
 {
-    signed char diff = midiNoteNum -  getMiddleNote();
+   juce::int8 diff = midiNoteNum -  getMiddleNote();
     int output = (int) diff / (int) getMapping().size();
     if(diff < 0 && diff % (int) getMapping().size() != 0) output--;//because division is symettric around 0, we need to decrement the octave when diff is negative.
     return output;

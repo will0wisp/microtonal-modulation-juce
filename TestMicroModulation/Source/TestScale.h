@@ -203,20 +203,59 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
 //TODO: improove coverage. this is absolutely atrocious.
 TEST_CASE("Midi notes can be converted into frequencies.")
 {
-    juce::UndoManager um; 
+    juce::UndoManager um;
     Scale s(um);
-    s.loadSclString(utils::makeSclString("12-TET", "12", {"100.0", "200.0", "300.0", "400.0", "500.0", "600.0", "700.0", "800.0", "900.0", "1000.0", "1100.0", "1200.0"}));
     
-    for(int noteNum = 0; noteNum < 128; noteNum++)
+    SECTION("12-TET 12 note representation")
     {
-        REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
+        s.loadSclString(utils::makeSclString("12-TET 12 notes", "12", {"100.0", "200.0", "300.0", "400.0", "500.0", "600.0", "700.0", "800.0", "900.0", "1000.0", "1100.0", "1200.0"}));
+        
+        for(int noteNum = 0; noteNum < 128; noteNum++)
+        {
+            REQUIRE(s.getFreq(noteNum) == Catch::Approx(utils::getMidiNoteInHertz(noteNum, 440.0)) );
+        }
+    }
+    SECTION("12-TET 1 note representation")
+    {
+        s.loadSclString(utils::makeSclString("12-TET 1 note", "1", {"100.0"}));
+        for(int noteNum = 0; noteNum < 128; noteNum++)
+        {
+            REQUIRE(s.getFreq(noteNum) == Catch::Approx(utils::getMidiNoteInHertz(noteNum, 440.0)) );
+        }
     }
     
-    s.loadSclString(utils::makeSclString("12-TET", "1", {"100.0"}));
-    for(int noteNum = 60; noteNum < 128; noteNum++)
+    int middleNote = 0;
+    int refNote = middleNote;
+    float refFreq = 10.0;
+    s.loadSclString(utils::makeSclString("3 note scale test",
+                                         "3",
+                                         {"12/10", "13/10", "2"}));
+    s.loadKbmString(utils::makeKbmString(3,
+                                         0, 127, //bounds
+                                         middleNote, //midle note
+                                         refNote, refFreq, //refnote, freq
+                                         3, //formal octave
+                                         {0, 1, 2}));
+    int curNoteCounter = 1;
+    int octaveCounter = 0;
+    float freq = refFreq;
+    for(int i = middleNote+1; i < 128; i++ )
     {
-        REQUIRE(s.getFreq(noteNum) == Catch::Approx((utils::getMidiNoteInHertz(noteNum, 440.0))) );
+        switch(curNoteCounter++)
+        {
+            case(0):
+                freq = freq = freq / 1.3 * 2; //1.3, 2 are values from scale
+                break;
+            case(1):
+                freq = freq * 1.2; //1.2 is value from scale
+                break;
+            case(2):
+                freq = freq / 1.2 * 1.3; //1.2,1.3 are avlues from scale
+                curNoteCounter = 0;
+                octaveCounter++;
+                break;
+        }
+        REQUIRE(s.getFreq(i) == Catch::Approx(freq));
     }
-    
-                                        
+        
 }

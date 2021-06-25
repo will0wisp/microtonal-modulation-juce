@@ -21,8 +21,7 @@ private:
     
     juce::Array<juce::int8> midiNoteChannelMap; // midiNoteChannelMap[noteNum] stores which channel noteNum is being played on, or -1 if noteNum is not currently mapped/being played
     
-    /**
-     */
+
     void sendSetupMessages() {
         processedBuffer.addEvents(setupMessages, 0, -1, 0);
         hasSentSetupMessages = true;
@@ -176,12 +175,20 @@ public:
             if((pivot >= 0)
                && (pivot < 128)
                && (center >= 0)
-               && (center < 128))
+               && (center < 128)
+               )
             {
                 scale.modulate(center, pivot);
             }
         }
     }
+    
+    void undo()
+    {
+        undoManager.undo();
+    }
+    
+    
     juce::MidiBuffer processedBuffer;
     juce::UndoManager& undoManager;
     Scale scale;
