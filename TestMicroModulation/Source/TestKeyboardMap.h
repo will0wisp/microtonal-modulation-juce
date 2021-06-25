@@ -201,6 +201,8 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
     juce::UndoManager um;
     KeyboardMap kb(um, 6);
     int numTests = 50;
+    std::srand(time(NULL));
+
     
     int numNotes = 6;
     int mapLowBound = 0; int mapHighBound = 127;
@@ -211,11 +213,11 @@ TEST_CASE("Test KeyboardMap::getScaleDegree")
 
     for(int test = 0; test < numTests; test++)
     {
-        middleNote = rand() % 128;
+        middleNote = utils::randInt(0,128);
 //        mapLowBound = rand() % 127;
 //        mapHighBound = mapLowBound + rand() % (127 - mapLowBound);
-        refNote = rand() % 128;
-        formalOctaveScaleDegree = rand() % 6 + 1; // + 1, because is 1-indexed in file
+        refNote = utils::randInt(0,128);
+        formalOctaveScaleDegree = utils::randInt(0,5) + 1; // + 1, because is 1-indexed in file
         
         assert(kb.loadKbmString(utils::makeKbmString(numNotes, mapLowBound, mapHighBound, middleNote, refNote, refFreq, formalOctaveScaleDegree, mappings)));
         REQUIRE(kb.getScaleDegree(middleNote) == 1); //tests middleNote is the first mapped note
@@ -270,36 +272,3 @@ TEST_CASE("Test KeyboardMap::getOctave")
     }
 
 }
-
-
-//TEST_CASE("Test KeyboardMap::modulate")
-//{
-//    int numRandomMods = 100000;
-//
-//    KeyboardMap kb;
-//
-//    kb.loadSclString("Pivot constant scale"
-//                     "4"
-//                     "1.1"
-//                     "1.2"
-//                     "1.3"
-//                     "2."
-//                     );
-//
-//    KeyboardMap afterMod;
-//    int center;
-//    int pivot;
-//    for(int i = 0; i < numRandomMods; i++)
-//    {
-//        center = rand() % 128;
-//        pivot = rand() % 128;
-//
-//        afterMod = kb;
-//        afterMod.modulate(center, pivot);
-//
-//        SECTION()
-//        {
-//            REQUIRE(kb.getFreq(pivot) == afterMod.getFreq(pivot));
-//        }
-//    }
-//}

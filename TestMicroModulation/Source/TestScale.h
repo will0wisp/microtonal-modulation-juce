@@ -21,6 +21,7 @@ TEST_CASE("Scale::getNotes() works correctly.")
 }
 
 TEST_CASE( "Scale (.scl) Files can be loaded") {
+    
     juce::UndoManager um;
     Scale scale(um);
 
@@ -83,6 +84,7 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
         }
 
         SECTION("Check ratio parsing"){
+            for(int i = 0; i < 10; i++){
             REQUIRE(scale.loadSclString(
                                            "Check ratio parsing Scale\n"
                                            "4\n"
@@ -90,10 +92,11 @@ TEST_CASE( "Scale (.scl) Files can be loaded") {
                                            "2/3\n"
                                            "3/7\n"
                                            "19/11\n"));
-            REQUIRE(scale.getNotes().getUnchecked(0) == Catch::Approx(1.0/2.0));
-            REQUIRE(scale.getNotes().getUnchecked(1) == Catch::Approx(2.0/3.0));
-            REQUIRE(scale.getNotes().getUnchecked(2) == Catch::Approx(3.0/7.0));
-            REQUIRE(scale.getNotes().getUnchecked(3) == Catch::Approx(19.0/11.0));
+            REQUIRE(scale.getNoteRatio(0) == Catch::Approx(1.0/2.0));
+            REQUIRE(scale.getNoteRatio(1) == Catch::Approx(2.0/3.0));
+            REQUIRE(scale.getNoteRatio(2)  == Catch::Approx(3.0/7.0));
+            REQUIRE(scale.getNoteRatio(3)  == Catch::Approx(19.0/11.0));
+            }
         }
 
         SECTION("Check integer interpreted as ratio"){ // integers without a decimal should be ratios
@@ -223,39 +226,84 @@ TEST_CASE("Midi notes can be converted into frequencies.")
             REQUIRE(s.getFreq(noteNum) == Catch::Approx(utils::getMidiNoteInHertz(noteNum, 440.0)) );
         }
     }
-    
-    int middleNote = 0;
-    int refNote = middleNote;
-    float refFreq = 10.0;
-    s.loadSclString(utils::makeSclString("3 note scale test",
-                                         "3",
-                                         {"12/10", "13/10", "2"}));
-    s.loadKbmString(utils::makeKbmString(3,
-                                         0, 127, //bounds
-                                         middleNote, //midle note
-                                         refNote, refFreq, //refnote, freq
-                                         3, //formal octave
-                                         {0, 1, 2}));
-    int curNoteCounter = 1;
-    int octaveCounter = 0;
-    float freq = refFreq;
-    for(int i = middleNote+1; i < 128; i++ )
-    {
-        switch(curNoteCounter++)
+    SECTION("Random 3-note scales") {
+        int numTests = 50;
+        std::srand(time(NULL));
+        
+        juce::UndoManager um;
+        
+        int numRightOctaves = 0;
+        for(int i = 0; i < numTests; i++)
         {
-            case(0):
-                freq = freq = freq / 1.3 * 2; //1.3, 2 are values from scale
+            Scale s(um);
+            int middleNote = utils::randInt(0, 128);
+            int refNote = middleNote;
+            float refFreq = utils::randFloat(.1, 5000.0);
+            
+            std::vector<float> scaleRatios = {utils::randFloat(1.0, 3.0),utils::randFloat(1.0, 3.0),utils::randFloat(1.0, 3.0)} ;
+            
+            
+            bool sclLoaded = s.loadSclString(utils::makeSclString("3 note scale test",
+                                                                  "3",
+                                                                  scaleRatios));
+            bool kbmLoaded = s.loadKbmString(utils::makeKbmString(3,
+                                                                  0, 127, //bounds
+                                                                  middleNote, //midle note
+                                                                  refNote, refFreq, //refnote, freq
+                                                                  3, //formal octave
+                                                                  {0, 1, 2}));
+            REQUIRE(sclLoaded);
+            REQUIRE(kbmLoaded);
+            
+            float octaveRatio = s.getNoteRatio(s.getKeyboardMap().getFormalOctaveScaleDegree());
+            if(octaveRatio == Catch::Approx(2))
+            {
+                numRightOctaves++;
+            }else {
                 break;
-            case(1):
-                freq = freq * 1.2; //1.2 is value from scale
-                break;
-            case(2):
-                freq = freq / 1.2 * 1.3; //1.2,1.3 are avlues from scale
-                curNoteCounter = 0;
-                octaveCounter++;
-                break;
+            }
+               
+            int curNoteCounter = 1;
+            float freq = refFreq;
+            for(int i = middleNote+1; i < 128; i++ )
+            {
+                switch(curNoteCounter++)
+                {
+                    case(0):
+                        freq = freq = freq / scaleRatios[1] * scaleRatios[2];
+                        break;
+                    case(1):
+                        freq = freq * scaleRatios[0];
+                        break;
+                    case(2):
+                        freq = freq / scaleRatios[0] * scaleRatios[1];
+                        curNoteCounter = 0;
+                        break;
+                }
+                float scaleFreq = s.getFreq(i);
+                REQUIRE(scaleFreq == Catch::Approx(freq));
+            }
+            freq = refFreq;
+            curNoteCounter = 2;
+            for(int i = middleNote - 1; i >=0; i--)
+            {
+                switch(curNoteCounter--)
+                {
+                    case(0):
+                        freq = freq/ scaleRatios[0];
+                        curNoteCounter = 2;
+                        break;
+                    case(1):
+                        freq = freq / scaleRatios[1] * scaleRatios[0];
+                        break;
+                    case(2):
+                        freq = freq / scaleRatios[2] * scaleRatios[1];
+                        break;
+                }
+                float scaleFreq = s.getFreq(i);
+                REQUIRE(scaleFreq == Catch::Approx(freq));
+            }
         }
-        REQUIRE(s.getFreq(i) == Catch::Approx(freq));
     }
         
 }

@@ -6,6 +6,7 @@
 
 //catch2 unit testing
 #include "Catch/catch_amalgamated.hpp"
+
 //Unit-tests
 #include "TestScale.h"
 #include "TestKeyboardMap.h"

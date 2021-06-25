@@ -8,9 +8,9 @@
  ==============================================================================
  */
 
-#include <cmath>
 #include <cstdio>
 #include <fstream>
+#include <math.h>
 #include <string>
 
 #include "JuceHeader.h"
@@ -132,7 +132,11 @@ bool Scale::loadSclString(std::string sclString)
 bool Scale::loadKbmFile(std::string kbmPath)
 {
     bool output = kbm.loadKbmFile(kbmPath);
-    calcFundamentalFreq();
+    if(output)
+    {
+        initCalculatedFreqs(); //if .kbm changed, we need to recalculate frequencies.
+        calcFundamentalFreq();
+    }
     return output;
 }
 bool Scale::loadKbmFile(juce::File kbmFile)
@@ -142,7 +146,11 @@ bool Scale::loadKbmFile(juce::File kbmFile)
 bool Scale::loadKbmString(std::string kbmString)
 {
     bool output = kbm.loadKbmString(kbmString);
-    calcFundamentalFreq();
+    if(output)
+    {
+        initCalculatedFreqs();
+        calcFundamentalFreq();
+    }
     return output;
 }
 
@@ -163,7 +171,7 @@ float Scale::getFreq(juce::int8 midiNoteNum)
         calculatedFreq =  getNoteRatio(midiNoteNum - 1) //I don't know why we need the midiNoteNum - 1 in this function.
         * pow( getNoteRatio(kbm.getFormalOctaveScaleDegree()), kbm.getOctave(midiNoteNum - 1))
         * static_cast<float>(scaleValues.getProperty(IDs::fundamentalFreq));
-
+        
         calculatedFreqs.set(midiNoteNum, calculatedFreq);
         return calculatedFreq;
     }
